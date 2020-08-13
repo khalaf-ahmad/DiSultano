@@ -24,3 +24,9 @@ yarn-error.log*
 
 # python
 *.pyc
+
+#vscode settings
+.vscode
+
+#enviroment variables
+/backend/.env
