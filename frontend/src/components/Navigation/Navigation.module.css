@@ -1,0 +1,17 @@
+.Navbar {
+  background-color: #e2494c;
+}
+
+.Navbar .Brand,
+.Navbar .Brand:focus {
+  color: #f5be0a;
+}
+
+.Navbar .Brand:hover,
+.Navbar .Brand span {
+  color: #cebd73;
+}
+
+.Navbar .Toggler {
+  border-color: #fff;
+}
