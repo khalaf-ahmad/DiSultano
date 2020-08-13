@@ -30,3 +30,6 @@ yarn-error.log*
 
 #enviroment variables
 /backend/.env
+
+# sqlite db
+/backend/disoltano/*.db

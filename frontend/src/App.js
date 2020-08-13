@@ -1,6 +1,5 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Navigation from "./components/Navigation/Navigation";
 import { Route, Switch } from "react-router-dom";
 import Layout from "./hoc/Layout/Layout";
 function App() {
