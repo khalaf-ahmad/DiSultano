@@ -39,6 +39,8 @@ class Registration(Resource):
             user.save_to_db()
         except Exception as e:
             return {"message": "internal server error"}, 500
+        finally:
+            _parser.remove_argument("name")
 
         return {"message": "Registration Success!"}, 201
 
@@ -59,6 +61,15 @@ class Users(Resource):
     def get(self):
         return {
             "users": [
-                {**user.json(), "password": user.password} for user in UserModel.query.all()
+                user.json() for user in UserModel.get_all()
             ]
         }
+
+class UserLogin(Resource):
+
+    def post(self):
+        data = _parser.parse_args();
+        user = UserModel.find_by_username(data['username'])
+        if not user or not bcrypt.check_password_hash(user.password, data['password']):
+            return {"message": "invalid username or passwrod."}, 401
+        return {"message": "Login Success."}

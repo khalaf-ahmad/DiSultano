@@ -1,6 +1,5 @@
 import React,{ Component } from 'react';
-import {Form, Button, Col, Alert } from 'react-bootstrap';
-import FormControl from "../../components/UI/FormControl/FormControl";
+import UserForm from "../../components/UI/UserForm/UserForm";
 import axios from '../../axios-base';
 import { UserControls } from '../../shared/utility';
 
@@ -39,6 +38,7 @@ class Registration extends Component {
   };
   handleSubmit = (event) => {
     event.preventDefault();
+    this.setState({displayMessage: ""})
     if (!this.formIsValid()) {
       return;
     }
@@ -78,30 +78,14 @@ class Registration extends Component {
   }
 
   render() {
-    return (
-      <Col xs={12} sm={{ span: 8, offset: 2 }} md={{ span: 6, offset: 3 }}>
-        {this.state.displayMessage && (
-          <Alert variant={this.state.category}>
-            {this.state.displayMessage}
-          </Alert>
-        )}
-        <Form onSubmit={this.handleSubmit}>
-          {Object.keys(this.state.controls).map((cKey, idx) => (
-            <FormControl
-              changeHandler={(event) => this.changeHandler(event)}
-              control={this.state.controls[cKey]}
-              name={cKey}
-              key={cKey + idx}
-            />
-          ))}
-          <div className="d-flex justify-content-center">
-            <Button variant="primary" type="submit">
-              {this.state.isLoading ? "Loading..." : "Sign Up"}
-            </Button>
-          </div>
-        </Form>
-      </Col>
-    );
+    return <UserForm
+      controls={this.state.controls}
+      submitText={this.state.isLoading ? "Loading..." : "Sign Up"}
+      changeHandler = {this.changeHandler}
+      displayMessage={this.state.displayMessage} 
+      category={this.state.category}
+      handleSubmit={this.handleSubmit}
+      />
   }
 }
 
