@@ -1,6 +1,6 @@
 from flask import Flask
 from backend.disoltano.config import Config
-from backend.disoltano.extensions_init import db, jwt, bcrypt
+from backend.disoltano.extensions_init import db, jwt, bcrypt, cors
 from backend.disoltano.api import api
 
 
@@ -20,5 +20,5 @@ def create_app(config_class=Config):
     api.init_app(app)
     jwt.init_app(app)
     bcrypt.init_app(app)
-    
+    cors.init_app(app)
     return app

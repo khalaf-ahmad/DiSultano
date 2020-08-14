@@ -1,11 +1,16 @@
 import React, { Fragment } from "react";
+import { Container, Row } from 'react-bootstrap';
 import classes from "./Layout.module.css";
 import Navigation from "../../components/Navigation/Navigation";
 
 const layout = (props) => (
   <Fragment>
     <Navigation />
-    <main className={classes.Content}>{props.children}</main>
+    <Container className={classes.Content} fluid="md">
+      <Row as="main" >
+        {props.children}
+      </Row>
+    </Container>
   </Fragment>
 );
 
