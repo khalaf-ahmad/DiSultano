@@ -1,6 +1,7 @@
 from flask import Flask
 from backend.disoltano.config import Config
-from backend.disoltano.extensions_init import db, jwt, bcrypt, cors
+from backend.disoltano.extensions_init import db, bcrypt, cors
+from backend.disoltano.jwt import jwt
 from backend.disoltano.api import api
 
 
@@ -8,7 +9,7 @@ from backend.disoltano.api import api
 def create_app(config_class=Config):
     app = Flask(__name__)
 
-    # create db before first request if not exists
+    # create db before first request
     @app.before_first_request
     def create_db():
         db.create_all()

@@ -17,8 +17,7 @@ const optionsLinks = {
   dropdownitems: [
     { name: "profile", type: "navdropdownitem", path: "/profile" },
     { name: "users", type: "navdropdownitem", path: "/users" },
-    { type: "navdropdowndivider" },
-    
+    { type: "navdropdowndivider" }
   ],
 };
 const Navigation = () => {
@@ -28,12 +27,12 @@ const Navigation = () => {
   if (authContext.token) {
     options["dropdownitems"] = [
       ...optionsLinks.dropdownitems,
-      { name: "logout", type: "navdropdownitem", path: "logout" },
+      { name: "logout", type: "navdropdownitem", path: "/logout" },
     ];
   } else {
     options["dropdownitems"] = [
       ...optionsLinks.dropdownitems,
-      { name: "login", type: "navdropdownitem", path: "login" },
+      { name: "login", type: "navdropdownitem", path: "/login" },
       { name: "register", type: "navdropdownitem", path: "/register" },
     ];
   }

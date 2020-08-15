@@ -8,7 +8,12 @@ const initialState = {
   displayMessage: "",
   category: "danger",
 };
-const authContext = createContext({ ...initialState, login: () => { }, reset: () => { }});
+const authContext = createContext({
+  ...initialState,
+  login: () => { },
+  registerUser: () => { },
+  resetAuth: () => {},
+});
 
 export class AuthContextProvider extends Component {
   state = { ...initialState }

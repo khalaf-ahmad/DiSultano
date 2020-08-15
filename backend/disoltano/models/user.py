@@ -1,5 +1,5 @@
 from backend.disoltano.extensions_init import db
-
+from backend.disoltano.utility import UserLevel
 
 class UserModel(db.Model):
     __tablename__= "user"
@@ -41,3 +41,11 @@ class UserModel(db.Model):
     @classmethod
     def get_all(cls):
         return cls.query.all()
+
+    @classmethod
+    def get_guest_users(cls):
+        return cls.query.filter_by(role=UserLevel.GUEST)
+
+    @classmethod
+    def get_admin_users(cls):
+        return cls.query.filter_by(role=UserLevel.ADMIN)

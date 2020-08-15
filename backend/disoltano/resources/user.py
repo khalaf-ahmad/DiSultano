@@ -3,9 +3,11 @@ from backend.disoltano.models.user import UserModel
 from backend.disoltano.extensions_init import bcrypt
 from flask_jwt_extended import (
     create_access_token,
-    create_refresh_token
+    create_refresh_token,
+    jwt_required,
+    get_jwt_claims
 )
-from backend.disoltano.utility import create_request_parser
+from backend.disoltano.utility import create_request_parser, UserLevel
 
 auth_list = ["username", "password"]
 
@@ -43,12 +45,21 @@ class Registration(Resource):
         return {"message": "user not found!"}, 404
 
 class Users(Resource):
+    @jwt_required
     def get(self):
-        return {
-            "users": [
-                user.json() for user in UserModel.get_all()
-            ]
-        }
+        user_level = get_jwt_claims()['user_level']
+        if user_level == UserLevel.GUEST:
+            return {
+                "message": "you don't have access rights to the content.",
+                "error": "request_forbidden"
+            }, 403
+        users = []
+        if user_level == UserLevel.SYS_ADMIN:
+            users = [user.json() for user in UserModel.get_all()]
+        elif user_level == UserLevel.ADMIN:
+            users = [user.json() for user in UserModel.get_guest_users()]
+
+        return {"users": users}
 
 class UserLogin(Resource):
 

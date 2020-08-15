@@ -24,3 +24,8 @@ def create_request_parser(options):
             help="This field cannot be blank"
         ) if options.count("name") else None
     return _parser
+
+class UserLevel():
+    GUEST = 1
+    ADMIN = 2
+    SYS_ADMIN = 3
