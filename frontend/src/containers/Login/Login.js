@@ -13,6 +13,10 @@ class Login extends Component {
     },
   };
 
+  componentDidMount() {
+    this.context.resetAuth();
+  }
+
   changeHandler = (event) => {
     const controlName = event.target.id;
     const control = { ...this.state.controls[controlName] };

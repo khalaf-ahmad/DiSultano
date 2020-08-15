@@ -8,11 +8,19 @@ const initialState = {
   displayMessage: "",
   category: "danger",
 };
-const authContext = createContext({...initialState, login: () => { }});
+const authContext = createContext({ ...initialState, login: () => { }, reset: () => { }});
 
 export class AuthContextProvider extends Component {
   state = { ...initialState }
 
+  reset = () => {
+    this.setState(
+      (prevState) => {
+        return {
+          ...initialState
+        }
+      });
+  }
   login = (user) => {
     this.setState({ displayMessage: "", isLoading: true });
     axios
@@ -38,12 +46,15 @@ export class AuthContextProvider extends Component {
       });
   }
   registerUser = (user) => {
+    this.setState({ isLoading: true });
     axios
     .post("/user", user)
     .then((response) => {
       this.setState((prevState) => {
         return {
           ...initialState,
+          token: response.data.token,
+          refreshToken: response.data.refreshToken,
           displayMessage: response.data.message,
           category: "success",
         };
@@ -59,16 +70,22 @@ export class AuthContextProvider extends Component {
     });
   }
   render() {
-    return <authContext.Provider value={{
-      token: this.state.token,
-      refreshToken: this.state.refreshToken,
-      isLoading: this.state.isLoading,
-      displayMessage: this.state.displayMessage,
-      category: this.state.category,
-      login: this.login
-    }} >
+    return (
+      <authContext.Provider
+        value={{
+          token: this.state.token,
+          refreshToken: this.state.refreshToken,
+          isLoading: this.state.isLoading,
+          displayMessage: this.state.displayMessage,
+          category: this.state.category,
+          login: this.login,
+          registerUser: this.registerUser,
+          resetAuth: this.reset
+        }}
+      >
         {this.props.children}
-    </authContext.Provider>
+      </authContext.Provider>
+    );
   }
 }
 

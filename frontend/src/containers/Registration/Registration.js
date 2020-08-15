@@ -1,16 +1,19 @@
 import React,{ Component } from 'react';
 import UserForm from "../../components/UI/UserForm/UserForm";
-import axios from '../../axios-base';
 import { UserControls } from '../../shared/utility';
+import AuthContext from '../../context/auth-context';
 
 class Registration extends Component {
+  static contextType = AuthContext;
+
   state = {
     controls: UserControls,
     displayMessage: "",
-    category: "",
-    isLoading: false
+    category: ""
   };
-
+  componentDidMount() {
+    this.context.resetAuth();
+  }
   changeHandler = (event) => {
     const controlName = event.target.id;
     const control = { ...this.state.controls[controlName] };
@@ -18,7 +21,8 @@ class Registration extends Component {
 
     this.setState((prevState) => {
       return {
-        ...prevState,
+        displayMessage: "",
+        category:"",
         controls: {
           ...prevState.controls,
           [controlName]: control,
@@ -31,47 +35,28 @@ class Registration extends Component {
       return {
         ...prevState,
         displayMessage: message,
-        category: "danger",
-        isLoading: false
+        category: "danger"
       };
     });
   };
   handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({displayMessage: ""})
     if (!this.formIsValid()) {
       return;
     }
-    this.setState({ isLoading: true });
     const user = {
       name: this.state.controls["name"].value,
       username: this.state.controls["username"].value,
       password: this.state.controls["password"].value,
     };
-    this.registerUser(user);
+    this.context.registerUser(user);
   }
-  registerUser = (user) => {
-    axios
-    .post("/user", user)
-    .then((response) => {
-      this.setState((prevState) => {
-        return {
-          ...prevState,
-          displayMessage: response.data.message,
-          category: "success",
-          isLoading: false,
-        };
-      });
-    })
-    .catch((error) => {
-      this.displayMessage(error.response.data.message);
-    });
-  }
+
   formIsValid = () => {
     const password = this.state.controls["password"].value;
     const confirmPassword = this.state.controls["confirmPassword"].value;
     if (password !== confirmPassword) {
-      this.displayMessage("Passwords didn't match.");
+      this.displayMessage("Passwords didn't match.", "danger");
       return false;
     }
     return true;
@@ -80,10 +65,10 @@ class Registration extends Component {
   render() {
     return <UserForm
       controls={this.state.controls}
-      submitText={this.state.isLoading ? "Loading..." : "Sign Up"}
+      submitText={this.context.isLoading ? "Loading..." : "Sign Up"}
       changeHandler = {this.changeHandler}
-      displayMessage={this.state.displayMessage} 
-      category={this.state.category}
+      displayMessage={this.state.displayMessage || this.context.displayMessage} 
+      category={this.state.category || this.context.category}
       handleSubmit={this.handleSubmit}
       />
   }

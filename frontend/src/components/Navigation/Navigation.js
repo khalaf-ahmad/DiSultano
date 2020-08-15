@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import classes from "./Navigation.module.css";
 import NavigationItems from "./NavigationItems/NavigationItems";
+import AuthContext from '../../context/auth-context';
 
 const navigationLinks = [
   { name: "home", type: "link", path: "/" },
@@ -17,17 +18,25 @@ const optionsLinks = {
     { name: "profile", type: "navdropdownitem", path: "/profile" },
     { name: "users", type: "navdropdownitem", path: "/users" },
     { type: "navdropdowndivider" },
-    { name: "register", type: "navdropdownitem", path: "/register" },
+    
   ],
 };
 const Navigation = () => {
-
+  const authContext = useContext(AuthContext);
   const links = [...navigationLinks];
   const options = { ...optionsLinks }
-  options["dropdownitems"] = [
-    ...optionsLinks.dropdownitems,
-    { name: "login", type: "navdropdownitem", path: "/login" },
-  ];
+  if (authContext.token) {
+    options["dropdownitems"] = [
+      ...optionsLinks.dropdownitems,
+      { name: "logout", type: "navdropdownitem", path: "logout" },
+    ];
+  } else {
+    options["dropdownitems"] = [
+      ...optionsLinks.dropdownitems,
+      { name: "login", type: "navdropdownitem", path: "login" },
+      { name: "register", type: "navdropdownitem", path: "/register" },
+    ];
+  }
   links.push(options);
 
   return (
