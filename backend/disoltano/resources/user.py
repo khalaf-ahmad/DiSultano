@@ -2,12 +2,13 @@ from flask_restful import Resource, reqparse, request
 from backend.disoltano.models.user import UserModel
 from backend.disoltano.extensions_init import bcrypt
 from flask_jwt_extended import (
-    create_access_token,
-    create_refresh_token,
     jwt_required,
-    get_jwt_claims
+    get_jwt_claims,
+    create_access_token,
+    get_jwt_identity,
+    jwt_refresh_token_required
 )
-from backend.disoltano.utility import create_request_parser, UserLevel
+from backend.disoltano.utility import create_request_parser, UserLevel, create_user_token
 
 auth_list = ["username", "password"]
 
@@ -29,7 +30,10 @@ class Registration(Resource):
         except Exception as e:
             return {"message": "internal server error"}, 500
 
-        return {"message": "Registration Success!", **createUserToken(user.id)}, 201
+        return {
+            "message": "Registration Success!",
+            "token": create_user_token(user.id)
+        }, 201
 
 
     def delete(self):
@@ -68,12 +72,23 @@ class UserLogin(Resource):
         user = UserModel.find_by_username(data['username'])
         if not user or not bcrypt.check_password_hash(user.password, data['password']):
             return {"message": "invalid username or passwrod."}, 401
-        return {"message": "Login Success.", **createUserToken(user.id)}
+        return {
+            "message": "Login Success.",
+            "token": create_user_token(user.id)
+        }
 
-def createUserToken(userId):
-    access_token = create_access_token(identity=userId, fresh=True)
-    refresh_token = create_refresh_token(userId)
-    return {
-        'token': access_token,
-        'refreshToken': refresh_token
-    }
+
+class TokenRefresh(Resource):
+    @jwt_refresh_token_required
+    def post(self):
+        """
+        Get a new access token without requiring username and password—only the 'refresh token'
+        provided in the /login endpoint.
+
+        Note that refreshed access tokens have a `fresh=False`, which means that the user may have not
+        given us their username and password for potentially a long time (if the token has been
+        refreshed many times over).
+        """
+        current_user = get_jwt_identity()
+        new_token = create_access_token(identity=current_user, fresh=False)
+        return {'access_token': new_token}, 201

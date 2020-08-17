@@ -24,7 +24,7 @@ const Navigation = () => {
   const authContext = useContext(AuthContext);
   const links = [...navigationLinks];
   const options = { ...optionsLinks }
-  if (authContext.token) {
+  if (authContext.isAuthenticated) {
     options["dropdownitems"] = [
       ...optionsLinks.dropdownitems,
       { name: "logout", type: "navdropdownitem", path: "/logout" },

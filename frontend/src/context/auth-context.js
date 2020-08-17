@@ -1,13 +1,14 @@
 import React, { createContext, Component } from 'react';
 import axios from '../axios-base';
-
+import LocalStorageService from '../shared/LocalStorageService';
+import { current_user } from '../shared/utility';
 const initialState = {
-  token: "",
-  refreshToken: "",
   isLoading: false,
   displayMessage: "",
   category: "danger",
+  isAuthenticated: false,
 };
+
 const authContext = createContext({
   ...initialState,
   login: () => { },
@@ -17,8 +18,33 @@ const authContext = createContext({
 
 export class AuthContextProvider extends Component {
   state = { ...initialState }
-
+  storage = LocalStorageService.get_service();
+  componentDidMount() {
+    this.check_authentication();
+  }
+  check_authentication() {
+    const refresh_token = this.storage.get_refresh_token();
+    if (!refresh_token) {
+      return ;
+    }
+    this.setState({
+      isLoading: true,
+    });
+    axios.defaults.headers.common['Authorization'] = `Bearer ${refresh_token}`;
+    axios.post('/token/refresh')
+      .then(response => {
+        current_user.access_token = response.data.access_token;
+        this.setState((prevState) => {
+          return {
+            isLoading: false,
+            isAuthenticated: true
+          }
+        })
+    })
+  }
   reset = () => {
+    this.storage.clear_refresh_token();
+    current_user.access_token = "";
     this.setState(
       (prevState) => {
         return {
@@ -26,60 +52,53 @@ export class AuthContextProvider extends Component {
         }
       });
   }
+
   login = (user) => {
-    this.setState({ displayMessage: "", isLoading: true });
-    axios
-      .post("/login", user)
-      .then((response) => {
-        this.setState((prevState) => {
-          return {
-            ...initialState,
-            token: response.data.token,
-            refreshToken: response.data.refreshToken,
-            displayMessage: response.data.message,
-            category: "success",
-          };
-        });
-      })
-      .catch((error) => {
-        this.setState((prevState) => {
-          return {
-            ...initialState,
-            displayMessage: error.response.data.message,
-          };
-        });
-      });
+    this.send_auth_request(user, "/login");
   }
+
   registerUser = (user) => {
-    this.setState({ isLoading: true });
-    axios
-    .post("/user", user)
+    this.send_auth_request(user, '/user');
+  }
+
+  send_auth_request = (user, url) => {
+    this.setState({ displayMessage:"" ,isLoading: true, isAuthenticated: false });
+    axios.post(url, user)
     .then((response) => {
-      this.setState((prevState) => {
-        return {
-          ...initialState,
-          token: response.data.token,
-          refreshToken: response.data.refreshToken,
-          displayMessage: response.data.message,
-          category: "success",
-        };
-      });
+      this.on_auth_success(response.data.token);
     })
     .catch((error) => {
-      this.setState((prevState) => {
-        return {
-          ...initialState,
-          displayMessage: error.response.data.message,
-        };
-      });
+      this.on_auth_fail(error.response? error.response.data.message : error);
     });
   }
+
+  on_auth_fail = (error_message) => {
+    this.setState((prevState) => {
+      return {
+        ...initialState,
+        displayMessage: error_message,
+      };
+    });
+  }
+
+  on_auth_success = (token) => {
+    current_user.access_token = token.access_token;
+    this.storage.set_refresh_token(token.refresh_token);
+    this.setState((prevState) => {
+      return {
+        ...initialState,
+        displayMessage: "",
+        category: "",
+        isAuthenticated: true,
+      };
+    });
+  }
+
   render() {
     return (
       <authContext.Provider
         value={{
-          token: this.state.token,
-          refreshToken: this.state.refreshToken,
+          isAuthenticated: this.state.isAuthenticated,
           isLoading: this.state.isLoading,
           displayMessage: this.state.displayMessage,
           category: this.state.category,
