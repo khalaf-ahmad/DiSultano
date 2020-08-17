@@ -8,18 +8,20 @@ class UserModel(db.Model):
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     role = db.Column(db.Integer, default=1)
-
-    def __init__(self, name, username, password, role=1):
+    activated = db.Column(db.Boolean, default=False)
+    def __init__(self, name, username, password, role=1, activated=False):
         self.name = name
         self.username = username
         self.password = password
         self.role = role
+        self.activated = False
 
     def json(self):
         return {
             'name': self.name,
             'username': self.username,
-            'role': self.role
+            'role': self.role,
+            'activated': self.activated
         }
 
     def save_to_db(self):

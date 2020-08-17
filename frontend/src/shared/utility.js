@@ -38,4 +38,11 @@ const form = {
     }, "")
 };
 
+export const current_user = {
+  name: "",
+  username: "",
+  role: "",
+  access_token: ""
+};
+
 export  const UserControls = {...form};

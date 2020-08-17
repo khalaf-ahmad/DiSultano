@@ -8,7 +8,7 @@ import { AuthContextProvider } from './context/auth-context';
 import Logout from "./components/Logout/Logout";
 
 
-function App() {
+function App(props) {
   return (
     <div className="App">
       <AuthContextProvider>
