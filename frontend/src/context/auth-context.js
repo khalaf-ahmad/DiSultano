@@ -7,7 +7,7 @@ const initialState = {
   isLoading: false,
   displayMessage: "",
   category: "danger",
-  isAuthenticated: false
+  isAuthenticated: false,
 };
 
 const authContext = createContext({
@@ -19,7 +19,7 @@ const authContext = createContext({
 
 export class AuthContextProvider extends Component {
   state = { ...initialState }
-  storage = LocalStorageService.get_service()
+  storage = LocalStorageService.get_service();
   componentDidMount() {
     this.check_authentication();
   }
@@ -73,14 +73,21 @@ export class AuthContextProvider extends Component {
       this.on_auth_success(response.data.token);
     })
     .catch((error) => {
+<<<<<<< HEAD
       this.on_auth_fail(error.response? error.response.data.message : error.message);
+=======
+      this.on_auth_fail(error.response? error.response.data.message : error);
+>>>>>>> 1a00d5dd591b1df372f832b6ebd108edc50e30e7
     });
   }
 
   on_auth_fail = (error_message) => {
     this.setState((prevState) => {
       return {
+<<<<<<< HEAD
         ...prevState,
+=======
+>>>>>>> 1a00d5dd591b1df372f832b6ebd108edc50e30e7
         ...initialState,
         displayMessage: error_message,
       };
@@ -92,7 +99,10 @@ export class AuthContextProvider extends Component {
     this.storage.set_refresh_token(token.refresh_token);
     this.setState((prevState) => {
       return {
+<<<<<<< HEAD
         ...prevState,
+=======
+>>>>>>> 1a00d5dd591b1df372f832b6ebd108edc50e30e7
         ...initialState,
         displayMessage: "",
         category: "",

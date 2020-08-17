@@ -6,7 +6,7 @@ const Logout = () => {
     const authContext = useContext(AuthContext);
     useEffect(() => {
         authContext.resetAuth();
-    }, [authContext.resetAuth]);
+    }, [authContext]);
 
     return  <Redirect to="/" />  ;
 }
