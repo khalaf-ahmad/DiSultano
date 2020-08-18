@@ -30,7 +30,7 @@ class Registration extends Component {
       };
     });
   };
-  displayMessage = (message, category = "danger") => {
+  displayMessage = (message) => {
     this.setState((prevState) => {
       return {
         ...prevState,
@@ -56,7 +56,7 @@ class Registration extends Component {
     const password = this.state.controls["password"].value;
     const confirmPassword = this.state.controls["confirmPassword"].value;
     if (password !== confirmPassword) {
-      this.displayMessage("Passwords didn't match.", "danger");
+      this.displayMessage("Passwords didn't match.");
       return false;
     }
     return true;

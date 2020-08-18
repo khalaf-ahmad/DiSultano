@@ -7,6 +7,7 @@ import Login from "./containers/Login/Login";
 import { AuthContextProvider } from './context/auth-context';
 import Logout from "./components/Logout/Logout";
 import Users from './containers/Users/Users';
+import Profile from './containers/Profile/Profile';
 
 
 function App(props) {
@@ -15,6 +16,7 @@ function App(props) {
       <AuthContextProvider>
         <Layout>
           <Switch>
+            <Route path="/profile" component={Profile} />
             <Route path="/users" component={Users} />
             <Route path="/register" component={Registration} />
             <Route path="/login" component={Login} />

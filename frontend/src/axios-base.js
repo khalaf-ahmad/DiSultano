@@ -36,6 +36,7 @@ instance.interceptors.response.use((response) => response,
                         current_user.name = res.data.user.name;
                         current_user.username = res.data.user.username;
                         current_user.role = res.data.user.role;
+                        current_user.id = res.data.user.id;
                         instance.defaults.headers.common['Authorization'] =`Bearer ${current_user.access_token}`
                     }
                     return instance(originalRequest);

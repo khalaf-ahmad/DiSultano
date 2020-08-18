@@ -41,8 +41,9 @@ const form = {
 export const current_user = {
   name: "",
   username: "",
-  role: "",
-  access_token: ""
+  role: 0,
+  access_token: "",
+  id: 0
 };
 
 export const updateObject = (oldObject, updatedProperties) => {

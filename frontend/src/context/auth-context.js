@@ -65,8 +65,9 @@ export class AuthContextProvider extends Component {
   reset_current_user = () => {
     current_user.access_token = "";
     current_user.name = "";
-    current_user.role = "";
+    current_user.role = 0;
     current_user.username = "";
+    current_user.id = 0;
   }
   
   login = (user) => {
@@ -82,6 +83,7 @@ export class AuthContextProvider extends Component {
     current_user.username = user.username;
     current_user.role = user.role;
     current_user.access_token = access_token;
+    current_user.id = user.id;
   }
   
   send_auth_request = (user, url) => {
