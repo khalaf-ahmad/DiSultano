@@ -4,14 +4,30 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { SagaMiddleware } from 'redux-saga';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import { watchUsers } from "./store/sagas";
+import usersReducer from './store/reducers/users';
 
-ReactDOM.render(
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const rootReducer = combineReducers({
+  users: usersReducer,
+})
+
+const sagaMiddleWare = createSagaMiddleware();
+
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(sagaMiddleWare)) )
+
+sagaMiddleWare.run(watchUsers);
+
+const app = (
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>
 );
+ReactDOM.render(app, document.getElementById("root"));

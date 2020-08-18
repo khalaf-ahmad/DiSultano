@@ -6,27 +6,14 @@ from flask_jwt_extended import (
 
 def create_request_parser(options):
     _parser = reqparse.RequestParser()
+    for option in options:
+        _parser.add_argument(
+                option.get('name', None),
+                type=option.get('type', str),
+                required=True,
+                help="This field cannot be blank"
+            )
 
-    _parser.add_argument(
-            'username',
-            type=str,
-            required=True,
-            help="This field cannot be blank"
-        ) if options.count("username") else None
-
-    _parser.add_argument(
-        'password',
-        type=str,
-        required=True,
-        help="This field cannot be blank"
-    ) if options.count("password") else None
-
-    _parser.add_argument(
-            'name',
-            type=str,
-            required=True,
-            help="This field cannot be blank"
-        ) if options.count("name") else None
     return _parser
 
 class UserLevel():

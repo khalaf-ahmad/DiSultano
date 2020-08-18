@@ -18,6 +18,7 @@ class UserModel(db.Model):
 
     def json(self):
         return {
+            'id': self.id,
             'name': self.name,
             'username': self.username,
             'role': self.role,
