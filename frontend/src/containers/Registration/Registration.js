@@ -63,14 +63,15 @@ class Registration extends Component {
   }
 
   render() {
-    return <UserForm
+    return  <UserForm
       controls={this.state.controls}
       submitText={this.context.isLoading ? "Loading..." : "Sign Up"}
-      changeHandler = {this.changeHandler}
-      displayMessage={this.state.displayMessage || this.context.displayMessage} 
+      loading={this.context.isLoading}
+      changeHandler={this.changeHandler}
+      displayMessage={this.state.displayMessage || this.context.displayMessage}
       category={this.state.category || this.context.category}
       handleSubmit={this.handleSubmit}
-      />
+    />;
   }
 }
 

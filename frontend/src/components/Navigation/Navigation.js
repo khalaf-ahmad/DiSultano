@@ -3,6 +3,7 @@ import { Navbar, Nav } from "react-bootstrap";
 import classes from "./Navigation.module.css";
 import NavigationItems from "./NavigationItems/NavigationItems";
 import AuthContext from '../../context/auth-context';
+import { current_user } from '../../shared/utility';
 
 const navigationLinks = [
   { name: "home", type: "link", path: "/" },
@@ -42,7 +43,7 @@ const Navigation = () => {
     <div>
       <Navbar collapseOnSelect expand="sm" className={classes.Navbar} fixed="top">
         <Navbar.Brand href="/" className={classes.Brand}>
-          <h4> <span> Di</span> Soltano </h4>
+          <h4> <span> Di</span> Soltano{current_user.name? "-"+current_user.name: null} </h4>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" className={classes.Toggler}/>
         <Navbar.Collapse id="responsive-navbar-nav">

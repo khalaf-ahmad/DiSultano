@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Form, Button, Alert } from 'react-bootstrap';
+import { Col, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import FormControl from './FormControl/FormControl';
 
 const UserForm = (props) => {
@@ -19,6 +19,13 @@ const UserForm = (props) => {
           ))}
           <div className="d-flex justify-content-center">
             <Button variant="primary" type="submit">
+              {props.loading ? <Spinner
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              /> : null}
               {props.submitText}
             </Button>
           </div>

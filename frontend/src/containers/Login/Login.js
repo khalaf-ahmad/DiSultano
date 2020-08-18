@@ -43,6 +43,7 @@ class Login extends Component {
       <UserForm
         controls={this.state.controls}
         submitText={this.context.isLoading ? "Loading..." : "Login"}
+        loading={this.context.isLoading}
         changeHandler={this.changeHandler}
         displayMessage={this.context.displayMessage}
         category={this.context.category}

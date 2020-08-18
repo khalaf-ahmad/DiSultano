@@ -45,4 +45,15 @@ export const current_user = {
   access_token: ""
 };
 
+export const updateObject = (oldObject, updatedProperties) => {
+  return {
+    ...oldObject,
+    ...updatedProperties,
+  };
+};
+
+export const get_error_message = (error) => {
+  return error.response? error.response.data.message : error.message
+}
+
 export  const UserControls = {...form};

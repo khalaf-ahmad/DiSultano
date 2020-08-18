@@ -1,13 +1,12 @@
 import React, { createContext, Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import axios from '../axios-base';
 import LocalStorageService from '../shared/LocalStorageService';
-import { current_user } from '../shared/utility';
+import { current_user, get_error_message } from '../shared/utility';
 const initialState = {
   isLoading: false,
   displayMessage: "",
   category: "danger",
-  isAuthenticated: false,
+  isAuthenticated: false
 };
 
 const authContext = createContext({
@@ -18,7 +17,7 @@ const authContext = createContext({
 });
 
 export class AuthContextProvider extends Component {
-  state = { ...initialState }
+  state = { ...initialState, pause: true }
   storage = LocalStorageService.get_service();
   componentDidMount() {
     this.check_authentication();
@@ -26,6 +25,7 @@ export class AuthContextProvider extends Component {
   check_authentication() {
     const refresh_token = this.storage.get_refresh_token();
     if (!refresh_token) {
+      this.setState({ pause: false });
       return ;
     }
     this.setState({
@@ -36,19 +36,23 @@ export class AuthContextProvider extends Component {
   get_access_token(refresh_token) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${refresh_token}`;
     axios.post("/token/refresh").then((response) => {
-      current_user.access_token = response.data.access_token;
+      this.set_current_user(response.data.user, response.data.access_token);
       this.setState((prevState) => {
         return {
           ...prevState,
           isLoading: false,
           isAuthenticated: true,
+          pause: false
         };
       });
+    }).catch(error => {
+      this.reset_current_user();
+      this.setState({pause: false})
     });
   }
   reset = () => {
     this.storage.clear_refresh_token();
-    current_user.access_token = "";
+    this.reset_current_user();
     this.setState(
       (prevState) => {
         return {
@@ -58,6 +62,13 @@ export class AuthContextProvider extends Component {
       });
   }
 
+  reset_current_user = () => {
+    current_user.access_token = "";
+    current_user.name = "";
+    current_user.role = "";
+    current_user.username = "";
+  }
+  
   login = (user) => {
     this.send_auth_request(user, "/login");
   }
@@ -66,43 +77,40 @@ export class AuthContextProvider extends Component {
     this.send_auth_request(user, '/user');
   }
 
+  set_current_user = (user, access_token) => {
+    current_user.name = user.name;
+    current_user.username = user.username;
+    current_user.role = user.role;
+    current_user.access_token = access_token;
+  }
+  
   send_auth_request = (user, url) => {
     this.setState({ displayMessage:"" ,isLoading: true, isAuthenticated: false });
     axios.post(url, user)
-    .then((response) => {
-      this.on_auth_success(response.data.token);
+      .then((response) => {
+      this.on_auth_success(response.data);
     })
     .catch((error) => {
-<<<<<<< HEAD
-      this.on_auth_fail(error.response? error.response.data.message : error.message);
-=======
-      this.on_auth_fail(error.response? error.response.data.message : error);
->>>>>>> 1a00d5dd591b1df372f832b6ebd108edc50e30e7
+      this.on_auth_fail(get_error_message(error));
     });
   }
 
   on_auth_fail = (error_message) => {
     this.setState((prevState) => {
       return {
-<<<<<<< HEAD
         ...prevState,
-=======
->>>>>>> 1a00d5dd591b1df372f832b6ebd108edc50e30e7
         ...initialState,
         displayMessage: error_message,
       };
     });
   }
 
-  on_auth_success = (token) => {
-    current_user.access_token = token.access_token;
-    this.storage.set_refresh_token(token.refresh_token);
+  on_auth_success = (data) => {
+    this.storage.set_refresh_token(data.token.refresh_token);
+    this.set_current_user(data.user, data.token.access_token);
     this.setState((prevState) => {
       return {
-<<<<<<< HEAD
         ...prevState,
-=======
->>>>>>> 1a00d5dd591b1df372f832b6ebd108edc50e30e7
         ...initialState,
         displayMessage: "",
         category: "",
@@ -124,7 +132,7 @@ export class AuthContextProvider extends Component {
           resetAuth: this.reset
         }}
       >
-        {this.props.children}
+        {!this.state.pause && this.props.children}
       </authContext.Provider>
     );
   }
