@@ -1,13 +1,38 @@
-import React from 'react';
-import { Col, Form, Card } from 'react-bootstrap';
+import React,{useState} from 'react';
+import { Col, Form, Card, Modal, Button } from 'react-bootstrap';
 import { FaTrashAlt, FaSave } from 'react-icons/fa';
 
 
 const User = (props) => {
   const { name, username, role, activated, role_change,
     status_change, changed, save_clicked, delete_clicked, } = props;
+  const [show, set_show] = useState(false);
+  const handle_close = () => set_show(false);
+  const alert = (
+    <Modal show={show} onHide={handle_close}>
+      <Modal.Header closeButton>
+        <Modal.Title>Deleting user {name}!</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>do you want to continue?</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handle_close}>
+          no
+        </Button>
+        <Button
+          variant="danger"
+          onClick={() => {
+            handle_close();
+            delete_clicked();
+          }}
+        >
+          yes
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
   return (
     <Col xs="12" sm="6" md="4">
+      {alert}
       <Card
         bg={activated ? "light" : "dark"}
         text={!activated ? "light" : "dark"}
@@ -37,7 +62,7 @@ const User = (props) => {
               </Form.Control>
             </Form.Group>
             <div className="mt-5 d-flex justify-content-between">
-              <FaTrashAlt size="25" color="red" onClick={delete_clicked} />
+              <FaTrashAlt size="25" color="red" onClick={() => set_show(true)} />
               {changed ? (
                 <FaSave size="25" color="green" onClick={save_clicked} />
               ) : null}

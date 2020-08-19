@@ -7,15 +7,29 @@ import axios from '../../axios-base';
 class Profile extends Component {
   state = {
     controls: {
-      name: { ...UserControls.name, value: current_user.name },
+      name: {
+        ...UserControls.name,
+        elementConfig: {
+          ...UserControls.name.elementConfig,
+          required: false,
+        },
+        value: current_user.name,
+      },
       password: {
         ...UserControls.password,
         elementConfig: {
           ...UserControls.password.elementConfig,
           placeholder: "New Password",
+          required: false,
         },
       },
-      confirmPassword: { ...UserControls.confirmPassword },
+      confirmPassword: {
+        ...UserControls.confirmPassword,
+        elementConfig: {
+          ...UserControls.confirmPassword.elementConfig,
+          required: false,
+        },
+      },
     },
     displayMessage: "",
     category: "",
@@ -52,57 +66,62 @@ class Profile extends Component {
     if (!this.formIsValid()) {
       return;
     }
+    const name = this.state.controls["name"].value;
+    const password = this.state.controls["password"].value;
     const user = {
-      name: this.state.controls["name"].value,
-      username: current_user.username,
-      password: this.state.controls["password"].value,
-      role: current_user.role,
-      activated: true,
-      id: current_user.id
+      id: current_user.id,
     };
+    if (name) user.name = name;
+    if (password) user.password = password;
     this.setState((prevState) => {
       return {
         ...prevState,
         isLoading: true,
         category: "",
-        displayMessage: ""
-      }
-    })
+        displayMessage: "",
+      };
+    });
     this.update_user(user);
   };
 
   update_user = (user) => {
-    axios.put("/user", user).then((response) => {
-      this.set_current_user(response.data.user);
-      this.setState((prevState) => ({
-        ...prevState,
-        displayMessage: response.data.message,
-        isLoading: false,
-        category: "success"
-      }));
-    })
-    .catch(error => {
-      this.setState((prevState) => {
-        return {
+    axios
+      .put("/user", user)
+      .then((response) => {
+        this.set_current_user(response.data.user);
+        this.setState((prevState) => ({
           ...prevState,
+          displayMessage: response.data.message,
           isLoading: false,
-          displayMessage: get_error_message(error),
-          category: "danger",
-        };
+          category: "success",
+        }));
       })
-    })
+      .catch((error) => {
+        this.setState((prevState) => {
+          return {
+            ...prevState,
+            isLoading: false,
+            displayMessage: get_error_message(error),
+            category: "danger",
+          };
+        });
+      });
   };
   set_current_user = (user) => {
     current_user.name = user.name;
     current_user.username = user.username;
     current_user.role = user.role;
-    current_user.id = user.id
+    current_user.id = user.id;
   };
 
   formIsValid = () => {
-    const password = this.state.controls["password"].value;
-    const confirmPassword = this.state.controls["confirmPassword"].value;
-    if (password !== confirmPassword) {
+    const password = this.state.controls.password.value;
+    const confirmPassword = this.state.controls.confirmPassword.value;
+    const name = this.state.controls.name.value;
+    if (!name && !password && !confirmPassword) {
+      return false;
+    }
+    if ((password || confirmPassword) && password !== confirmPassword) {
       this.displayMessage("Passwords didn't match.");
       return false;
     }

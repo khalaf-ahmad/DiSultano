@@ -42,9 +42,8 @@ class Registration(Resource):
 
     @jwt_required
     def put(self):
-        user_data = create_request_parser([_username_arg, _name_arg,
-        _id_arg, _role_arg, _status_arg]).parse_args()
-        user = UserModel.find_by_id(user_data['id'])
+        user_data = request.get_json()
+        user = UserModel.find_by_id(user_data.get('id', None))
         if not user:
             return {'message': 'user not found.'}, 404
         user_level = get_jwt_claims()["user_level"]
@@ -52,12 +51,14 @@ class Registration(Resource):
         if current_user_id != user.id:
             if user_level != UserLevel.ADMIN and user_level != UserLevel.SYS_ADMIN:
                 return {'message': 'you are not allowed to do this action.'}, 405
+            user_data = create_request_parser([_role_arg, _status_arg]).parse_args()
             user.role = user_data['role']
             user.activated = user_data['activated']
             user.save_to_db()
             return {'message': 'change success.', 'user': user.json()}, 201
-        user.name = user_data['name']
-        if(user_data.get('password', None)):
+        if "name" in user_data:
+            user.name = user_data.get("name")
+        if "password" in user_data:
             user.password = bcrypt.generate_password_hash(user_data['password']).decode('utf-8')
         user.save_to_db()
         return {'message': 'change success.', 'user': user.json()}, 201

@@ -38,12 +38,13 @@ const Navigation = () => {
     ];
   }
   links.push(options);
-
+  let name = current_user.name ? "-" + current_user.name : "";
+  name = name.length > 10 ? name.slice(0, 10) + "..." : name;
   return (
     <div>
       <Navbar collapseOnSelect expand="sm" className={classes.Navbar} fixed="top">
         <Navbar.Brand href="/" className={classes.Brand}>
-          <h4> <span> Di</span> Soltano{current_user.name? "-"+current_user.name: null} </h4>
+          <h4> <span> Di</span> Soltano{name} </h4>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" className={classes.Toggler}/>
         <Navbar.Collapse id="responsive-navbar-nav">
