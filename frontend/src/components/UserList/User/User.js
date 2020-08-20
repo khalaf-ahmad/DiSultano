@@ -31,17 +31,18 @@ const User = (props) => {
     </Modal>
   );
   return (
-    <Col xs="12" sm="6" md="4">
+    <Col  sm="6" md="4">
       {alert}
       <Card
         bg={activated ? "light" : "dark"}
         text={!activated ? "light" : "dark"}
         style={{ width: "100%" }}
         className="mb-2"
+        border="danger"
       >
-        <Card.Header>{username}</Card.Header>
+        <Card.Header className="text-primary" >{username}</Card.Header>
         <Card.Body>
-          <Card.Title>{name}</Card.Title>
+          <Card.Title className="text-success" >{name}</Card.Title>
           <Form>
             <Form.Check
               type="switch"
@@ -49,6 +50,7 @@ const User = (props) => {
               label={activated ? "activated" : "deactivated"}
               checked={activated}
               onChange={status_change}
+              className="text-danger"
             />
             <Form.Group controlId={"ControlSelect" + username}>
               <Form.Control

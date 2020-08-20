@@ -15,11 +15,7 @@ const optionsLinks = {
   name: "settings",
   type: "navdropdown",
   id: "options",
-  dropdownitems: [
-    { name: "profile", type: "navdropdownitem", path: "/profile" },
-    { name: "users", type: "navdropdownitem", path: "/users" },
-    { type: "navdropdowndivider" }
-  ],
+  dropdownitems: [],
 };
 const Navigation = () => {
   const authContext = useContext(AuthContext);
@@ -27,12 +23,13 @@ const Navigation = () => {
   const options = { ...optionsLinks }
   if (authContext.isAuthenticated) {
     options["dropdownitems"] = [
-      ...optionsLinks.dropdownitems,
+      { name: "profile", type: "navdropdownitem", path: "/profile" },
+      { name: "users", type: "navdropdownitem", path: "/users" },
+      { type: "navdropdowndivider" },
       { name: "logout", type: "navdropdownitem", path: "/logout" },
     ];
   } else {
     options["dropdownitems"] = [
-      ...optionsLinks.dropdownitems,
       { name: "login", type: "navdropdownitem", path: "/login" },
       { name: "register", type: "navdropdownitem", path: "/register" },
     ];
