@@ -14,7 +14,7 @@ class UserModel(db.Model):
         self.username = username
         self.password = password
         self.role = role
-        self.activated = False
+        self.activated = activated
 
     def json(self):
         return {

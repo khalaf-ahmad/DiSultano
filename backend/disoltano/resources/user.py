@@ -1,4 +1,4 @@
-from flask_restful import Resource, reqparse, request
+from flask_restful import Resource, request
 from backend.disoltano.models.user import UserModel
 from backend.disoltano.extensions_init import bcrypt
 from flask_jwt_extended import (
