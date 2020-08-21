@@ -4,10 +4,7 @@ import ProductList from '../../components/ProductList/ProductList';
 import Categories from '../../components/Categories/Categories';
 import classes from './Store.module.css';
 
-const style = {
-    maxHeight: "calc( 100vh - 95px)",
-    overflow:"auto",
-};
+
 const Store = (props) => {
     const handle_delete_category = (category_id) => {
 
@@ -22,9 +19,7 @@ const Store = (props) => {
     };
     
     const product_list = (
-        <Row>
-            <ProductList products={props.products} />
-        </Row>
+        <ProductList products={props.products} category_list={props.category_list}/>
     );
     const categor_list = <Categories
         delete_clicked={handle_delete_category}
@@ -33,20 +28,20 @@ const Store = (props) => {
     <React.Fragment>
         <Col className={classes.ShowOnMobile}>
             <Tabs as={Col} defaultActiveKey="products" id="uncontrolled-tab-example">
-                <Tab style={style}  xs="12" as={Col} eventKey="products" title="Products">
+                <Tab  className="pt-2"  as={Col} eventKey="products" title="Products">
                     {product_list}
                 </Tab>
-                <Tab style={style} className="p-0"  xs="12" as={Col} eventKey="categories" title="Categories">
+                <Tab  className="pt-2"   as={Col} eventKey="categories" title="Categories">
                     {categor_list}
                 </Tab>
             </Tabs>
         </Col>
         <Col className={classes.ShowOnDesktop}>
             <Row>
-                <Col style={style} xs="8" >
+                <Col  className="d-flex flex-column justify-content-between" md="8" >
                 {product_list}
                 </Col>
-                <Col xs="4" style={style} className="p-0">
+                <Col md="4" className="border-left border-danger b-red d-flex flex-column justify-content-between" >
                 {categor_list}
                 </Col>
             </Row>

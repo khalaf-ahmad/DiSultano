@@ -36,8 +36,13 @@ const categories = [
   { name: "chinese salad", id: 25 },
   { name: "egyptian fish", id: 335 },
   { name: "palestinian fool", id: 45 },
-  { name: "lebanese burger", id: 15 },
-
+  { name: "chinese salad", id: 223 },
+  { name: "egyptian fish", id: 332 },
+  { name: "palestinian fool", id: 244 },
+  { name: "lebanese burger", id: 251 },
+  { name: "chinese salad", id: 245 },
+  { name: "egyptian fish", id: 3335 },
+  { name: "palestinian fool", id: 453 },
 ];
 function App(props) {
   return (
@@ -45,7 +50,8 @@ function App(props) {
       <AuthContextProvider>
         <Layout>
           <Switch>
-            <Route path="/store" render={() => <Store category_list={categories} products={[product, product, product]} />} />
+            <Route path="/store" render={() => <Store category_list={categories}
+              products={Array(15).fill(product)} />} />
             <Route path="/profile" component={Profile} />
             <Route path="/users" component={Users} />
             <Route path="/register" component={Registration} />

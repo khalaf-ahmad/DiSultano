@@ -3,7 +3,7 @@ import { Col, Card, Accordion, ListGroup } from 'react-bootstrap';
 import classes from './Product.module.css';
 const Product = ({ product }) => {
   return (
-    <Col sm="6" lg="3">
+    <Col xs="6" sm="4" lg="3">
       <Card>
         {product.image ? (
           <Card.Img
