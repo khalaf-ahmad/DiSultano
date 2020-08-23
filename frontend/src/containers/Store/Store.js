@@ -2,7 +2,6 @@ import React from 'react';
 import { Col, Row, Tabs, Tab } from 'react-bootstrap';
 import ProductList from '../../components/ProductList/ProductList';
 import Categories from '../../components/Categories/Categories';
-import classes from './Store.module.css';
 
 
 const Store = (props) => {
@@ -19,14 +18,17 @@ const Store = (props) => {
     };
     
     const product_list = (
-        <ProductList products={props.products} category_list={props.category_list}/>
+        <ProductList products={props.products}
+            users= {props.users}
+            category_list={props.category_list} />
     );
     const categor_list = <Categories
         delete_clicked={handle_delete_category}
         category_list={props.category_list} />;
-    return (
-    <React.Fragment>
-        <Col className={classes.ShowOnMobile}>
+
+    const width = window.innerWidth;
+    let content = (
+        <Col>
             <Tabs as={Col} defaultActiveKey="products" id="uncontrolled-tab-example">
                 <Tab  className="pt-2"  as={Col} eventKey="products" title="Products">
                     {product_list}
@@ -36,18 +38,22 @@ const Store = (props) => {
                 </Tab>
             </Tabs>
         </Col>
-        <Col className={classes.ShowOnDesktop}>
-            <Row>
-                <Col  className="d-flex flex-column justify-content-between" md="8" >
-                {product_list}
-                </Col>
-                <Col md="4" className="border-left border-danger b-red d-flex flex-column justify-content-between" >
-                {categor_list}
-                </Col>
-            </Row>
-        </Col>
-    </React.Fragment>
-    );
+    )
+    if (width >= 758) {
+        content = (
+            <Col>
+                <Row>
+                    <Col md="8" >
+                    {product_list}
+                    </Col>
+                    <Col md="4" className="d-flex flex-column justify-content-between border-left border-danger b-red " >
+                    {categor_list}
+                    </Col>
+                </Row>
+            </Col>  
+        )
+    }
+    return content;
 }
 
 export default Store;

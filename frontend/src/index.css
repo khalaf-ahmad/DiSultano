@@ -12,3 +12,6 @@ code {
 #nav-dropdown-options {
     color: #FFF;
 }
+.row::-webkit-scrollbar{
+    display: none;
+}

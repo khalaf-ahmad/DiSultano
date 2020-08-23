@@ -5,7 +5,7 @@ import CategoryForm from './CategoryForm/CategoryForm';
 
 const initial_category = { id: 0, name: "" };
 const style = {
-  height: "calc( 100vh - 210px)",
+  maxHeight: "calc( 100vh - 210px)",
   overflow: "auto",
 };
 const Categories = ({ category_list, delete_clicked }) => {

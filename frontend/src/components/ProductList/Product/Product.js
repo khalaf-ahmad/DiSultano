@@ -1,9 +1,9 @@
 import React from 'react';
 import { Col, Card, Accordion, ListGroup } from 'react-bootstrap';
 import classes from './Product.module.css';
-const Product = ({ product }) => {
+const Product = ({ product, card_clicked }) => {
   return (
-    <Col xs="6" sm="4" lg="3">
+    <Col xs="6" sm="4" lg="3" onClick={card_clicked}>
       <Card>
         {product.image ? (
           <Card.Img
@@ -34,6 +34,7 @@ const Product = ({ product }) => {
               className="text-warning p-2"
               as="div"
               eventKey="0"
+              onClick={(event) => event.stopPropagation()}
             >
               Recievers
             </Accordion.Toggle>
