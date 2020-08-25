@@ -12,6 +12,7 @@ flask-restful = "*"
 flask-jwt-extended = "*"
 flask-bcrypt = "*"
 flask-cors = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,5 +1,6 @@
 from backend.disoltano.models.Model import Model
 from backend.disoltano.extensions_init import db
+from backend.disoltano.models.product import ProductModel
 
 class CategoryModel(Model, db.Model):
     __tablename__ = "category"
@@ -26,3 +27,7 @@ class CategoryModel(Model, db.Model):
             "name": self.name,
             "id": self.id
         }
+
+    def category_used(self):
+        exists = ProductModel.query.filter_by(category_id=self.id).first()
+        return exists

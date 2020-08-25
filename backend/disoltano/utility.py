@@ -4,12 +4,36 @@ from flask_jwt_extended import (
     create_refresh_token
 )
 
+import secrets
+from PIL import Image
+import os
+from flask import current_app
+
+
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, file_extensoin = os.path.splitext(form_picture.filename)
+    new_name = random_hex + file_extensoin
+    img_path = os.path.join(
+        current_app.root_path, 'static/product_imgs', new_name)
+    output_size = (150, 150)
+    img = Image.open(form_picture)
+    img.thumbnail(output_size)
+    img.save(img_path)
+    return new_name
+
+def delete_product_img(img_name):
+    if img_name:
+        img_path = os.path.join(current_app.root_path,
+            'static','product_imgs', img_name)
+        if os.path.exists(img_path):
+            os.remove(img_path)
+
 def create_request_parser(options):
     _parser = reqparse.RequestParser()
     for option in options:
         _parser.add_argument(
-                option.get('name', None),
-                type=option.get('type', str),
+                **option,
                 required=True,
                 help="This field cannot be blank"
             )

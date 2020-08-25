@@ -1,4 +1,4 @@
-from flask_restful import Resource
+from flask_restful import Resource, request, inputs
 from backend.disoltano.models.category import CategoryModel
 from backend.disoltano.utility import create_request_parser, UserLevel
 from flask_jwt_extended import (
@@ -53,6 +53,10 @@ class Category(Resource):
         if not category:
             return {'message': 'category not found'}, 404
         try:
+            if category.category_used():
+                return {
+                    "message": "category used in product can't be deleted."
+                }, 405
             category.delete_from_db()
         except Exception as ex:
             return {"message": 'internal server error!'}, 500
@@ -78,6 +82,15 @@ class Category(Resource):
 class CategoryList(Resource):
     @jwt_required
     def get(self):
-        return {
-            "categories": [category.details_json() for category in CategoryModel.get_all()]
-        }
+        details = create_request_parser(
+            [{"name": "details", "type": inputs.boolean}])\
+            .parse_args().get('details')
+
+        result = {"categories": []}
+        if details:
+            result['categories'] = [category.details_json()
+            for category in CategoryModel.get_all()]
+        else:
+            result['categories'] = [category.json()
+            for category in CategoryModel.get_all()]
+        return result
