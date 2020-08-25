@@ -12,7 +12,9 @@ class Login extends Component {
       password: { ...UserControls.password },
     },
   };
-
+  componentWillUnmount() {
+    this.context.clearMessage();
+  }
   changeHandler = (event) => {
     const controlName = event.target.id;
     const control = { ...this.state.controls[controlName] };

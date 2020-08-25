@@ -15,26 +15,37 @@ const Users = () => {
 
     const dispatch = useDispatch();
 
-    const fetch_users = useCallback(() => dispatch(actions.fetch_users_initiate()), [dispatch]);
+    const fetch_users = useCallback(
+        () => dispatch(actions.fetch_users_initiate()), [dispatch]);
 
-    const handle_status_change = useCallback((username, activated) => dispatch(actions.update_user_status(username, activated)), [dispatch]);
+    const handle_status_change = useCallback(
+        (username, activated) =>
+            dispatch(actions.update_user_status(username, activated))
+        , [dispatch]);
 
-    const handle_role_change = useCallback((username, role) => dispatch(actions.update_user_role(username, role)), [dispatch]);
+    const handle_role_change = useCallback(
+        (username, role) =>
+            dispatch(actions.update_user_role(username, role))
+        , [dispatch]);
 
-    const handle_update_user = useCallback((user) => dispatch(actions.save_user_init(user)), [dispatch]);
+    const handle_update_user = useCallback(
+        (user) => dispatch(actions.save_user_init(user))
+        , [dispatch]);
 
-    const handle_delete_user = useCallback((userId) => dispatch(actions.delete_user_init(userId)), [dispatch]);
+    const handle_delete_user = useCallback(
+        (userId) => dispatch(actions.delete_user_init(userId))
+        , [dispatch]);
 
     useEffect(() => {
     fetch_users();
     }, [fetch_users]);
     const content = loading ? (
-        <Spinner
-            className="m-auto"
+        <Spinner className="m-auto"
             variant="danger"
             animation="grow"
-            size="sm"
-        />
+            size="sm">
+            <span className="sr-only">Loading...</span>
+        </Spinner>
     ) : (
             error ? <Alert className="m-auto" variant="danger" >{error}</Alert>
                 : <UserList

@@ -13,7 +13,8 @@ const authContext = createContext({
   ...initialState,
   login: () => { },
   registerUser: () => { },
-  resetAuth: () => {},
+  resetAuth: () => { },
+  clearMessage: () => {}
 });
 
 export class AuthContextProvider extends Component {
@@ -32,6 +33,9 @@ export class AuthContextProvider extends Component {
       isLoading: true,
     });
     this.get_access_token(refresh_token);
+  }
+  clearMessage = () => {
+    this.setState({ displayMessage: false });
   }
   get_access_token(refresh_token) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${refresh_token}`;
@@ -131,7 +135,8 @@ export class AuthContextProvider extends Component {
           category: this.state.category,
           login: this.login,
           registerUser: this.registerUser,
-          resetAuth: this.reset
+          resetAuth: this.reset,
+          clearMessage: this.clearMessage
         }}
       >
         {!this.state.pause && this.props.children}

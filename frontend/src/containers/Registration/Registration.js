@@ -14,6 +14,9 @@ class Registration extends Component {
   componentDidMount() {
     this.context.resetAuth();
   }
+  componentWillUnmount() {
+    this.context.clearMessage();
+  }
   changeHandler = (event) => {
     const controlName = event.target.id;
     const control = { ...this.state.controls[controlName] };
