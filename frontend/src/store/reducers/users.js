@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { updateObject } from '../../shared/utility';
+import { updateObject, on_action_fail, on_action_start } from '../../shared/utility';
 
 const initialState = {
     users: [],
@@ -7,20 +7,10 @@ const initialState = {
     error: ""
 }
 
-const on_action_fail = (state, action) => {
-    return updateObject(state, { loading: false, error: action.error });
-}
-
-const on_action_start = (state, action) => {
-    return updateObject(state, { loading: true, error: "" });
-}
-
 
 const fetch_success = (state, action) => {
     return updateObject(state, { loading: false, users: action.users });
 }
-
-
 
 const users_before_updated = {};
 
