@@ -28,8 +28,12 @@ yarn-error.log*
 #vscode settings
 .vscode
 
+#backend
+/backend/disoltano/static
+/backend/disoltano/db_alter.py
 #enviroment variables
 /backend/.env
 
 # sqlite db
 /backend/disoltano/*.db
+

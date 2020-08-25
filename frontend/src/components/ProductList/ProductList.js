@@ -1,128 +1,227 @@
-import React, {useState} from 'react';
-import Product from './Product/Product';
+import React, { useState, useCallback, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Product from "./Product/Product";
 import ProductForm from "./ProductForm/ProductForm";
-import { Row } from 'react-bootstrap';
-
+import { Row, Spinner, Alert } from "react-bootstrap";
+import * as actionTypes from "../../store/actions/product";
+import { fetch_users_initiate } from "../../store/actions/users";
 
 const style = {
-    maxHeight: "calc( 100vh - 395px)",
-    overflow: "auto",
+  maxHeight: "calc( 100vh - 395px)",
+  overflow: "auto",
 };
 
 const initial_product = {
-    name: "",
-    category: { name: "", id: 0 },
-    price: 0 ,
-    receivers: [],
-    image: {name: ""}
+  id: 0,
+  name: "",
+  category_id: 0,
+  price: 0,
+  receivers: [],
+  image: "",
+  image_form: "",
 };
 
 const get_initial_product = () => {
-    return {
-        ...initial_product,
-        category: { ...initial_product.category },
-        receivers: [...initial_product.receivers],
-    };
+  return {
+    ...initial_product,
+    receivers: [...initial_product.receivers],
+  };
 };
-const ProductList = (props) => {
 
-    const [selected_product, set_selected_product] = useState(get_initial_product());
+const check_product_equality = (selected, initial) => {
 
+  if (selected.image_form)
+    return false;
 
-    const handle_change = (event) => {
-        const value = event.target.value;
-        const property = event.target.id;
-        set_selected_product((prevState) => {
-            return {
-                ...prevState,
-                [property]: value,
-            };
-        });
-    };
+  if (selected.name !== initial.name)
+    return false;
 
-    const handle_image_changed = (event) => {
-        const new_image = event.target.files[0];
-        set_selected_product((prevState) => {
-            return {
-                ...prevState,
-                image: new_image
-            };
-        });
-    }
-    const handle_add_receiver = (user) => {
-        const idx =  selected_product.receivers.findIndex(usr => usr.id === user.id)
-        if (idx >= 0) {
-            return;
-        }
-        set_selected_product(prevState => {
-            return {
-                ...prevState,
-                receivers: [{ ...user }, ...prevState.receivers]
-            };
-        });
-    };
+  if (selected.price !== initial.price)
+    return false;
 
-    const handle_delete_user = (receiverId) => {
-        const updated_receivers = selected_product.receivers.filter(
-            reciever => reciever.id !== receiverId
-        );
-        set_selected_product(prevState => {
-            return {
-                ...prevState,
-                receivers: updated_receivers
-            };
-        });
-    };
+  if (selected.category_id !== initial.category_id)
+    return false;
 
-    const handle_category_changed = (event) => {
-        const category_id = +event.target.value;
-        const category = props.category_list.find(ctr => ctr.id === category_id);
-        if (!category) {
-            return;
-        }
-        set_selected_product(prevState => {
-            return {
-                ...prevState,
-                category: { ...category }
-            };
-        });
-    };
+  if (selected.receivers.lenght !== initial.receivers.lenght)
+    return false;
 
-    const handle_submit = () => {
-
-    };
-
-    const handle_clear = () => {
-        set_selected_product(get_initial_product());
-    }
-
-    const on_product_selected = (product_selected) => {
-        set_selected_product({ ...product_selected });
-    }
-    return (
-        <React.Fragment>
-            <Row style={style} >
-                {props.products.map((product, idx) => <Product
-                    card_clicked={()=> on_product_selected(product)}
-                    key={idx}
-                    product={product} />)}
-            </Row>
-            <Row>
-                <ProductForm
-                    product={selected_product}
-                    category_list={props.category_list}
-                    input_changed={(event) => handle_change(event)}
-                    users={props.users}
-                    delete_user_clicked={handle_delete_user}
-                    add_user_clicked={handle_add_receiver}
-                    image_changed={(event) =>handle_image_changed(event)}
-                    category_changed={(event) => handle_category_changed(event)}
-                    clear_clicked={handle_clear}
-                    submit_clicked={handle_submit}
-                />
-            </Row>
-        </React.Fragment>
-        )
+  return selected.receivers.every(usrid =>
+    initial.receivers.indexOf(usrid) >= 0)
 }
+
+const ProductList = (props) => {
+  const [selected_product, set_selected_product] = useState(
+    get_initial_product()
+  );
+
+  const [disable_update, set_disable_update] = useState(false);
+
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.product.products);
+  const categories = useSelector((state) => state.category.categories);
+  const users = useSelector((state) => state.users.users);
+  const loading = useSelector((state) => state.product.loading);
+  const error = useSelector((state) => state.product.error);
+
+  const fetch_products = useCallback(
+    () => dispatch(actionTypes.fetch_products(false)),
+    [dispatch]
+  );
+
+  const fetch_users = useCallback(() => dispatch(fetch_users_initiate()), [
+    dispatch,
+  ]);
+
+  const add_product = useCallback(
+    () => dispatch(actionTypes.add_product(selected_product)),
+    [dispatch, selected_product]
+  );
+
+  const update_product = useCallback(() => {
+    dispatch(actionTypes.update_product(selected_product));
+  }, [dispatch, selected_product]);
+
+  const delete_product = useCallback(
+    () => dispatch(actionTypes.delete_product(selected_product.id)),
+    [dispatch, selected_product.id]
+  );
+
+  const clear_form = useCallback(
+    () => {
+      set_selected_product(get_initial_product());
+      set_disable_update(false)
+    },
+    [set_selected_product]
+  );
+  const detect_change_status = useCallback(() => {
+    if (selected_product.id === 0)
+      return;
+    const product = products.find(prd => prd.id === selected_product.id);
+
+    if (!product) {
+      clear_form();
+      return;
+    }
+    const eq = check_product_equality(selected_product, product);
+    set_disable_update(eq);
+  }, [selected_product, products, clear_form]);
+
+  useEffect(() => detect_change_status(), [selected_product, detect_change_status])
+  useEffect(() => {
+    fetch_products();
+    fetch_users();
+  }, [fetch_products, fetch_users]);
+
+  useEffect(() => clear_form(), [clear_form, products]);
+
+  const handle_change = (event) => {
+    let value = event.target.value;
+    const property = event.target.id;
+    if (property === "category_id" || property === "price") value = +value;
+    set_selected_product((prevState) => {
+      return {
+        ...prevState,
+        [property]: value,
+      };
+    });
+  };
+
+  const handle_image_changed = (event) => {
+    const new_image = event.target.files[0];
+    set_selected_product((prevState) => {
+      return {
+        ...prevState,
+        image_form: new_image,
+      };
+    });
+  };
+
+  const handle_add_receiver = (user) => {
+    const idx = selected_product.receivers.findIndex(
+      (usr) => usr.id === user.id
+    );
+    if (idx >= 0) {
+      return;
+    }
+    set_selected_product((prevState) => {
+      return {
+        ...prevState,
+        receivers: [{ ...user }, ...prevState.receivers],
+      };
+    });
+  };
+
+  const handle_delete_user = (receiverId) => {
+    const updated_receivers = selected_product.receivers.filter(
+      (reciever) => reciever.id !== receiverId
+    );
+    set_selected_product((prevState) => {
+      return {
+        ...prevState,
+        receivers: updated_receivers,
+      };
+    });
+  };
+
+  const handle_submit = (event) => {
+    event.preventDefault();
+    if (selected_product.id === 0) {
+      add_product();
+    } else {
+      update_product();
+    }
+    clear_form();
+  };
+
+  const on_product_selected = (product_selected) => {
+    set_selected_product({ ...product_selected });
+  };
+
+  const get_category_by_id = (category_id) => {
+    const category = categories.find((ctr) => ctr.id === category_id);
+    return category;
+  };
+
+  return (
+    <React.Fragment>
+      {error && <Alert variant="danger">{error}</Alert>}
+      <Row style={style}>
+        {products.map((product, idx) => (
+          <Product
+            card_clicked={() => on_product_selected(product)}
+            category={get_category_by_id(product.category_id)}
+            key={idx}
+            product={product}
+          />
+        ))}
+      </Row>
+      <Row>
+        <ProductForm
+          product={selected_product}
+          category_list={categories}
+          input_changed={(event) => handle_change(event)}
+          users={users}
+          delete_user_clicked={handle_delete_user}
+          add_user_clicked={handle_add_receiver}
+          image_changed={(event) => handle_image_changed(event)}
+          clear_clicked={clear_form}
+          submit_clicked={handle_submit}
+          delete_product_clicked={delete_product}
+          disable_update={disable_update}
+        />
+      </Row>
+      {loading && (
+        <Spinner
+          variant="danger"
+          animation="grow"
+          style={{ position: "absolute", right: "50%", top: "50%" }}
+          size="sm"
+        >
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      )}
+    </React.Fragment>
+  );
+};
 
 export default ProductList;

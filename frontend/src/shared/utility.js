@@ -57,4 +57,22 @@ export const get_error_message = (error) => {
   return error.response? error.response.data.message : error.message
 }
 
+export const on_action_fail = (state, action) => {
+  return updateObject(state, { loading: false, error: action.error });
+};
+
+export const on_action_start = (state, action) => {
+  return updateObject(state, { loading: true, error: "" });
+};
+
+export const get_product_form_data = (product) => {
+  const data = new FormData();
+  data.append("id", product.id)
+  data.append("name", product.name);
+  data.append("image", product.image_form);
+  data.append("price", product.price);
+  data.append("category_id", product.category_id);
+  return data;
+}
+
 export  const UserControls = {...form};

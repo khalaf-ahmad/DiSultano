@@ -1,7 +1,26 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
 import { Col, Card, Accordion, ListGroup } from 'react-bootstrap';
 import classes from './Product.module.css';
-const Product = ({ product, card_clicked }) => {
+import axios from "../../../axios-base";
+
+const Product = ({ product, card_clicked, category }) => {
+
+  const img_ref = useRef();
+  useEffect(() => {
+    if (product.image) {
+      axios.get(product.image, { responseType: "blob" })
+        .then((response) => {
+          const reader = new window.FileReader();
+          reader.readAsDataURL(response.data);
+          reader.onload = () => {
+            const img_url = reader.result;
+            img_ref.current.setAttribute("src", img_url);
+          };
+      });
+    }
+  }
+  , [product.image]);
+
   return (
     <Col xs="6" sm="4" lg="3" onClick={card_clicked}>
       <Card>
@@ -10,7 +29,7 @@ const Product = ({ product, card_clicked }) => {
             className="bg-warning"
             variant="top"
             height="150px"
-            src={product.image}
+            ref={img_ref}
           />
         ) : null}
         <Card.Body className="bg-warning">
@@ -18,10 +37,10 @@ const Product = ({ product, card_clicked }) => {
             {product.name}
           </Card.Title>
           <Card.Subtitle className="text-secondary text-capitalize">
-            {product.category.name}
+            {category? category.name : ""}
           </Card.Subtitle>
           <Card.Text className="text-success d-flex justify-content-end">
-            {(+product.price).toFixed(2)}
+            {(+product.price.toFixed(2)).toLocaleString()}
           </Card.Text>
         </Card.Body>
         {product.receivers.length ? (

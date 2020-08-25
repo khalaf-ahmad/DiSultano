@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Col, Button } from 'react-bootstrap';
 const CategoryForm = ({ category, clear_clicked, submit_clicked, name_changed }) => {
     return (
-      <Form className="mt-2">
+      <Form className="mt-auto">
         <Form.Row className="align-items-center justify-content-between">
           <Col>
             <Form.Label htmlFor="inlineFormInput" srOnly>
@@ -30,6 +30,7 @@ const CategoryForm = ({ category, clear_clicked, submit_clicked, name_changed })
             <Button
               onClick={submit_clicked}
               type="submit"
+              disabled={!category.name}
               variant="outline-success"
               className="mb-2"
             >

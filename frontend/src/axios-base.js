@@ -4,7 +4,7 @@ import { current_user } from './shared/utility';
 
 
 const instance = axios.create({
-    baseURL: "http://192.168.0.105:5000",
+    baseURL: "http://192.168.0.106:5000",
 });
 
 instance.interceptors.request.use(
@@ -25,9 +25,12 @@ instance.interceptors.response.use((response) => response,
         const originalRequest = error.config;
         const storage = LocalStorageService.get_service();
         const refresh_token = storage.get_refresh_token();
-        if (error.response && error.response.status === 403 && !originalRequest._retry && refresh_token) {
+        if (error.response &&
+            (error.response.status === 403 || error.response.status === 401)
+            && !originalRequest._retry && refresh_token) {
             originalRequest._retry = true;
-            instance.defaults.headers.common['Authorization'] = `Bearer ${refresh_token}`;
+            instance.defaults.headers.common['Authorization'] =
+                `Bearer ${refresh_token}`;
             current_user.access_token = "";
             return instance.post('/token/refresh')
                 .then(res => {
@@ -37,7 +40,8 @@ instance.interceptors.response.use((response) => response,
                         current_user.username = res.data.user.username;
                         current_user.role = res.data.user.role;
                         current_user.id = res.data.user.id;
-                        instance.defaults.headers.common['Authorization'] =`Bearer ${current_user.access_token}`
+                        instance.defaults.headers.common['Authorization'] =
+                            `Bearer ${current_user.access_token}`
                     }
                     return instance(originalRequest);
                 }).catch(error =>  Promise.reject(error))

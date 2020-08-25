@@ -1,13 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import { Form, Button, Col, ListGroup, Row, Modal, Badge, Card } from 'react-bootstrap';
 import bsCustomFileInput from 'bs-custom-file-input';
+import React, { useEffect, useState } from 'react';
+import {
+  Badge, Button, Col, Form,
+  ListGroup, Modal, Row
+} from 'react-bootstrap';
+import { MdAdd, MdClear } from 'react-icons/md';
 import ProductFormControl from './ProductFormControl/ProductFormControl';
-import { MdClear, MdAdd } from 'react-icons/md';
 
 const list_group_style = {
   height: "50px",
   maxHeight: "50px",
-  overFlow: "auto",
+  overflow: "auto",
 };
 const variants = [
   "primary",
@@ -18,6 +21,7 @@ const variants = [
   "danger",
 ];
 const ProductForm = props => {
+  let users = props.users;
   useEffect(() => {
     bsCustomFileInput.init();
   }, []);
@@ -29,22 +33,23 @@ const ProductForm = props => {
 
   const [product_recievers, set_recievers] = useState([]);
 
-  const [user_list, set_user_list] = useState([...props.users]);
-
     useEffect(() => {
       set_recievers([...props.product.receivers]);
     }, [props.product.receivers]);
 
   const handle_receiver_search = (event) => {
     const text_to_search = event.target.value;
-    const result = props.product.receivers.filter(rec => rec.name.toLowerCase().indexOf(text_to_search.toLowerCase()) >= 0 );
+    const result = props.product.receivers.filter(rec => rec.name.toLowerCase()
+      .indexOf(text_to_search.toLowerCase()) >= 0);
     if (result.length) {
       set_recievers(result);
     } else {
       set_recievers([...props.product.receivers]);
     }
   }
-  
+
+  const set_user_list = (users) => users = [...users];
+
   const handle_user_search = (event) => {
     const text_to_search = event.target.value;
     const result = props.users.filter(
@@ -57,6 +62,7 @@ const ProductForm = props => {
     }
   }
   const column_grid = { xs: 12, sm: 6 }
+
 
   const name_control = (
     <ProductFormControl
@@ -87,10 +93,10 @@ const ProductForm = props => {
       <Form.Control
         as="select"
         className="mb-2"
-        id="category"
+        id="category_id"
         custom
-        value={props.product.category.id}
-        onChange={props.category_changed}
+        value={props.product.category_id}
+        onChange={props.input_changed}
       >
         <option key={0} value={0}>
           Choose Category
@@ -110,22 +116,23 @@ const ProductForm = props => {
         onChange={props.image_changed}
         className="mb-2"
         id="custom-file"
-        label={props.product.image.name ?
-          props.product.image.name: "Image" }
+        label={
+          props.product.image_form ?
+            props.product.image_form.name : "Image"
+        }
         custom
       />
     </Col>
   );
 
   const recievers_control = (
-    <Col>
+    <Col className="d-flex flex-column justify-content-between">
       <Form.Control
         className="mb-2 mt-2"
         placeholder="Filter Receivers"
         autoComplete="off"
         onChange={(event) => handle_receiver_search(event)}
       />
-      {product_recievers.length === 0 ? <hr /> : null}
 
       <div style={list_group_style}>
         {product_recievers.map((user) => (
@@ -143,6 +150,7 @@ const ProductForm = props => {
           </Badge>
         ))}
       </div>
+      <dir style={{height: "2px", backgroundColor:"#e5e5e5"}} ></dir>
     </Col>
   );
 
@@ -163,7 +171,7 @@ const ProductForm = props => {
         as="ul"
         className="text-capitalize rounded-0 text-lead"
       >
-        {user_list.map((user) => (
+        {users.map((user) => (
           <ListGroup.Item
             as="li"
             action
@@ -175,7 +183,7 @@ const ProductForm = props => {
             <MdAdd
               role="button"
               className="text-bg"
-              onClick={() => props.add_user_clicked(user)}
+              onClick={() =>props.add_user_clicked(user)}
             />
           </ListGroup.Item>
         ))}
@@ -187,41 +195,11 @@ const ProductForm = props => {
         </Button>
       </Modal.Footer>
     </Modal>
-    // <Col {...column_grid}>
-    //   <Form.Control
-    //     className="mb-2 mt-2"
-    //     placeholder="Filter Users"
-    //     autoComplete="off"
-    //     onChange={(event) => handle_user_search(event)}
-    //   />
-    //   <ListGroup
-    //     variant="flush"
-    //     as="ul"
-    //     className="text-capitalize rounded-0 text-lead"
-    //   >
-    //     {user_list.map((user) => (
-    //       <ListGroup.Item
-    //         as="li"
-    //         action
-    //         className="d-flex justify-content-between"
-    //         key={user.id}
-    //         variant="warning"
-    //       >
-    //         <span>{user.name}</span>
-    //         <MdAdd
-    //           role="button"
-    //           className="text-bg"
-    //           onClick={() => props.add_user_clicked(user)}
-    //         />
-    //       </ListGroup.Item>
-    //     ))}
-    //   </ListGroup>
-    // </Col>
   );
 
   const form_button_controls = (
-    <Col  className="d-flex justify-content-between mt-2">
-      <Button variant="warning" onClick={handleShow}>
+    <Col className="d-flex justify-content-between mt-2">
+      <Button variant="warning" className="mb-2" onClick={handleShow}>
         Add Receivers
       </Button>
       <Button
@@ -232,11 +210,22 @@ const ProductForm = props => {
       >
         Clear
       </Button>
+      {props.product.id > 0 ? (
+        <Button
+          onClick={props.delete_product_clicked}
+          type="button"
+          variant="outline-danger"
+          className="mb-2"
+        >
+          Delete
+        </Button>
+      ) : null}
       <Button
         onClick={props.submit_clicked}
         type="submit"
         variant="outline-success"
         className="mb-2"
+        disabled={props.disable_update}
       >
         {props.product.id ? "Update" : "Add"}
       </Button>
@@ -262,7 +251,6 @@ const ProductForm = props => {
         {recievers_control}
       </Row>
       <Row>{form_button_controls}</Row>
-      
     </Form>
   );
 }
