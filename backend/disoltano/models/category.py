@@ -19,6 +19,7 @@ class CategoryModel(Model, db.Model):
                 "name": product.name,
                 "id": product.id,
                 "price": product.price,
+                "image": product.get_image_url()
             } for product in self.products]
         }
 

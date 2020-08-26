@@ -72,6 +72,9 @@ export const get_product_form_data = (product) => {
   data.append("image", product.image_form);
   data.append("price", product.price);
   data.append("category_id", product.category_id);
+  product.receivers.forEach(user => {
+    data.append('receivers', user.id)
+  })
   return data;
 }
 

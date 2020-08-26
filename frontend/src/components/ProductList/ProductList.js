@@ -42,11 +42,11 @@ const check_product_equality = (selected, initial) => {
   if (selected.category_id !== initial.category_id)
     return false;
 
-  if (selected.receivers.lenght !== initial.receivers.lenght)
+  if (selected.receivers.length !== initial.receivers.length)
     return false;
 
-  return selected.receivers.every(usrid =>
-    initial.receivers.indexOf(usrid) >= 0)
+  return initial.receivers.every(user =>
+    selected.receivers.findIndex(usr => usr.id === user.id) >= 0);
 }
 
 const ProductList = (props) => {
@@ -68,9 +68,9 @@ const ProductList = (props) => {
     [dispatch]
   );
 
-  const fetch_users = useCallback(() => dispatch(fetch_users_initiate()), [
-    dispatch,
-  ]);
+  const fetch_users = useCallback(() => dispatch(fetch_users_initiate()),
+    [dispatch]
+  );
 
   const add_product = useCallback(
     () => dispatch(actionTypes.add_product(selected_product)),
@@ -106,7 +106,10 @@ const ProductList = (props) => {
     set_disable_update(eq);
   }, [selected_product, products, clear_form]);
 
-  useEffect(() => detect_change_status(), [selected_product, detect_change_status])
+  useEffect(() => detect_change_status(),
+    [selected_product, detect_change_status]
+  );
+
   useEffect(() => {
     fetch_products();
     fetch_users();
@@ -151,9 +154,9 @@ const ProductList = (props) => {
     });
   };
 
-  const handle_delete_user = (receiverId) => {
+  const handle_delete_user = (receiver_id) => {
     const updated_receivers = selected_product.receivers.filter(
-      (reciever) => reciever.id !== receiverId
+      (reciever) => reciever.id !== receiver_id
     );
     set_selected_product((prevState) => {
       return {

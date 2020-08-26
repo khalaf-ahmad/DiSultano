@@ -8,7 +8,8 @@ jwt = JWTManager()
 
 """
 `claims` are data we choose to attach to each jwt payload
-and for each jwt protected endpoint, we can retrieve these claims via  `get_jwt_claims()`
+and for each jwt protected endpoint, we can retrieve these claims via
+`get_jwt_claims()`
 """
 
 @jwt.user_claims_loader

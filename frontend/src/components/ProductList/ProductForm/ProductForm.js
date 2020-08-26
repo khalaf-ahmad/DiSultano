@@ -225,7 +225,9 @@ const ProductForm = props => {
         type="submit"
         variant="outline-success"
         className="mb-2"
-        disabled={props.disable_update}
+        disabled={ props.product.id ? props.disable_update :
+            !props.product.name || !props.product.price
+        }
       >
         {props.product.id ? "Update" : "Add"}
       </Button>

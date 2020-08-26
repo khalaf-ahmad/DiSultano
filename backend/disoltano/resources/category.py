@@ -1,4 +1,4 @@
-from flask_restful import Resource, request, inputs
+from flask_restful import Resource, inputs
 from backend.disoltano.models.category import CategoryModel
 from backend.disoltano.utility import create_request_parser, UserLevel
 from flask_jwt_extended import (

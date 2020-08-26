@@ -1,4 +1,4 @@
-from flask_restful import Resource, inputs, request, current_app
+from flask_restful import Resource, inputs, request
 from backend.disoltano.utility import (
     create_request_parser,
     UserLevel,
@@ -6,6 +6,7 @@ from backend.disoltano.utility import (
     delete_product_img
 )
 from backend.disoltano.models.product import ProductModel
+from backend.disoltano.models.user import UserModel
 from flask_jwt_extended import (
     jwt_required,
     get_jwt_claims
@@ -18,6 +19,8 @@ _id_arg = {"name": "id", "type": int, "location": "form"}
 _category_id_arg = {"name": "category_id", "type": int, "location": "form"}
 _price_arg = {"name": "price", "type": float, "location": "form"}
 _details_param = {"name": "details", "type": inputs.boolean, "location": "args"}
+_receivers_args = {"name": "receivers", "type": int,
+    "location": "form", "action": "append", "required": False}
 
 class Product(Resource):
 
@@ -44,11 +47,15 @@ class Product(Resource):
                 "error": "request_forbidden"
             }, 403
         data = create_request_parser([_name_arg,
-            _price_arg, _category_id_arg])\
+            _price_arg, _category_id_arg, _receivers_args])\
         .parse_args()
         image = request.files.get("image", None)
         product = ProductModel(data['name'],
             data['price'], data['category_id'], "")
+        if data.get('receivers', None):
+            for user_id in data['receivers']:
+                user = UserModel.find_by_id(user_id)
+                product.receivers.append(user) if user else None
         try:
             if image:
                 file_name = save_picture(image)
@@ -71,7 +78,7 @@ class Product(Resource):
                 "error": "request_forbidden"
             }, 403
         data = create_request_parser([_name_arg, _price_arg,
-            _category_id_arg, _id_arg]).parse_args()
+            _category_id_arg, _id_arg, _receivers_args]).parse_args()
         product = ProductModel.find_by_id(data['id'])
         image = request.files.get("image", None)
         try:
@@ -86,6 +93,12 @@ class Product(Resource):
             if image:
                     file_name = save_picture(image)
                     product.image_file = file_name
+            product.receivers.clear()
+            if data.get('receivers', None):
+                for user_id in data['receivers']:
+                    user = UserModel.find_by_id(user_id)
+                    product.receivers.append(user) \
+                        if user and user not in product.receivers else None 
             product.save_to_db()
         except Exception as ex:
             return {"message": "internal server error!"}, 500

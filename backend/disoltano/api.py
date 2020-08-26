@@ -1,5 +1,7 @@
 from flask_restful import Api
-from backend.disoltano.resources.user import Registration, Users, UserLogin, TokenRefresh
+from backend.disoltano.resources.user import (
+        Registration, Users, UserLogin, TokenRefresh
+    )
 from backend.disoltano.resources.category import Category, CategoryList
 from backend.disoltano.resources.product import Product, ProductList
 

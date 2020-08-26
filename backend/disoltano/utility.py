@@ -32,11 +32,12 @@ def delete_product_img(img_name):
 def create_request_parser(options):
     _parser = reqparse.RequestParser()
     for option in options:
-        _parser.add_argument(
-                **option,
-                required=True,
-                help="This field cannot be blank"
-            )
+        req = option.get('required', None)
+        _arg = {"required": True if  req is None else None,
+                "help":"This field cannot be blank"
+        }
+        _arg.update(option)
+        _parser.add_argument(**_arg)
 
     return _parser
 
