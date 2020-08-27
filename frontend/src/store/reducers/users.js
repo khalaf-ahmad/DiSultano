@@ -87,17 +87,28 @@ const delete_user_success = (state, action) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.FETCH_USERS_START: return on_action_start(state, action);
-        case actionTypes.FETCH_USERS_SUCCESS: return fetch_success(state, action);
-        case actionTypes.FETCH_USERS_FAIL: return on_action_fail(state, action);
-        case actionTypes.UPDATE_USER_STATUS: return update_user_status(state, action);
-        case actionTypes.UPDATE_USER_ROLE: return update_user_role(state, action);
-        case actionTypes.SAVE_USER_START: return on_action_start(state, action);
-        case actionTypes.SAVE_USER_SUCESS: return save_user_success(state, action);
-        case actionTypes.SAVE_USER_FAIL: return on_action_fail(state, action);
-        case actionTypes.DELETE_USER_START: return on_action_start(state, action);
-        case actionTypes.DELETE_USER_SUCCESS: return delete_user_success(state, action);
-        case actionTypes.DELETE_USER_FAIL: return on_action_fail(state, action);
+        case actionTypes.FETCH_USERS_START:
+            return on_action_start(state, action);
+        case actionTypes.FETCH_USERS_SUCCESS:
+            return fetch_success(state, action);
+        case actionTypes.FETCH_USERS_FAIL:
+            return on_action_fail(state, action);
+        case actionTypes.UPDATE_USER_STATUS:
+            return update_user_status(state, action);
+        case actionTypes.UPDATE_USER_ROLE:
+            return update_user_role(state, action);
+        case actionTypes.SAVE_USER_START:
+            return on_action_start(state, action);
+        case actionTypes.SAVE_USER_SUCESS:
+            return save_user_success(state, action);
+        case actionTypes.SAVE_USER_FAIL:
+            return on_action_fail(state, action);
+        case actionTypes.DELETE_USER_START:
+            return on_action_start(state, action);
+        case actionTypes.DELETE_USER_SUCCESS:
+            return delete_user_success(state, action);
+        case actionTypes.DELETE_USER_FAIL:
+            return on_action_fail(state, action);
         default: return state;
     }
 };

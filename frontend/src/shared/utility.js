@@ -58,7 +58,10 @@ export const get_error_message = (error) => {
 }
 
 export const on_action_fail = (state, action) => {
-  return updateObject(state, { loading: false, error: action.error });
+  return updateObject(state, {
+    loading: false,
+    error: get_error_message(action.error)
+  });
 };
 
 export const on_action_start = (state, action) => {
