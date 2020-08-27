@@ -1,6 +1,6 @@
 from backend.disoltano.extensions_init import db
 
-class Model:
+class BaseModel:
 
     def save_to_db(self):
         db.session.add(self)

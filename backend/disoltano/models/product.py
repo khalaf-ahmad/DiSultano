@@ -1,4 +1,4 @@
-from backend.disoltano.models.Model import Model
+from backend.disoltano.models.Model import BaseModel
 from backend.disoltano.extensions_init import db
 from flask import url_for, current_app
 import os
@@ -10,7 +10,7 @@ product_reciever = db.Table('product_receivers',
         primary_key=True)
 )
 
-class ProductModel(Model, db.Model):
+class ProductModel(BaseModel, db.Model):
     __tablename__ = "product"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False)
@@ -44,7 +44,7 @@ class ProductModel(Model, db.Model):
             "id": self.id,
             "category": self.category.json() if self.category \
                 else {"id": 0},
-            "receivers": [],
+            "receivers": [user.json() for user in self.receivers ],
             "image": self.get_image_url()
         }
 

@@ -4,6 +4,7 @@ from backend.disoltano.resources.user import (
     )
 from backend.disoltano.resources.category import Category, CategoryList
 from backend.disoltano.resources.product import Product, ProductList
+from backend.disoltano.resources.order import Order, OrderList
 
 # create api variable to make restful api's and endpoints
 api = Api()
@@ -23,3 +24,7 @@ api.add_resource(CategoryList, '/categories')
 #product resources
 api.add_resource(Product, '/product')
 api.add_resource(ProductList, '/products')
+
+#order resources
+api.add_resource(Order, '/order')
+api.add_resource(OrderList, '/orders')

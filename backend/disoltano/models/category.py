@@ -1,8 +1,8 @@
-from backend.disoltano.models.Model import Model
+from backend.disoltano.models.Model import BaseModel
 from backend.disoltano.extensions_init import db
 from backend.disoltano.models.product import ProductModel
 
-class CategoryModel(Model, db.Model):
+class CategoryModel(BaseModel, db.Model):
     __tablename__ = "category"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False, unique=True)
