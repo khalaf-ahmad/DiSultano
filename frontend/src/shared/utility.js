@@ -79,6 +79,24 @@ export const get_product_form_data = (product) => {
     data.append('receivers', user.id)
   })
   return data;
+};
+
+export const get_order_data = order => {
+  const details = order.details.map(detail => {
+    return {
+      detail_id: detail.detail_id,
+      product_id: detail.product.id,
+      detail_price: detail.detail_price,
+      quantity: detail.quantity,
+      description: detail.description
+    };
+  });
+  return {
+    id: order.id,
+    customer_name: order.customer_name,
+    description: order.description,
+    details
+  }
 }
 
 export  const UserControls = {...form};
