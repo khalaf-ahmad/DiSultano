@@ -3,6 +3,7 @@ from backend.disoltano.utility import create_request_parser
 from backend.disoltano.models.order import OrderModel, OrderDetailModel
 from backend.disoltano.models.product import ProductModel
 from flask_jwt_extended import jwt_required, get_jwt_claims
+from backend.disoltano.extensions_init import db
 
 _customer_name = {"name": "customer_name", "type": str}
 _id_arg = {"name": "id", "type": int, 'location': 'json'}
@@ -31,6 +32,7 @@ class Order(Resource):
         for detail in order_details:
             order_detail = OrderDetailModel(detail['product_id'],
             detail['detail_price'], detail['quantity'], detail['description'])
+            db.session.add(order_detail)
             order.details.append(order_detail)
         try:
             order.save_to_db()
@@ -55,17 +57,19 @@ class Order(Resource):
             order.description = new_order.description
         else:
             order = OrderModel(**data)
+        order.details = []
         for detail in order_details:
-                order_detail = OrderDetailModel.find_by_id(detail['detail_id'])
-                if order_detail:
+            order_detail = OrderDetailModel.find_by_id(detail['detail_id'])
+            if order_detail:
                     order_detail.detail_price = detail['detail_price']
                     order_detail.quantity = detail['quantity']
                     order_detail.description = detail['description']
-                    order_detail.save_to_db()
-                else:
-                    order_detail = OrderDetailModel(data['product_id'],
-                    data['detail_price'], data['quantity'], data['description'])
-                    order.append(order_detail)
+            else:
+                order_detail = OrderDetailModel(detail['product_id'],
+                detail['detail_price'], detail['quantity'],
+                detail['description'])
+                db.session.add(order_detail)
+            order.details.append(order_detail)
         order.save_to_db()
         return {'order': order.json()}
 
@@ -96,4 +100,3 @@ class OrderList(Resource):
         result['page'] = orders_pages.page
         result['pages'] = orders_pages.pages
         return result
- 

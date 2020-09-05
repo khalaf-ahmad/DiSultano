@@ -16,7 +16,7 @@ class OrderDetailModel(db.Model, BaseModel):
     product = db.relationship('ProductModel', lazy='subquery', uselist=False,
         backref=db.backref('product_orders', lazy=True))
     order = db.relationship("OrderModel", lazy='subquery', uselist=False,
-        backref=db.backref('details', lazy='subquery')
+        backref=db.backref('details', lazy='subquery', cascade='delete-orphan')
     )
 
     def __init__(self, product_id, detail_price, quantity,
