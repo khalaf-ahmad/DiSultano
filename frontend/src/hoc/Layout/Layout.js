@@ -6,7 +6,7 @@ import Navigation from "../../components/Navigation/Navigation";
 const layout = (props) => (
   <Fragment>
     <Navigation />
-    <Container className={classes.Content} fluid="md">
+    <Container className={classes.Content} fluid="xs">
       <Row as="main" >
         {props.children}
       </Row>

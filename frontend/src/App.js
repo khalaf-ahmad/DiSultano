@@ -9,7 +9,7 @@ import Logout from "./components/Logout/Logout";
 import Users from './containers/Users/Users';
 import Profile from './containers/Profile/Profile';
 import Store from './containers/Store/Store';
-
+import OrderBuilder from './containers/OrderBuilder/OrderBuilder';
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
             <Route path="/register" component={Registration} />
             <Route path="/login" component={Login} />
             <Route path="/logout" component={Logout} />
-            <Route path="/" exact render={() => <div></div>} />
+            <Route path="/" exact component={OrderBuilder} />
           </Switch>
         </Layout>
       </AuthContextProvider>
