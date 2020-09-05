@@ -3,26 +3,29 @@ import { Col, Card, Accordion, ListGroup } from 'react-bootstrap';
 import classes from './Product.module.css';
 import axios from "../../../axios-base";
 
-const Product = ({ product, card_clicked, category }) => {
-
+const Product = ({
+  product,
+  card_clicked,
+  on_double_click,
+  category,
+  size,
+}) => {
   const img_ref = useRef();
   useEffect(() => {
     if (product.image) {
-      axios.get(product.image, { responseType: "blob" })
-        .then((response) => {
-          const reader = new window.FileReader();
-          reader.readAsDataURL(response.data);
-          reader.onload = () => {
-            const img_url = reader.result;
-            img_ref.current.setAttribute("src", img_url);
-          };
+      axios.get(product.image, { responseType: "blob" }).then((response) => {
+        const reader = new window.FileReader();
+        reader.readAsDataURL(response.data);
+        reader.onload = () => {
+          const img_url = reader.result;
+          img_ref.current.setAttribute("src", img_url);
+        };
       });
     }
-  }
-  , [product.image]);
+  }, [product.image]);
 
   return (
-    <Col xs="6" sm="4" lg="3" onClick={card_clicked}>
+    <Col role="button" {...size} onClick={card_clicked} onDoubleClick={on_double_click}>
       <Card>
         {product.image ? (
           <Card.Img
@@ -36,14 +39,16 @@ const Product = ({ product, card_clicked, category }) => {
           <Card.Title className="text-primary text-capitalize">
             {product.name}
           </Card.Title>
-          <Card.Subtitle className="text-secondary text-capitalize">
-            {category? category.name : ""}
-          </Card.Subtitle>
+          {category ? (
+            <Card.Subtitle className="text-secondary text-capitalize">
+              {category.name}
+            </Card.Subtitle>
+          ) : null}
           <Card.Text className="text-success d-flex justify-content-end">
             {(+product.price.toFixed(2)).toLocaleString()}
           </Card.Text>
         </Card.Body>
-        {product.receivers.length ? (
+        {product.receivers && product.receivers.length ? (
           <Accordion
             role="button"
             as={Card.Footer}
@@ -71,6 +76,6 @@ const Product = ({ product, card_clicked, category }) => {
       </Card>
     </Col>
   );
-}
+};
 
 export default Product;

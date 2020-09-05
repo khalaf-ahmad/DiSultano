@@ -75,6 +75,7 @@ const Categories = () => {
       {error && <Alert variant="danger">{error}</Alert>}
       <ListGroup
         style={style}
+        role='button'
         as="ul"
         className="text-capitalize rounded-0 text-lead  mb-2"
       >

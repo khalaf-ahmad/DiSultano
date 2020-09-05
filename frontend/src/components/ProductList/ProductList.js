@@ -119,7 +119,7 @@ const ProductList = (props) => {
 
   const handle_change = (event) => {
     let value = event.target.value;
-    const property = event.target.id;
+    const property = event.target.name;
     if (property === "category_id" || property === "price") value = +value;
     set_selected_product((prevState) => {
       return {

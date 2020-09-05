@@ -1,22 +1,23 @@
 import React from 'react';
-import { Col, Form } from 'react-bootstrap';
-const ProductFormControl = (props) => {
+import {Form } from 'react-bootstrap';
+const FromInputControl = (props) => {
     return (
-        <Col xs="12" sm="6">
+        <div >
             <Form.Label htmlFor={props.id} srOnly>
                 {props.label}
             </Form.Label>
             <Form.Control
                 className="mb-2"
                 id={props.id}
+                name={props.name}
                 placeholder={props.placeholder}
                 type={props.type}
                 value={props.value}
                 onChange={props.onChange}
                 autoComplete="off"
             />
-        </Col>
+        </div>
     );
 }
 
-export default ProductFormControl;
+export default FromInputControl;

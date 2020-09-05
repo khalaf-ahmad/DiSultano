@@ -5,7 +5,7 @@ import {
   ListGroup, Modal, Row
 } from 'react-bootstrap';
 import { MdAdd, MdClear } from 'react-icons/md';
-import ProductFormControl from './ProductFormControl/ProductFormControl';
+import FromInputControl from "../../UI/FromInputControl/FromInputControl";
 
 const list_group_style = {
   height: "50px",
@@ -65,24 +65,30 @@ const ProductForm = props => {
 
 
   const name_control = (
-    <ProductFormControl
-      id="name"
-      placeholder="Product Name"
-      value={props.product.name}
-      onChange={props.input_changed}
-      label="Name"
-    />
+    <Col {...column_grid}>
+      <FromInputControl
+        name="name"
+        id="productNameInput"
+        placeholder="Product Name"
+        value={props.product.name}
+        onChange={props.input_changed}
+        label="Name"
+      />
+    </Col>
   );
 
   const price_control = (
-    <ProductFormControl
-      id="price"
-      placeholder="Price"
-      value={props.product.price}
-      onChange={props.input_changed}
-      label="Price"
-      type="number"
-    />
+    <Col {...column_grid}>
+      <FromInputControl
+        name="price"
+        id="productPriceInput"
+        placeholder="Price"
+        value={props.product.price}
+        onChange={props.input_changed}
+        label="Price"
+        type="number"
+      />
+    </Col>
   );
 
   const category_list_control = (
@@ -93,7 +99,8 @@ const ProductForm = props => {
       <Form.Control
         as="select"
         className="mb-2"
-        id="category_id"
+        id="productCategorySelect"
+        name="category_id"
         custom
         value={props.product.category_id}
         onChange={props.input_changed}
