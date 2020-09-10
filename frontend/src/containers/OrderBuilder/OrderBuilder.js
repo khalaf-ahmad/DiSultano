@@ -1,9 +1,14 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import { Col, Row } from 'react-bootstrap';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Col, Row, Alert, Spinner } from 'react-bootstrap';
 import Product from '../../components/ProductList/Product/Product';
 import OrderFrom from './OrderForm/OrderForm';
 import OrderDetailForm from './OrderDetailForm/OrderDetailForm';
 import CategoryList from "./CategoryList/CategoryList";
+import OrderList from './OrderList/OrderList';
+import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
+import * as actions from "../../store/actions";
+
 
 const initial_category = { id: 0, name: "", products: [] };
 const initial_product = { id: 0, name: "", price: 0, image: "" };
@@ -23,6 +28,25 @@ const OrderBuilder = () => {
   const [show_detail_modal, set_detail_modal] = useState(false);
   const [order_detail, set_order_detail] = useState(get_initial_detail());
   const [products, set_products] = useState([]);
+
+  // Getting State from redux store
+  const loading = useSelector(state => state.order_builder.loading);
+  const error = useSelector(state => state.order_builder.error);
+  const has_next = useSelector(state => state.order_builder.has_next);
+  const has_prev = useSelector((state) => state.order_builder.has_prev);
+  const page = useSelector(state => state.order_builder.page);
+  const pages = useSelector(state => state.order_builder.pages);
+
+  const dispatch = useDispatch();
+  // Mapping Store actions to functions
+  const fetch_orders = useCallback(() => dispatch(actions.fetch_orders()),
+    [dispatch]);
+
+  const increment_page = useCallback(() => dispatch(actions.increment_page()),
+    [dispatch]);
+  const decrement_page = useCallback(() => dispatch(actions.decrement_page()),
+    [dispatch])
+
 
   // Open and Close Functions for Detail Form Modal
   const handleCloseDetailModal = useCallback(() => {
@@ -46,10 +70,12 @@ const OrderBuilder = () => {
 // Getting detail from product when selecting product
   const get_detail_from_product = (product) => {
     const detail = get_initial_detail();
-    detail.product = { ...product };
-    detail.detail_price = detail.product.price;
+    detail.product = { name: product.name };
+    detail.product_id = product.id;
+    detail.detail_price = product.price;
     return detail;
   };
+
   const on_product_selected = (product_selected) => {
     set_order_detail(get_detail_from_product(product_selected));
     handleShowDetailModal();
@@ -77,6 +103,10 @@ const OrderBuilder = () => {
   }, [get_category_products])
 
 
+  useEffect(() => {
+    fetch_orders();
+  }, [fetch_orders, page]);
+
   const category_panel = (
     <CategoryList
       category_clicked={on_select_category}
@@ -103,6 +133,7 @@ const OrderBuilder = () => {
 
   return (
     <React.Fragment>
+      {error && <Alert variant="danger">{error}</Alert>}
       {show_detail_modal && order_detail_form}
       <Col xs="12" md="3">
         {category_panel}
@@ -113,6 +144,42 @@ const OrderBuilder = () => {
       <Col className="border-left" xs="12" md="4">
         <OrderFrom on_detail_click={on_detail_click} />
       </Col>
+      {pages > 0 ?(<Col style={{ marginTop: "100px" }}>
+        <Row className="border m-2 p-2">
+          <OrderList />
+        </Row>
+        <div className="m-auto d-flex justify-content-between">
+          <MdNavigateBefore
+            role="button"
+            aria-disabled="true"
+            color={has_prev ? "red" : "#e5e5e5"}
+            size="40px"
+            onClick={() => has_prev && decrement_page()}
+          />
+          <span className="p-2 text-success">{page + " / " + pages}</span>
+          <MdNavigateNext
+            role="button"
+            color={has_next ? "red" : "#e5e5e5"}
+            size="40px"
+            onClick={() => has_next && increment_page()}
+          />
+        </div>
+      </Col>) : null}
+      {loading && (
+        <Spinner
+          style={{
+            position: "fixed",
+            right: "50%",
+            top: "63px",
+            zIndex: "1031",
+          }}
+          variant="info"
+          animation="border"
+          size="bg"
+        >
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      )}
     </React.Fragment>
   );
 }

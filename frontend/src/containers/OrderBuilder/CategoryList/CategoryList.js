@@ -20,7 +20,8 @@ const CategoryList = (props) => {
   }, [fetch_categories]);
 
   return (
-    <ListGroup role="button" as="ul" className="text-capitalize">
+    <ListGroup
+      variant="flush" role="button" as="ul" className="text-capitalize">
       {categories.map((category) => (
         <ListGroup.Item
           as="li"
@@ -29,7 +30,6 @@ const CategoryList = (props) => {
           active={category.id === props.selected_category.id}
           key={category.id}
           onClick={() => props.category_clicked(category)}
-          variant="secondary"
         >
           {category.name}
         </ListGroup.Item>

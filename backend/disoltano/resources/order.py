@@ -92,7 +92,8 @@ class OrderList(Resource):
         page = request.args.get('page', 1, type=int)
         print(page)
         result = {'orders': []}
-        orders_pages = OrderModel.query.paginate(page=page, per_page=10)
+        orders_pages = OrderModel.query.order_by(
+            OrderModel.date_created.desc()).paginate(page=page, per_page=10)
         result['orders'] = [order.json() for order in orders_pages.items]
         result['has_next'] = orders_pages.has_next
         result['has_prev'] = orders_pages.has_prev
