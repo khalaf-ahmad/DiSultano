@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Product from "./Product/Product";
 import ProductForm from "./ProductForm/ProductForm";
+import QuestionModal from '../../components/UI/QuestionModal/QuestionModal';
 import { Row, Spinner, Alert } from "react-bootstrap";
 import * as actionTypes from "../../store/actions/product";
 import { fetch_users_initiate } from "../../store/actions/users";
@@ -55,6 +56,7 @@ const ProductList = (props) => {
   );
 
   const [disable_update, set_disable_update] = useState(false);
+  const [show_delete_modal, set_delete_modal] = useState(false);
 
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product.products);
@@ -185,15 +187,35 @@ const ProductList = (props) => {
     return category;
   };
 
+  const handle_delete_product = () => {
+    delete_product();
+    set_delete_modal(false);
+  };
+
+  const delete_modal = (
+    <QuestionModal
+      show={show_delete_modal}
+      submit_clicked={handle_delete_product}
+      title={`Deleting Product ${selected_product.name}`}
+      close_clicked={() => set_delete_modal(false)}
+    />
+  );
+
   return (
     <React.Fragment>
       {error && <Alert variant="danger">{error}</Alert>}
+      {delete_modal}
       <Row style={style}>
         {products.map((product, idx) => (
           <Product
             card_clicked={() => on_product_selected(product)}
             category={get_category_by_id(product.category_id)}
             key={idx}
+            size={{
+              xs: "6",
+              sm: "4",
+              lg: "3",
+            }}
             product={product}
           />
         ))}
@@ -209,7 +231,7 @@ const ProductList = (props) => {
           image_changed={(event) => handle_image_changed(event)}
           clear_clicked={clear_form}
           submit_clicked={handle_submit}
-          delete_product_clicked={delete_product}
+          delete_product_clicked={() => set_delete_modal(true)}
           disable_update={disable_update}
         />
       </Row>

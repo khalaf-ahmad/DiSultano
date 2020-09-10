@@ -5,11 +5,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../../store/actions';
 import FromInputControl
   from "../../../components/UI/FromInputControl/FromInputControl";
+import QuestionModal from "../../../components/UI/QuestionModal/QuestionModal";
 
 const OrderForm = (props) => {
 // Component State
   const [customer_name, set_customer_name] = useState("");
   const [description, set_description] = useState("");
+  const [show_delete_modal, set_delete_modal] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -39,14 +41,27 @@ const OrderForm = (props) => {
       update_order();
   }
 
+  const handle_delete_submit = () => {
+    delete_order();
+    set_delete_modal(false);
+  };
+
+  const delete_modal = <QuestionModal
+      show={show_delete_modal}
+      submit_clicked={handle_delete_submit} 
+      title={`Deleting ${customer_name} Order`}
+      close_clicked={() => set_delete_modal(false)}
+    />
+
 // Setting component state to order info
   useEffect(() => {
     set_customer_name(order.customer_name);
     set_description(order.description);
-  },[order])
+  },[order.customer_name, order.description])
 
   return (
     <React.Fragment>
+      {delete_modal}
       <ListGroup className="border-bottom mb-2" variant="flush">
         {order.details.map((detail, idx) => {
           return (
@@ -57,7 +72,8 @@ const OrderForm = (props) => {
               className="d-flex flex-wrap justify-content-between"
             >
               <span className="text-success">
-                {detail.quantity + "/ " + detail.detail_price.toFixed(3)}
+                {detail.quantity + "/ " +
+                  (+detail.detail_price.toFixed(3)).toLocaleString()}
               </span>
               <span className="text-info lead">{detail.product.name}</span>
               {detail.description ? (
@@ -73,7 +89,7 @@ const OrderForm = (props) => {
           );
         })}
       </ListGroup>
-      <Form className="b-1 text-large">
+      <Form className="b-1 text-large" onSubmit={on_order_submit}>
         <FromInputControl
           name="customer_name"
           id="orderCustomerInput"
@@ -104,12 +120,12 @@ const OrderForm = (props) => {
             Clear
           </Button>
           {order.id > 0 ? (
-            <Button onClick={() => delete_order()} variant="outline-danger">
+            <Button onClick={() => set_delete_modal(true)} variant="outline-danger">
               Delete
             </Button>
           ) : null}
-          <Button onClick={on_order_submit} variant="outline-success">
-            {order.id > 0 ? "Update" : "Add"}
+          <Button type='submit' variant="outline-success">
+            Save
           </Button>
         </div>
       </Form>

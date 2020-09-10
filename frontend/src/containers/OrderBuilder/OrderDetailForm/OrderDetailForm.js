@@ -1,7 +1,7 @@
 import React,{ useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import * as actions from '../../../store/actions';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import FromInputControl
   from "../../../components/UI/FromInputControl/FromInputControl";
 
@@ -18,7 +18,8 @@ const OrderDetailForm = (props) => {
     [dispatch]
   );
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     if (props.order_detail.detail_id === 0) {
       add_detail({ ...props.order_detail, detail_id: Date.now() });
     }
@@ -40,34 +41,40 @@ const OrderDetailForm = (props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h5 className="text-success">{props.order_detail.product.name}</h5>
-        <label>Quantity</label>
-        <FromInputControl
-          name="quantity"
-          id="detailQuantityInput"
-          placeholder="Quantity"
-          type="number"
-          value={props.order_detail.quantity}
-          onChange={(event) => props.update_detail_info(event)}
-        />
-        <label>Price</label>
-        <FromInputControl
-          name="detail_price"
-          id="detailPriceInput"
-          placeholder="Price"
-          type="number"
-          value={props.order_detail.detail_price}
-          onChange={(event) => props.update_detail_info(event)}
-        />
-        <label>Description</label>
-        <FromInputControl
-          name="description"
-          id="detailDescriptionInput"
-          placeholder="Description"
-          type="text"
-          value={props.order_detail.description}
-          onChange={(event) => props.update_detail_info(event)}
-        />
+        <Form onSubmit={handleSubmit} >
+          <h5 className="text-success">{props.order_detail.product.name}</h5>
+          <label>Quantity</label>
+          <FromInputControl
+            name="quantity"
+            id="detailQuantityInput"
+            placeholder="Quantity"
+            type="number"
+            value={props.order_detail.quantity}
+            onChange={(event) => props.update_detail_info(event)}
+          />
+          <label>Price</label>
+          <FromInputControl
+            name="detail_price"
+            id="detailPriceInput"
+            placeholder="Price"
+            type="number"
+            value={props.order_detail.detail_price}
+            onChange={(event) => props.update_detail_info(event)}
+          />
+          <label>Description</label>
+          <FromInputControl
+            name="description"
+            id="detailDescriptionInput"
+            placeholder="Description"
+            type="text"
+            value={props.order_detail.description}
+            onChange={(event) => props.update_detail_info(event)}
+          />
+          <Button
+            type='submit'
+            hidden
+          ></Button>
+        </Form>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
         <Button
@@ -76,7 +83,10 @@ const OrderDetailForm = (props) => {
         >
           Close
         </Button>
-        <Button variant="outline-success" onClick={handleSubmit}>
+        <Button
+          variant="outline-success"
+          onClick={handleSubmit}
+        >
           Submit
         </Button>
       </Modal.Footer>
