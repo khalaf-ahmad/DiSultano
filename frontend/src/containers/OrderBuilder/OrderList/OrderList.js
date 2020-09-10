@@ -19,7 +19,7 @@ const OrderList = () => {
     set_order(order);
   }
   return order_list.map((order) => (
-    <Col key={order.id} className="mb-2" xs="6" sm="4" md="3" lg="2">
+    <Col key={order.id} className="mb-2" sm="6" md="4" lg="2">
       <Order order={order} card_clicked={() => order_clicked(order)} />
     </Col>
   ));

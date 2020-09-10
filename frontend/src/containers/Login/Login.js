@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { UserControls } from '../../shared/utility';
 import UserForm from "../../components/UI/UserForm/UserForm";
 import AuthContext from '../../context/auth-context';
+import { Redirect } from 'react-router';
 
 class Login extends Component {
   static contextType = AuthContext;
@@ -15,6 +16,7 @@ class Login extends Component {
   componentWillUnmount() {
     this.context.clearMessage();
   }
+
   changeHandler = (event) => {
     const controlName = event.target.id;
     const control = { ...this.state.controls[controlName] };
@@ -41,7 +43,8 @@ class Login extends Component {
   };
 
   render() {
-    return (
+
+    return this.context.isAuthenticated? <Redirect to='/' /> : (
       <UserForm
         controls={this.state.controls}
         submitText={this.context.isLoading ? "Loading..." : "Login"}

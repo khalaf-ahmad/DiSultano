@@ -133,7 +133,12 @@ const OrderBuilder = () => {
 
   return (
     <React.Fragment>
-      {error && <Alert variant="danger">{error}</Alert>}
+      {error && <Alert
+        style={{
+          position: 'fixed', top: '72px', zIndex: '1340',
+          left: "50%", transform: "translateX(-50%)"
+        }}
+        variant="danger">{error}</Alert>}
       {show_detail_modal && order_detail_form}
       <Col xs="12" md="3">
         {category_panel}
@@ -144,27 +149,29 @@ const OrderBuilder = () => {
       <Col className="border-left" xs="12" md="4">
         <OrderFrom on_detail_click={on_detail_click} />
       </Col>
-      {pages > 0 ?(<Col style={{ marginTop: "100px" }}>
-        <Row className="border m-2 p-2">
-          <OrderList />
-        </Row>
-        <div className="m-auto d-flex justify-content-between">
-          <MdNavigateBefore
-            role="button"
-            aria-disabled="true"
-            color={has_prev ? "red" : "#e5e5e5"}
-            size="40px"
-            onClick={() => has_prev && decrement_page()}
-          />
-          <span className="p-2 text-success">{page + " / " + pages}</span>
-          <MdNavigateNext
-            role="button"
-            color={has_next ? "red" : "#e5e5e5"}
-            size="40px"
-            onClick={() => has_next && increment_page()}
-          />
-        </div>
-      </Col>) : null}
+      {pages > 0 ? (
+        <Col style={{ marginTop: "100px" }}>
+          <Row className="border m-2 p-2">
+            <OrderList />
+          </Row>
+          <div className="m-auto d-flex justify-content-between">
+            <MdNavigateBefore
+              role="button"
+              aria-disabled="true"
+              color={has_prev ? "red" : "#e5e5e5"}
+              size="40px"
+              onClick={() => has_prev && decrement_page()}
+            />
+            <span className="p-2 text-success">{page + " / " + pages}</span>
+            <MdNavigateNext
+              role="button"
+              color={has_next ? "red" : "#e5e5e5"}
+              size="40px"
+              onClick={() => has_next && increment_page()}
+            />
+          </div>
+        </Col>
+      ) : null}
       {loading && (
         <Spinner
           style={{

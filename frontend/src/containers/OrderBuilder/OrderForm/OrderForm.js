@@ -107,7 +107,8 @@ const OrderForm = (props) => {
           onChange={(event) => set_description(event.target.value)}
         />
 
-        <Form.Label className="d-flex justify-content-between text-success font-weight-bold">
+        <Form.Label
+          className="d-flex justify-content-between text-success font-weight-bold">
           <span>TOTAL:</span>
           <span>{(+order.total_price.toFixed(3)).toLocaleString()}</span>
         </Form.Label>
@@ -120,11 +121,15 @@ const OrderForm = (props) => {
             Clear
           </Button>
           {order.id > 0 ? (
-            <Button onClick={() => set_delete_modal(true)} variant="outline-danger">
+            <Button onClick={() => set_delete_modal(true)}
+              variant="outline-danger">
               Delete
             </Button>
           ) : null}
-          <Button type='submit' variant="outline-success">
+          <Button
+            type='submit'
+            disabled={order.details.length === 0}
+            variant="outline-success">
             Save
           </Button>
         </div>

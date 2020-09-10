@@ -1,4 +1,4 @@
-import React,{ useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Redirect } from 'react-router-dom';
 import AuthContext from '../../context/auth-context';
 
@@ -8,7 +8,7 @@ const Logout = () => {
         authContext.resetAuth();
     }, [authContext]);
 
-    return  <Redirect to="/" />  ;
+    return  <Redirect to="/login" />  ;
 }
 
 export default Logout;
