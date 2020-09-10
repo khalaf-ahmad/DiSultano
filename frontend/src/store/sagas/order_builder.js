@@ -43,7 +43,7 @@ export function* delete_order_saga(action) {
 export function* fetch_orders_saga(action) {
     yield put(actions.fetch_orders_start());
     try {
-        const page = select(selectors.page);
+        const page = yield select(selectors.page);
         const response = yield axios.get('/orders',
             {
                 params: { page: page},

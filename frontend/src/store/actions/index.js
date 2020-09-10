@@ -54,6 +54,7 @@ export {
 } from './product';
 
 export {
+    set_order,
     set_order_info,
     reset_order,
     set_order_details,
@@ -75,5 +76,7 @@ export {
     fetch_orders,
     fetch_orders_fail,
     fetch_orders_start,
-    fetch_orders_success
+    fetch_orders_success,
+    increment_page,
+    decrement_page
 } from './order_builder'

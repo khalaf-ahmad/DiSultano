@@ -1,5 +1,13 @@
 import *  as actionTypes from './actionTypes';
 
+
+export const set_order = order => {
+    return {
+        type: actionTypes.SET_ORDER,
+        order
+    };
+};
+
 export const set_order_details = details => {
     return {
         type: actionTypes.SET_ORDER_DETAILS,
@@ -144,5 +152,17 @@ export const fetch_orders_fail = (error) => {
     return {
         type: actionTypes.FETCH_ORDERS_FAIL,
         error
+    };
+};
+
+export const increment_page = () => {
+    return {
+        type: actionTypes.INCREMENT_PAGE
+    };
+};
+
+export const decrement_page = () => {
+    return {
+        type: actionTypes.DECREMENT_PAGE
     };
 };

@@ -85,7 +85,7 @@ export const get_order_data = order => {
   const details = order.details.map(detail => {
     return {
       detail_id: detail.detail_id,
-      product_id: detail.product.id,
+      product_id: detail.product_id,
       detail_price: detail.detail_price,
       quantity: detail.quantity,
       description: detail.description
