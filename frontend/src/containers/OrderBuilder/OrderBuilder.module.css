@@ -1,0 +1,9 @@
+.flexItem{
+  flex-basis: 100%;
+}
+
+.ordersWrapper{
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-end;
+}

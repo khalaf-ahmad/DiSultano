@@ -1,0 +1,13 @@
+.CategoryList, .ProductList {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+}
+
+.ProductList > div, .CategoryList > * {
+    flex-basis: 100%;
+}
+
+.CategoryList {
+  border-left: 1px solid red;
+}

@@ -8,7 +8,7 @@ import CategoryList from "./CategoryList/CategoryList";
 import OrderList from './OrderList/OrderList';
 import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 import * as actions from "../../store/actions";
-
+import classes from './OrderBuilder.module.css';
 
 const initial_category = { id: 0, name: "", products: [] };
 const initial_product = { id: 0, name: "", price: 0, image: "" };
@@ -133,28 +133,54 @@ const OrderBuilder = () => {
 
   return (
     <React.Fragment>
-      {error && <Alert
-        style={{
-          position: 'fixed', top: '72px', zIndex: '1340',
-          left: "50%", transform: "translateX(-50%)"
-        }}
-        variant="danger">{error}</Alert>}
+      {error && (
+        <Alert
+          style={{
+            position: "fixed",
+            top: "72px",
+            zIndex: "1340",
+            left: "50%",
+            transform: "translateX(-50%)",
+          }}
+          variant="danger"
+        >
+          {error}
+        </Alert>
+      )}
       {show_detail_modal && order_detail_form}
       <Col xs="12" md="3">
         {category_panel}
       </Col>
-      <Col xs="12" md="5">
+      <Col
+        xs="12"
+        md="5"
+        style={{
+          maxHeight: "450px",
+          overflow: "auto",
+        }}
+      >
         <Row>{product_panel}</Row>
       </Col>
       <Col className="border-left" xs="12" md="4">
         <OrderFrom on_detail_click={on_detail_click} />
       </Col>
       {pages > 0 ? (
-        <Col style={{ marginTop: "100px" }}>
-          <Row className="border m-2 p-2">
+        <Col className={classes.ordersWrapper}>
+          <Row
+            style={{
+              maxHeight: "350px",
+              overflow: "auto",
+            }}
+            className={["border m-2 p-2", classes.flexItem].join(" ")}
+          >
             <OrderList />
           </Row>
-          <div className="m-auto d-flex justify-content-between">
+          <div
+            className={[
+              "d-flex justify-content-between",
+              classes.flexItem,
+            ].join(" ")}
+          >
             <MdNavigateBefore
               role="button"
               aria-disabled="true"

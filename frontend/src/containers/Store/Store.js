@@ -2,6 +2,7 @@ import React from 'react';
 import { Col, Row, Tabs, Tab } from 'react-bootstrap';
 import ProductList from '../../components/ProductList/ProductList';
 import Categories from '../../components/Categories/Categories';
+import classes from './Store.module.css';
 
 const Store = (props) => {
     
@@ -26,11 +27,11 @@ const Store = (props) => {
     if (width >= 758) {
         content = (
             <Col>
-                <Row>
-                    <Col md="8" >
+                <Row style={{height: '100%'}}>
+                    <Col md="8" className={classes.ProductList} >
                     {product_list}
                     </Col>
-                    <Col md="4" className="d-flex flex-column border-left border-danger b-red " >
+                    <Col md="4" className={classes.CategoryList}>
                     {categor_list}
                     </Col>
                 </Row>

@@ -4,11 +4,18 @@ import { Card, Badge } from 'react-bootstrap';
 const Order = ({ order, card_clicked }) => {
   return (
     <Card border="warning" onClick={card_clicked} role="button">
-      <Card.Header className="bg-danger d-flex justify-content-between">
-        <span className="text-warning font-weight-bold ">
+      <Card.Header className="bg-danger position-relative p-3">
+        <span className="text-warning ">
           {order.customer_name}
         </span>
-        <Badge pill variant="warning" className="p-2">
+        <Badge pill variant="warning"
+          style={{
+            position: 'absolute',
+            right: '5px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            padding: '6px'
+          }}>
           {order.id}
         </Badge>
       </Card.Header>
