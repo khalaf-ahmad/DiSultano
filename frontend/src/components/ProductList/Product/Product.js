@@ -36,11 +36,13 @@ const Product = ({
           />
         ) : null}
         <Card.Body className="bg-warning">
-          <Card.Title className="text-primary text-capitalize">
+          <Card.Title style={{ fontSize: '.9rem' }}
+            className="text-primary text-capitalize">
             {product.name}
           </Card.Title>
           {category ? (
-            <Card.Subtitle className="text-secondary text-capitalize">
+            <Card.Subtitle style={{fontSize: '.8rem'}}
+              className="text-secondary text-capitalize">
               {category.name}
             </Card.Subtitle>
           ) : null}

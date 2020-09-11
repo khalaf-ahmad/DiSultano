@@ -148,7 +148,7 @@ const OrderBuilder = () => {
         </Alert>
       )}
       {show_detail_modal && order_detail_form}
-      <Col xs="12" md="3">
+      <Col xs="12" md="3" style={{ maxHeight: "250px", overflow: "auto" }}>
         {category_panel}
       </Col>
       <Col

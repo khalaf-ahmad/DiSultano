@@ -62,7 +62,11 @@ const OrderForm = (props) => {
   return (
     <React.Fragment>
       {delete_modal}
-      <ListGroup className="border-bottom mb-2" variant="flush">
+      <ListGroup
+        style={{ maxHeight: "250px", overflow: "auto" }}
+        className="border-bottom mb-2"
+        variant="flush"
+      >
         {order.details.map((detail, idx) => {
           return (
             <ListGroup.Item
@@ -72,7 +76,8 @@ const OrderForm = (props) => {
               className="d-flex flex-wrap justify-content-between"
             >
               <span className="text-success">
-                {detail.quantity + "/ " +
+                {detail.quantity +
+                  "/ " +
                   (+detail.detail_price.toFixed(3)).toLocaleString()}
               </span>
               <span className="text-info lead">{detail.product.name}</span>
@@ -107,8 +112,7 @@ const OrderForm = (props) => {
           onChange={(event) => set_description(event.target.value)}
         />
 
-        <Form.Label
-          className="d-flex justify-content-between text-success font-weight-bold">
+        <Form.Label className="d-flex justify-content-between text-success font-weight-bold">
           <span>TOTAL:</span>
           <span>{(+order.total_price.toFixed(3)).toLocaleString()}</span>
         </Form.Label>
@@ -121,15 +125,18 @@ const OrderForm = (props) => {
             Clear
           </Button>
           {order.id > 0 ? (
-            <Button onClick={() => set_delete_modal(true)}
-              variant="outline-danger">
+            <Button
+              onClick={() => set_delete_modal(true)}
+              variant="outline-danger"
+            >
               Delete
             </Button>
           ) : null}
           <Button
-            type='submit'
+            type="submit"
             disabled={order.details.length === 0}
-            variant="outline-success">
+            variant="outline-success"
+          >
             Save
           </Button>
         </div>
