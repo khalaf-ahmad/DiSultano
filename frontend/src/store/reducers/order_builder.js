@@ -136,13 +136,11 @@ const add_order_success = (state, action) => {
 
 const update_order_success = (state, action) => {
   const order_list = [...state.order_list];
-  for (let order of order_list) {
-      if (order.id === state.order.id) {
-        order.customer_name = action.order.customer_name;
-        order.description = action.order.description;
-        console.log(order)
-        break;
-      }
+  for (let orderIndex in order_list) {
+    if (order_list[orderIndex].id === state.order.id) {
+      order_list[orderIndex] = {...action.order}
+      break;
+    }
   }
   return updateObject(state, {
     order: { ...action.order },
