@@ -119,7 +119,7 @@ const OrderBuilder = () => {
         product={product}
         on_double_click={() => on_product_selected(product)}
         key={product.id}
-        size={{ xs: "6", sm: "4", md: "6", lg: "auto" }}/>
+        size={{ xs: "6", sm: "4", md: "6", lg: "3" }}/>
     ))
   );
 
@@ -148,7 +148,7 @@ const OrderBuilder = () => {
         </Alert>
       )}
       {show_detail_modal && order_detail_form}
-      <Col xs="12" md="3" style={{ maxHeight: "250px", overflow: "auto" }}>
+      <Col xs="12" md="3" style={{ maxHeight: "450px", overflow: "auto" }}>
         {category_panel}
       </Col>
       <Col

@@ -23,7 +23,7 @@ function App() {
             <Route path="/register" component={Registration} />
             <Route path="/login" component={Login} />
             <Route path="/logout" component={Logout} />
-            <Route path="/" exact component={OrderBuilder} />
+            <Route path="/"  component={OrderBuilder} />
           </Switch>
         </Layout>
       </AuthContextProvider>

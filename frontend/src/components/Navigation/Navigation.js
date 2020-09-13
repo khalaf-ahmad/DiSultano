@@ -7,34 +7,36 @@ import { current_user } from '../../shared/utility';
 
 const navigationLinks = [
   { name: "home", type: "link", path: "/" },
-  { name: "orders", type: "link", path: "/orders" },
   { name: "inprogress", type: "link", path: "/inprogress" },
   { name: "store", type: "link", path: "/store" },
 ];
+
 const optionsLinks = {
   name: "settings",
   type: "navdropdown",
   id: "options",
-  dropdownitems: [],
+  dropdownitems: [
+    { name: "profile", type: "navdropdownitem", path: "/profile" },
+    { name: "users", type: "navdropdownitem", path: "/users" },
+    { type: "navdropdowndivider" },
+    { name: "logout", type: "navdropdownitem", path: "/logout" },
+  ],
 };
+
 const Navigation = () => {
   const authContext = useContext(AuthContext);
-  const links = [...navigationLinks];
-  const options = { ...optionsLinks }
+  let links = [];
   if (authContext.isAuthenticated) {
-    options["dropdownitems"] = [
-      { name: "profile", type: "navdropdownitem", path: "/profile" },
-      { name: "users", type: "navdropdownitem", path: "/users" },
-      { type: "navdropdowndivider" },
-      { name: "logout", type: "navdropdownitem", path: "/logout" },
-    ];
+    links = [...navigationLinks, optionsLinks];
   } else {
-    options["dropdownitems"] = [
-      { name: "login", type: "navdropdownitem", path: "/login" },
-      { name: "register", type: "navdropdownitem", path: "/register" },
-    ];
+    links.push({ name: "login", type: "link", path: "/login" });
+    links.push({
+      name: "register",
+      type: "link",
+      path: "/register",
+    });
   }
-  links.push(options);
+
   let name = current_user.name ? "-" + current_user.name : "";
   name = name.length > 10 ? name.slice(0, 10) + "..." : name;
   return (
