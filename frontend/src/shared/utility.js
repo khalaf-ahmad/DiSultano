@@ -54,7 +54,10 @@ export const updateObject = (oldObject, updatedProperties) => {
 };
 
 export const get_error_message = (error) => {
-  return error.response? error.response.data.message : error.message
+  const error_message = error.response
+    ? error.response.data.message
+    : error.message;
+  return JSON.stringify(error_message);
 }
 
 export const on_action_fail = (state, action) => {
@@ -88,7 +91,8 @@ export const get_order_data = order => {
       product_id: detail.product_id,
       detail_price: detail.detail_price,
       quantity: detail.quantity,
-      description: detail.description
+      description: detail.description,
+      created: detail.created || false
     };
   });
   return {
