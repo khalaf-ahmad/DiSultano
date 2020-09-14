@@ -80,3 +80,14 @@ export {
     increment_page,
     decrement_page
 } from './order_builder'
+
+export {
+    fetch_orders_details,
+    fetch_orders_details_start,
+    fetch_orders_details_success,
+    fetch_orders_details_fail,
+    update_detail_state,
+    update_detail_state_start,
+    update_detail_state_fail,
+    update_detail_state_success
+} from './orders_details'

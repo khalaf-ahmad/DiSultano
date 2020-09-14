@@ -38,14 +38,17 @@ const Navigation = () => {
   }
 
   let name = current_user.name ? "-" + current_user.name : "";
-  name = name.length > 10 ? name.slice(0, 10) + "..." : name;
+  name = name.length > 10 && window.innerWidth < 758 ?
+    name.slice(0, 10) + "..." : name;
   return (
     <div>
-      <Navbar collapseOnSelect expand="sm" className={classes.Navbar} fixed="top">
+      <Navbar collapseOnSelect expand="sm"
+        className={classes.Navbar} fixed="top">
         <Navbar.Brand href="/" className={classes.Brand}>
           <h4> <span> Di</span> Soltano{name} </h4>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" className={classes.Toggler}/>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav"
+          className={classes.Toggler} />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
             <NavigationItems navLinks={links} />
