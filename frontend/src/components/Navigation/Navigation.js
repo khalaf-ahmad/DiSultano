@@ -7,7 +7,7 @@ import { current_user } from '../../shared/utility';
 
 const navigationLinks = [
   { name: "home", type: "link", path: "/" },
-  { name: "inprogress", type: "link", path: "/inprogress" },
+  { name: "Orders Watcher", type: "link", path: "/orders_watcher" },
   { name: "store", type: "link", path: "/store" },
 ];
 
@@ -38,7 +38,7 @@ const Navigation = () => {
   }
 
   let name = current_user.name ? "-" + current_user.name : "";
-  name = name.length > 10 && window.innerWidth < 758 ?
+  name = name.length > 10 && window.innerWidth < 758 && window.innerWidth > 567?
     name.slice(0, 10) + "..." : name;
   return (
     <div>
