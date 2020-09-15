@@ -10,6 +10,7 @@ import Users from './containers/Users/Users';
 import Profile from './containers/Profile/Profile';
 import Store from './containers/Store/Store';
 import OrderBuilder from './containers/OrderBuilder/OrderBuilder';
+import OrderWatcher from './containers/OrderWatcher/OrderWatcher';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <AuthContextProvider>
         <Layout>
           <Switch>
+            <Route path='/orders_watcher' component={OrderWatcher}/>
             <Route path="/store" component={Store}/>
             <Route path="/profile" component={Profile} />
             <Route path="/users" component={Users} />
