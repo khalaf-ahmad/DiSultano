@@ -26,11 +26,11 @@ export const fetch_orders_details_success = (data) => {
   };
 };
 
-export const update_detail_state = (detail_id, created) => {
+export const update_detail_state = (detail_id, status) => {
   return {
     type: actionTypes.UPDATE_DETAIL_STATE,
     detail_id,
-    created
+    status
   };
 };
 
@@ -40,9 +40,11 @@ export const update_detail_state_start = () => {
   };
 };
 
-export const update_detail_state_success = () => {
+export const update_detail_state_success = (detail_id, status) => {
   return {
-    type: actionTypes.UPDATE_DETAIL_STATE_SUCCESS
+    type: actionTypes.UPDATE_DETAIL_STATE_SUCCESS,
+    detail_id,
+    status
   };
 };
 

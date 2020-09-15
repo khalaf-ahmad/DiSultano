@@ -13,8 +13,8 @@ const initial_state = {
 
 const fetch_orders_details_success = (state, action) => {
   return updateObject(state, {
-    created: [...action.created],
-    waiting: [...action.waiting],
+    created: [...action.data.created],
+    waiting: [...action.data.waiting],
     loading: false,
     error: ""
   });
@@ -30,20 +30,19 @@ const switch_detail = (first, second, detail_id) => {
 
 const update_detail_state_success = (state, action) => {
   const detail_id = action.detail_id;
-  const created_status = action.created;
+  const created_status = action.status;
   let waiting = [...state.waiting];
   let created = [...state.created];
   if (created_status) {
-    switch_detail(waiting, created);
+    switch_detail(waiting, created, detail_id);
   } else {
-    switch_detail(created, waiting);
+    switch_detail(created, waiting, detail_id);
   }
   return updateObject(state, { waiting, created });
 };
 
 
-
-export const reducer = (state = initial_state, action) => {
+const reducer = (state = initial_state, action) => {
   const type = action.type;
   switch (true) {
     case type === actionTypes.FETCH_ORDERS_DETAILS_SUCCESS:
@@ -59,3 +58,5 @@ export const reducer = (state = initial_state, action) => {
     default: return state;
   }
 };
+
+export default reducer;
