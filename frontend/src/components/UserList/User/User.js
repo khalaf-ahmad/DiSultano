@@ -34,13 +34,11 @@ const User = (props) => {
     <Col  sm="6" md="4">
       {alert}
       <Card
-        bg={activated ? "light" : "dark"}
-        text={!activated ? "light" : "dark"}
         style={{ width: "100%" }}
         className="mb-2"
-        border="danger"
+        border={activated? 'success' : 'light'}
       >
-        <Card.Header className="text-primary" >{username}</Card.Header>
+        <Card.Header style={{color: 'darkorchid'}} >{username}</Card.Header>
         <Card.Body>
           <Card.Title className="text-success" >{name}</Card.Title>
           <Form>
