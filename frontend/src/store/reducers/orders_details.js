@@ -38,7 +38,7 @@ const update_detail_state_success = (state, action) => {
   } else {
     switch_detail(created, waiting, detail_id);
   }
-  return updateObject(state, { waiting, created });
+  return updateObject(state, { waiting, created, loading: false });
 };
 
 
