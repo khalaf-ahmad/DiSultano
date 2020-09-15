@@ -47,6 +47,16 @@ const OrderBuilder = () => {
   const decrement_page = useCallback(() => dispatch(actions.decrement_page()),
     [dispatch])
 
+  const add_detail = useCallback(
+    (detail) => dispatch(actions.add_detail(detail)),
+    [dispatch]
+  );
+
+  const update_detail = useCallback(
+    (detail) => dispatch(actions.update_detail(detail)),
+    [dispatch]
+  );
+
 
   // Open and Close Functions for Detail Form Modal
   const handleCloseDetailModal = useCallback(() => {
@@ -77,8 +87,8 @@ const OrderBuilder = () => {
   };
 
   const on_product_selected = (product_selected) => {
-    set_order_detail(get_detail_from_product(product_selected));
-    handleShowDetailModal();
+    const detail = get_detail_from_product(product_selected);
+    add_detail({ ...detail , detail_id: Date.now()});
   };
 
 // update detail when change occurs
@@ -113,18 +123,19 @@ const OrderBuilder = () => {
       selected_category={selected_category} />
   );
 
-  const product_panel = (
-    products.map(product => (
-      <Product
-        product={product}
-        on_double_click={() => on_product_selected(product)}
-        key={product.id}
-        size={{ xs: "6", sm: "4", md: "6", lg: "3" }}/>
-    ))
-  );
+  const product_panel = products.map((product) => (
+    <Product
+      product={product}
+      card_clicked={() => on_product_selected(product)}
+      key={product.id}
+      size={{ xs: "6", sm: "4", md: "6", lg: "3" }}
+    />
+  ));
 
   const order_detail_form = (
     <OrderDetailForm 
+      add_detail={add_detail}
+      update_detail={update_detail}
       order_detail={order_detail}
       show_detail_modal={show_detail_modal}
       handleCloseDetailModal={handleCloseDetailModal}

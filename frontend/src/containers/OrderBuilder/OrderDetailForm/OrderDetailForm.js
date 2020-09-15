@@ -1,30 +1,13 @@
-import React,{ useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import * as actions from '../../../store/actions';
+import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import FromInputControl
   from "../../../components/UI/FromInputControl/FromInputControl";
 
 const OrderDetailForm = (props) => {
-  const dispatch = useDispatch();
-
-  const add_detail = useCallback(
-    (detail) => dispatch(actions.add_detail(detail)),
-    [dispatch]
-  );
-
-  const update_detail = useCallback(
-    (detail) => dispatch(actions.update_detail(detail)),
-    [dispatch]
-  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (props.order_detail.detail_id === 0) {
-      add_detail({ ...props.order_detail, detail_id: Date.now() });
-    }
-    else
-      update_detail(props.order_detail);
+    props.update_detail(props.order_detail);
     props.handleCloseDetailModal();
   };
 

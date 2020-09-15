@@ -5,7 +5,6 @@ import axios from "../../../axios-base";
 const Product = ({
   product,
   card_clicked,
-  on_double_click,
   category,
   size,
 }) => {
@@ -24,8 +23,7 @@ const Product = ({
   }, [product.image]);
 
   return (
-    <Col role="button" {...size} onClick={card_clicked}
-      onDoubleClick={on_double_click}>
+    <Col role="button" {...size} onClick={card_clicked}>
       <Card className='mb-2' >
         {product.image ? (
           <Card.Img
