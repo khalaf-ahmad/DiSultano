@@ -108,15 +108,16 @@ const update_detail = (state, action) => {
 };
 
 
-const delete_order_success = (state) => {
+const delete_order_success = (state, action) => {
   return {
     ...state,
-    order: { ...initial_state.order }
+    order: { ...initial_state.order },
+    order_list: state.order_list.filter((ord) => ord.id !== action.order_id),
   };
 };
 
 const check_orders_length = orders => {
-  while (orders.length > 10) {
+  while (orders.length > 12) {
     orders.pop();
   }
 }
@@ -199,7 +200,7 @@ const reducer = (state = initial_state, action) => {
     case type === actionTypes.UPDATE_ORDER_SUCCESS:
         return update_order_success(state, action);
     case type === actionTypes.DELETE_ORDER_SUCCESS:
-        return delete_order_success(state);
+        return delete_order_success(state, action);
     case type === actionTypes.FETCH_ORDERS_SUCCESS:
         return fetch_orders_success(state, action);
     case type === actionTypes.RESET_ORDER_INFO:
