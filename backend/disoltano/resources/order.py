@@ -68,7 +68,6 @@ class Order(Resource):
                     order_detail.detail_price = detail['detail_price']
                     order_detail.quantity = detail['quantity']
                     order_detail.description = detail['description']
-                    order_detail.created = detail['created']
                     if db.session.is_modified(order_detail):
                         order_detail.user_id = get_jwt_identity()
             else:
