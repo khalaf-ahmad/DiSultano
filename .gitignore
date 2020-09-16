@@ -31,8 +31,9 @@ yarn-error.log*
 #backend
 /backend/disoltano/static
 /backend/disoltano/db_alter.py
+
 #enviroment variables
-/backend/.env
+.env
 
 # sqlite db
 /backend/disoltano/*.db

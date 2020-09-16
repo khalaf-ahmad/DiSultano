@@ -49,8 +49,7 @@ const reducer = (state = initial_state, action) => {
       return fetch_orders_details_success(state, action);
     case type === actionTypes.UPDATE_DETAIL_STATE_SUCCESS:
       return update_detail_state_success(state, action);
-    case type === actionTypes.FETCH_ORDERS_DETAILS_START ||
-      type === actionTypes.UPDATE_DETAIL_STATE_START:
+    case type === actionTypes.UPDATE_DETAIL_STATE_START:
       return on_action_start(state, action);
     case type === actionTypes.FETCH_ORDERS_DETAILS_FAIL ||
       type === actionTypes.UPDATE_DETAIL_STATE_FAIL:
