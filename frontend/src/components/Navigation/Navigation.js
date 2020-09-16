@@ -3,7 +3,6 @@ import { Navbar, Nav } from "react-bootstrap";
 import classes from "./Navigation.module.css";
 import NavigationItems from "./NavigationItems/NavigationItems";
 import AuthContext from '../../context/auth-context';
-import { current_user } from '../../shared/utility';
 
 const navigationLinks = [
   { name: "home", type: "link", path: "/" },
@@ -37,9 +36,10 @@ const Navigation = () => {
     });
   }
 
-  let name = current_user.name ? "-" + current_user.name : "";
+  let name = authContext.user.name ? "-" + authContext.user.name : "";
   name = name.length > 10 && window.innerWidth < 758 && window.innerWidth > 567?
     name.slice(0, 10) + "..." : name;
+
   return (
     <div>
       <Navbar collapseOnSelect expand="sm"

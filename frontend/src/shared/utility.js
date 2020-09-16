@@ -38,14 +38,6 @@ const form = {
     }, "")
 };
 
-export const current_user = {
-  name: "",
-  username: "",
-  role: 0,
-  access_token: "",
-  id: 0
-};
-
 export const updateObject = (oldObject, updatedProperties) => {
   return {
     ...oldObject,
@@ -103,4 +95,8 @@ export const get_order_data = order => {
   }
 }
 
-export  const UserControls = {...form};
+export const UserControls = { ...form };
+
+export const UserLevel = { GUEST: 1, ADMIN: 2, SYS_ADMIN: 3 };
+
+export const token =  { access_token:  "" }
