@@ -5,6 +5,8 @@ import Col from 'react-bootstrap/Col';
 import CreatedDetails from './CreatedDetails/CreatedDetails';
 import WaitingDetails from './WaitingDetails/WaitingDetails';
 import { Spinner, Alert, Modal } from 'react-bootstrap';
+import socket_io from 'socket.io-client';
+
 
 const OrderWatcher = () => {
 
@@ -60,6 +62,20 @@ const OrderWatcher = () => {
       {error}
     </Alert>
   );
+
+  useEffect(() => {
+    const socket = socket_io.connect("http://192.168.0.101:5000");
+    socket.on('connect', () => {
+      console.log('connected...')
+    })
+    socket.on('fetch_details', data => {
+      fetch_orders_details();
+    });
+    socket.on("message", (data) => console.log('message', data));
+
+    // clean up
+    return () => socket.disconnect();
+  }, [fetch_orders_details]);
 
   return (
     <React.Fragment>

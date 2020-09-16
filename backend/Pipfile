@@ -13,6 +13,7 @@ flask-jwt-extended = "*"
 flask-bcrypt = "*"
 flask-cors = "*"
 pillow = "*"
+flask-socketio = "*"
 
 [requires]
 python_version = "3.8"
