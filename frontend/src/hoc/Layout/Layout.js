@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Container, Row } from 'react-bootstrap';
 import classes from "./Layout.module.css";
-import Navigation from "../../components/Navigation/Navigation";
+import Navigation from "../../containers/Navigation/Navigation";
 
 const layout = (props) => (
   <Fragment>
