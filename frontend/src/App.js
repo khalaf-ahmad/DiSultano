@@ -6,11 +6,15 @@ import Registration from "./containers/Registration/Registration";
 import Login from "./containers/Login/Login";
 import { AuthContextProvider } from './context/auth-context';
 import Logout from "./components/Logout/Logout";
-import Users from './containers/Users/Users';
 import Profile from './containers/Profile/Profile';
-import Store from './containers/Store/Store';
-import OrderBuilder from './containers/OrderBuilder/OrderBuilder';
-import OrderWatcher from './containers/OrderWatcher/OrderWatcher';
+import LazyRoute, {
+  OrderBuilder,
+  OrderWatcher,
+  Store,
+  Users,
+} from "./lazy_routes";
+
+
 
 function App() {
   return (
@@ -18,14 +22,14 @@ function App() {
       <AuthContextProvider>
         <Layout>
           <Switch>
-            <Route path='/orders_watcher' component={OrderWatcher}/>
-            <Route path="/store" component={Store}/>
+            <LazyRoute path="/orders_watcher" Component={OrderWatcher} />
+            <LazyRoute path="/store" Component={Store} />
+            <LazyRoute path="/users" Component={Users} />
             <Route path="/profile" component={Profile} />
-            <Route path="/users" component={Users} />
             <Route path="/register" component={Registration} />
             <Route path="/login" component={Login} />
             <Route path="/logout" component={Logout} />
-            <Route path="/"  component={OrderBuilder} />
+            <LazyRoute path="/" Component={OrderBuilder} />
           </Switch>
         </Layout>
       </AuthContextProvider>
