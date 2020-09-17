@@ -24,7 +24,7 @@ const Product = ({
 
   return (
     <Col role="button" {...size} onClick={card_clicked}>
-      <Card className='mb-2' >
+      <Card className="mb-2">
         {product.image ? (
           <Card.Img
             className="bg-warning"
@@ -34,13 +34,29 @@ const Product = ({
           />
         ) : null}
         <Card.Body className="bg-warning">
-          <Card.Title style={{ fontSize: '.9rem' }}
-            className="text-primary text-capitalize">
+          {product.receivers && product.receivers.length === 0 ? (
+            <span
+              style={{
+                padding: "5px",
+                background: "#fff",
+                position: "absolute",
+                right: "5px",
+                top: "5px",
+                borderRadius: "50%",
+              }}
+            ></span>
+          ) : null}
+          <Card.Title
+            style={{ fontSize: ".9rem" }}
+            className="text-primary text-capitalize"
+          >
             {product.name}
           </Card.Title>
           {category ? (
-            <Card.Subtitle style={{fontSize: '.8rem'}}
-              className="text-secondary text-capitalize">
+            <Card.Subtitle
+              style={{ fontSize: ".8rem" }}
+              className="text-secondary text-capitalize"
+            >
               {category.name}
             </Card.Subtitle>
           ) : null}
