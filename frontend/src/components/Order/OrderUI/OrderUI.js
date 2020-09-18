@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card, Badge } from 'react-bootstrap';
+import React from "react";
+import { Card, Badge } from "react-bootstrap";
 
 const Order = ({ order, card_clicked }) => {
   return (
@@ -21,14 +21,16 @@ const Order = ({ order, card_clicked }) => {
         </Badge>
       </Card.Header>
       <Card.Body>
-        <Card.Text as="div" style={{ fontSize: '.7rem' }}>
+        <Card.Text as="div" style={{ fontSize: ".7rem" }}>
           <span className="d-block text-muted">{order.date_created}</span>
-          <span className="d-block text-info">
-            {order.description}
-          </span>
+          <span className="d-block text-info">{order.description}</span>
           <div className="d-flex justify-content-end mt-2">
-            <Badge pill variant="danger"
-              className="p-2 ml-2" style={{fontSize: '.8rem'}}>
+            <Badge
+              pill
+              variant="danger"
+              className="p-2 ml-2"
+              style={{ fontSize: ".8rem" }}
+            >
               {(+order.total_price.toFixed(2)).toLocaleString()}
             </Badge>
           </div>

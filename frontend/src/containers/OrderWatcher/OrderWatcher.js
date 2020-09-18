@@ -2,8 +2,10 @@ import React, {useEffect, useCallback, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../../store/actions';
 import Col from 'react-bootstrap/Col';
-import CreatedDetails from './CreatedDetails/CreatedDetails';
-import WaitingDetails from './WaitingDetails/WaitingDetails';
+import CreatedDetails
+  from '../../components/Order/OrderDetails/CreatedDetails/CreatedDetails';
+import WaitingDetails
+  from '../../components/Order/OrderDetails/WaitingDetails/WaitingDetails';
 import { Spinner, Alert, Modal } from 'react-bootstrap';
 import socket_io from 'socket.io-client';
 
@@ -64,16 +66,12 @@ const OrderWatcher = () => {
   );
 
   useEffect(() => {
-    const socket = socket_io.connect("http://192.168.0.101:5000");
-    socket.on('connect', () => {
-      console.log('connected...')
-    })
+    const socket = socket_io.connect(process.env.REACT_APP_BASE_URL);
     socket.on('fetch_details', data => {
       fetch_orders_details();
     });
-    socket.on("message", (data) => console.log('message', data));
 
-    // clean up
+    // clean up connection
     return () => socket.disconnect();
   }, [fetch_orders_details]);
 

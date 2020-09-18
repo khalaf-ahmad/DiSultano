@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card, Badge, Button } from 'react-bootstrap';
+import React from "react";
+import { Card, Badge, Button } from "react-bootstrap";
 
 const WaitingDetail = ({ detail, detail_clicked }) => {
   const time = detail.date_created.split(" ")[1];
@@ -42,6 +42,6 @@ const WaitingDetail = ({ detail, detail_clicked }) => {
       </Card.Footer>
     </Card>
   );
-}
+};
 
 export default WaitingDetail;
