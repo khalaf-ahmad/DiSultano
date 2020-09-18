@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../../store/actions";
 import OrderForm from "../../../components/Order/OrderForm/OrderForm";
 import QuestionModal from "../../../components/UI/QuestionModal/QuestionModal";
-import OrderDetails from "../../../components/Order/OrderDetails/Details/Details";
+import DetailsInfo from './DetailsInfo/DetailsInfo';
 
 const OrderInfo = (props) => {
   // Component State
@@ -17,11 +17,6 @@ const OrderInfo = (props) => {
   const order = useSelector((state) => state.order_builder.order);
 
   // Mapping Store Actions to component functions
-  const delete_detail = useCallback(
-    (index) => dispatch(actions.remove_detail(index)),
-    [dispatch]
-  );
-
   const set_order_info = useCallback(
     () => dispatch(actions.set_order_info(customer_name, description)),
     [dispatch, customer_name, description]
@@ -95,11 +90,7 @@ const OrderInfo = (props) => {
   return (
     <React.Fragment>
       {delete_modal}
-      <OrderDetails
-        details={order.details}
-        delete_detail={delete_detail}
-        on_detail_click={props.on_detail_click}
-      />
+      <DetailsInfo details={order.details} />
       <div
         className={`d-flex justify-content-between 
         text-danger font-weight-bold mb-2`}
