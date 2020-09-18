@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import * as actions from "../../../../store/actions";
 import OrderDetails from "../../../../components/Order/OrderDetails/Details/Details";

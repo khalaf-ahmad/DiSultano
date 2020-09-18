@@ -1,9 +1,19 @@
-.flexItem{
-  flex-basis: 100%;
+.builderAlert, .builderSpinner {
+  position: fixed;
+  z-index: 1340;
+  left: 50%;
 }
 
-.ordersWrapper{
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-end;
+.builderAlert {
+  transform: translateX(-50%);
+  top: 72px;
+}
+
+.builderSpinner {
+  top: 63px;
+}
+
+.BuildersRow{
+  max-height: 450px;
+  overflow: auto;
 }
