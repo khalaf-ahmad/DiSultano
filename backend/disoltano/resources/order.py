@@ -55,10 +55,9 @@ class Order(Resource):
         del data['details']
         order_id =  data['id']
         del data['id']
-        new_order = OrderModel(**data)
         if order:
-            order.customer_name = new_order.customer_name
-            order.description = new_order.description
+            order.customer_name = data['customer_name']
+            order.description =  data['description']
         else:
             order = OrderModel(**data)
         details = []
@@ -74,6 +73,7 @@ class Order(Resource):
                 order_detail = OrderDetailModel(detail['product_id'],
                 detail['detail_price'], detail['quantity'],
                 detail['description'], get_jwt_identity())
+                order_detail.order_id = order.id
                 db.session.add(order_detail)
             details.append(order_detail)
         order.details = []
