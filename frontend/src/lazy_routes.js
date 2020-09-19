@@ -13,12 +13,13 @@ export const Store = React.lazy(() => import("./containers/Store/Store"));
 
 export const Users = React.lazy(() => import("./containers/Users/Users"));
 
-export default ({ Component, path }) => {
+export default ({ Component, path, exact }) => {
   return (
     <Route
       path={path}
+      exact={exact}
       render={() => (
-        <Suspense fallback={<div className='m-auto' >loading...</div>}>
+        <Suspense fallback={<div className="m-auto">loading...</div>}>
           <Component />
         </Suspense>
       )}

@@ -40,7 +40,7 @@ const AppRoutes = () => {
         <Route path="/register" component={Registration} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
-        <LazyRoute path="/" Component={OrderBuilder} />
+        <LazyRoute path="/" exact Component={OrderBuilder} />
       </Switch>
     </React.Fragment>
   );
