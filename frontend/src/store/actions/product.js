@@ -1,9 +1,8 @@
 import * as actionTypes from './actionTypes';
 
-export const fetch_products = (details) => {
+export const fetch_products = () => {
     return {
-        type: actionTypes.FETCH_PRODUCT,
-        details
+        type: actionTypes.FETCH_PRODUCT
     };
 };
 

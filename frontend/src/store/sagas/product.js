@@ -6,11 +6,7 @@ import * as actions from '../actions';
 export function* fetch_product_saga(action) {
     yield put(actions.fetch_products_start());
     try {
-        const response = yield axios.get('/products', {
-            params: {
-                details: action.details
-            }
-        });
+        const response = yield axios.get('/products');
         yield put(actions.fetch_products_success(response.data.products));
     } catch (error) {
         yield put(actions.fetch_products_fail(error));
