@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import * as actions from "../../../store/actions";
-import Product from "../../../components/ProductList/Product/Product";
+import ProductUI from "../../../components/Product/ProductUI/ProductUI";
 
 const initial_product = { id: 0, name: "", price: 0, image: "" };
 
@@ -39,7 +39,7 @@ const ProductList = ({ products }) => {
   };
 
   return products.map((product) => (
-    <Product
+    <ProductUI
       product={product}
       card_clicked={() => on_product_selected(product)}
       key={product.id}

@@ -1,13 +1,8 @@
-import React, {useRef, useEffect} from 'react';
-import { Col, Card } from 'react-bootstrap';
+import React, { useRef, useEffect } from "react";
+import { Col, Card } from "react-bootstrap";
 import axios from "../../../axios-base";
 
-const Product = ({
-  product,
-  card_clicked,
-  category,
-  size,
-}) => {
+const ProductUI = ({ product, card_clicked, category, size }) => {
   const img_ref = useRef();
   useEffect(() => {
     if (product.image) {
@@ -69,4 +64,4 @@ const Product = ({
   );
 };
 
-export default Product;
+export default ProductUI;
