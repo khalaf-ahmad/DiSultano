@@ -25,7 +25,6 @@ const User = (props) => {
 
   return (
     <Col sm="6" md="4">
-      {alert}
       {delete_modal}
       <Card
         style={{ width: "100%" }}

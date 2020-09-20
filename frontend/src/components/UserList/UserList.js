@@ -2,7 +2,7 @@ import React from "react";
 import User from "./User/User";
 
 const UserList = (props) => {
-  return props.users.map(user => (
+  return props.users.map((user) => (
     <User
       key={user.username}
       changed={user.changed}
