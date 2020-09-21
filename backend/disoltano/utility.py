@@ -10,22 +10,22 @@ import os
 from flask import current_app
 
 
-def save_picture(form_picture):
+def save_picture(form_picture, location, size=(100, 100)):
   random_hex = secrets.token_hex(8)
   _, file_extensoin = os.path.splitext(form_picture.filename)
   new_name = random_hex + file_extensoin
   img_path = os.path.join(
-  current_app.root_path, 'static/product_imgs', new_name)
-  output_size = (100, 100)
+  current_app.root_path, 'static', location, new_name)
+  output_size = size
   img = Image.open(form_picture)
   img.thumbnail(output_size)
   img.save(img_path)
   return new_name
 
-def delete_product_img(img_name):
+def delete_img(img_name, location):
   if img_name:
     img_path = os.path.join(current_app.root_path,
-    'static','product_imgs', img_name)
+    'static', location, img_name)
     if os.path.exists(img_path):
       os.remove(img_path)
 
@@ -39,7 +39,6 @@ def create_request_parser(options):
     }
     _arg.update(option)
     _parser.add_argument(**_arg)
-
   return _parser
 
 class UserLevel():
