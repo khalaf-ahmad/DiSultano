@@ -1,9 +1,15 @@
 from flask_restful import Resource, inputs, request
 from backend.disoltano.utility import create_request_parser, UserLevel
-from backend.disoltano.models.order import OrderModel, OrderDetailModel
+from backend.disoltano.models.order import OrderModel
+from backend.disoltano.models.order_detail import OrderDetailModel
 from backend.disoltano.models.product import ProductModel
 from flask_jwt_extended import jwt_required, get_jwt_claims, get_jwt_identity
 from backend.disoltano.extensions_init import db
+from backend.disoltano.error_messages import (
+  get_forbidden_error,
+  get_internal_server_error,
+  get_not_found_error
+)
 
 _customer_name = {"name": "customer_name", "type": str}
 _id_arg = {"name": "id", "type": int, 'location': 'json'}
@@ -20,7 +26,7 @@ class Order(Resource):
     data = create_request_parser([_id_arg]).parse_args()
     order = OrderModel.find_by_id(data['id'])
     if not order:
-      return { 'message': 'order not found!' }, 404
+      return get_not_found_error('order')
     return {'order': order.json()}
 
   @jwt_required
@@ -30,16 +36,11 @@ class Order(Resource):
     order_details = data['details']
     del data['details']
     order = OrderModel(**data)
-    for detail in order_details:
-      order_detail = OrderDetailModel(detail['product_id'],
-      detail['detail_price'], detail['quantity'], detail['description'],
-      get_jwt_identity())
-      db.session.add(order_detail)
-      order.details.append(order_detail)
+    order.add_details(order_details, get_jwt_identity())
     try:
       order.save_to_db()
     except Exception as e:
-      return {'message': 'internal server error!'+str(e)}, 500
+      return get_internal_server_error()
     return { 'order': order.json() }, 201
 
   @jwt_required
@@ -53,28 +54,13 @@ class Order(Resource):
     del data['id']
     if order:
       order.customer_name = data['customer_name']
-      order.description =  data['description']
+      order.description = data['description']
+      order.update_order(data['customer_name'], data['description'],
+      order_details, get_jwt_identity())
     else:
       order = OrderModel(**data)
-    details = []
-    for detail in order_details:
-      order_detail = OrderDetailModel.find_by_id(detail['detail_id'])
-      if order_detail:
-        order_detail.detail_price = detail['detail_price']
-        order_detail.quantity = detail['quantity']
-        order_detail.description = detail['description']
-        if db.session.is_modified(order_detail):
-          order_detail.user_id = get_jwt_identity()
-      else:
-        order_detail = OrderDetailModel(detail['product_id'],
-        detail['detail_price'], detail['quantity'],
-        detail['description'], get_jwt_identity())
-        order_detail.order_id = order.id
-        db.session.add(order_detail)
-      details.append(order_detail)
-    order.details = []
-    order.details.extend(details)
-    order.save_to_db()
+      order.add_details(order_details, get_jwt_identity())
+      order.save_to_db()
     return {'order': order.json()}
 
   @jwt_required
@@ -82,11 +68,11 @@ class Order(Resource):
     data = create_request_parser([_id_arg]).parse_args()
     order = OrderModel.find_by_id(data['id'])
     if not order:
-      return {'message': 'order not found!'}, 404
+      return get_not_found_error('order')
     try:
       order.delete_from_db()
     except Exception as e:
-      return {'message': 'internal server error.'+str(e)}, 500
+      return get_internal_server_error()
     return {'message': 'order deleted successfully'}
 
 class OrderList(Resource):
@@ -112,29 +98,26 @@ class OrderDetail(Resource):
   def get(self):
     user_level = get_jwt_claims()['user_level']
     page = request.args.get('page', 1, type=int)
-    if user_level == UserLevel.ADMIN or user_level == UserLevel.SYS_ADMIN:
-      try:
+    try:
+      if user_level == UserLevel.ADMIN or user_level == UserLevel.SYS_ADMIN:
         return {
           'created': OrderDetailModel.admin_created_details(page, 10),
           'waiting': OrderDetailModel.admin_waiting_details()
         }
-      except Exception as e:
-        return { "message": "internal server error" }, 500
-    user_id = get_jwt_identity()
-    try:
+      user_id = get_jwt_identity()
       return {
         'created': OrderDetailModel.user_created_details(user_id, page, 10),
         'waiting': OrderDetailModel.user_waiting_details(user_id)
       }
     except Exception as e:
-      return {'message': "internal server error!"}, 500
+      return get_internal_server_error()
 
   @jwt_required
   def put(self):
     data = create_request_parser([_detail_id, _created]).parse_args()
     detail = OrderDetailModel.find_by_id(data['detail_id'])
     if not detail:
-      return {'message': 'detail not found!'}, 404
+      return get_not_found_error('detail')
     detail.created = data['created']
     detail.user_id = get_jwt_identity()
     detail.save_to_db()
