@@ -3,7 +3,12 @@ from backend.disoltano.utility import (
   create_request_parser,
   UserLevel,
   save_picture,
-  delete_product_img
+  delete_img
+)
+from backend.disoltano.error_messages import (
+  get_forbidden_error,
+  get_internal_server_error,
+  get_not_found_error
 )
 from backend.disoltano.models.product import ProductModel
 from backend.disoltano.models.user import UserModel
@@ -25,89 +30,61 @@ class Product(Resource):
     data = create_request_parser([_name_arg]).parse_args()
     product = ProductModel.find_by_name(data['name'])
     if not product:
-      return {'message': 'product not found!'}, 404
+      return get_not_found_error('product')
     return { "product": product.json() }
 
   @jwt_required
   def post(self):
     user_level = get_jwt_claims()['user_level']
     if user_level == UserLevel.GUEST:
-      return {
-        "message": "you don't have access rights to the content.",
-        "error": "request_forbidden"
-      }, 403
+      return get_forbidden_error()
     data = create_request_parser([_name_arg,
       _price_arg, _category_id_arg, _receivers_args]).parse_args()
     image = request.files.get("image", None)
-    product = ProductModel(data['name'],
-      data['price'], data['category_id'], "")
-    if data.get('receivers', None):
-      for user_id in data['receivers']:
-        user = UserModel.find_by_id(user_id)
-        product.receivers.append(user) if user else None
+    product = ProductModel(data['name'], data['price'], data['category_id'], "")
+    product.add_receivers(data.get('receivers', None))
     try:
-      if image:
-        file_name = save_picture(image)
-        product.image_file = file_name
+      product.set_image(image)
       product.save_to_db()
     except Exception as ex:
-      return {"message": "internal server error!"}, 500
+      return get_internal_server_error()
     return { "product": product.json() }, 201
 
   @jwt_required
   def put(self):
     user_level = get_jwt_claims()['user_level']
     if user_level == UserLevel.GUEST:
-      return {
-        "message": "you don't have access rights to the content.",
-        "error": "request_forbidden"
-      }, 403
+      return get_forbidden_error()
     data = create_request_parser([_name_arg, _price_arg,
       _category_id_arg, _id_arg, _receivers_args]).parse_args()
     product = ProductModel.find_by_id(data['id'])
     image = request.files.get("image", None)
     try:
       if product:
-        product.name = data['name']
-        product.price = data['price']
-        product.category_id = data['category_id']
-        if image:
-          delete_product_img(product.image_file)
+        product.update_product(data['name'], data['price'], data['category_id'],
+        image, data.get('receivers', None))
       else:
         product = ProductModel(**data)
-      if image:
-        file_name = save_picture(image)
-        product.image_file = file_name
-      product.receivers.clear()
-      if data.get('receivers', None):
-        for user_id in data['receivers']:
-          user = UserModel.find_by_id(user_id)
-          product.receivers.append(user) \
-            if user and user not in product.receivers else None 
-      product.save_to_db()
+        product.set_image(image)
+        product.add_receivers(data.get('receivers', None))
+        product.save_to_db()
     except Exception as ex:
-      return {"message": "internal server error!"}, 500
-    
+      return get_internal_server_error()
     return { "product": product.json() }, 201
 
   @jwt_required
   def delete(self):
     user_level = get_jwt_claims()['user_level']
     if user_level == UserLevel.GUEST:
-      return {
-        "message": "you don't have access rights to the content.",
-        "error": "request_forbidden"
-      }, 403
+      return get_forbidden_error()
     data = create_request_parser([{**_id_arg, "location": "json"}]).parse_args()
     product = ProductModel.find_by_id(data['id'])
     if not product:
-      return { "message": "product not found." }, 404
+      return get_not_found_error('product')
     try:
-      delete_product_img(product.image_file)
       product.delete_from_db()
     except Exception as ex:
-      return {"message": "internal server error!"}, 500
-    
+      return get_internal_server_error()
     return { "message": "product deleted successfully" }
 
 
@@ -115,7 +92,4 @@ class ProductList(Resource):
 
   @jwt_required
   def get(self):
-    result = {"products": []}
-    result['products'] = [product.json()
-    for product in ProductModel.get_all()]
-    return result
+    return {"products": [product.json() for product in ProductModel.get_all()]}
