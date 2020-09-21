@@ -1,6 +1,5 @@
-import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-
+import React from "react";
+import { Modal, Button } from "react-bootstrap";
 
 const QuestionModal = (props) => {
   return (
@@ -8,7 +7,7 @@ const QuestionModal = (props) => {
       <Modal.Header closeButton>
         <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>do you want to continue?</Modal.Body>
+      <Modal.Body>Do you want to continue?</Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.close_clicked}>
           no
