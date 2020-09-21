@@ -1,12 +1,12 @@
 import React from "react";
 import { Col, Row, Tabs, Tab } from "react-bootstrap";
 import ProductContainer from "./ProductContainer/ProductContainer";
-import Categories from "../../components/Categories/Categories";
+import CategoryContainer from "./CategoryContainer/CategoryContainer";
 import classes from "./Store.module.css";
 
 const Store = () => {
   const product_container = <ProductContainer />;
-  const categor_list = <Categories />;
+  const categor_container = <CategoryContainer />;
   const content = window.innerWidth < 758 ? (
     <Col>
       <Tabs as={Col} defaultActiveKey="products" id="store-tab">
@@ -14,7 +14,7 @@ const Store = () => {
           {product_container}
         </Tab>
         <Tab className="pt-2" as={Col} eventKey="categories" title="Categories">
-          {categor_list}
+          {categor_container}
         </Tab>
       </Tabs>
     </Col>
@@ -25,7 +25,7 @@ const Store = () => {
           {product_container}
         </Col>
         <Col md="4" className={classes.CategoryList}>
-          {categor_list}
+          {categor_container}
         </Col>
       </Row>
     </Col>

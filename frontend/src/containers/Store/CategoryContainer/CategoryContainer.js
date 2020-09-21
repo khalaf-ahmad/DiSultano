@@ -1,22 +1,26 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { ListGroup, Spinner, Alert } from 'react-bootstrap';
-import {MdClear} from 'react-icons/md';
-import CategoryForm from './CategoryForm/CategoryForm';
-import * as actionTypes from "../../store/actions/category";
+import React, { useState, useCallback, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Spinner, Alert } from "react-bootstrap";
+import CategoryForm from "../../../components/Category/CategoryForm/CategoryForm";
+import * as actionTypes from "../../../store/actions/category";
+import CategoryList from "../../../components/Category/CategoryList/CategoryList";
 
 const initial_category = { id: 0, name: "" };
-const style = {
-  maxHeight: "calc( 100vh - 210px)",
-  overflow: "auto",
+
+const status_position_style = {
+  position: "absolute",
+  left: "50%",
+  transform: "translateX(-50%)",
+  zIndex: "3031",
 };
+
 const Categories = () => {
   const [selected_category, setCategory] = useState({ ...initial_category });
 
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.category.categories);
-  const loading = useSelector(state => state.category.loading);
-  const error = useSelector(state => state.category.error);
+  const loading = useSelector((state) => state.category.loading);
+  const error = useSelector((state) => state.category.error);
 
   const fetch_categories = useCallback(
     () => dispatch(actionTypes.fetch_categories(false)),
@@ -46,7 +50,7 @@ const Categories = () => {
     event.stopPropagation();
     delete_category(category_id);
     reset_category();
-  }
+  };
 
   const handle_submit = (event) => {
     event.preventDefault();
@@ -66,56 +70,41 @@ const Categories = () => {
     setCategory((prevState) => {
       return {
         ...prevState,
-        name
-      }
-    })
+        name,
+      };
+    });
   };
+
+  const spinner = (
+    <Spinner
+      variant="danger"
+      animation="grow"
+      style={status_position_style}
+      size="sm"
+    >
+      <span className="sr-only">Loading...</span>
+    </Spinner>
+  );
+
+  const alert =  <Alert style={status_position_style} variant="danger">{error}</Alert>
   return (
     <React.Fragment>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <ListGroup
-        style={style}
-        role='button'
-        as="ul"
-        className="text-capitalize rounded-0 text-lead  mb-2"
-      >
-        {categories.map((category) => (
-          <ListGroup.Item
-            as="li"
-            action
-            active={category.id === selected_category.id}
-            className="d-flex justify-content-between"
-            key={category.id}
-            onClick={() => on_select_category(category)}
-            variant="warning"
-          >
-            <span>{category.name}</span>
-            <MdClear
-              role="button"
-              className="text-bg"
-              onClick={(event) => handle_delete(event, category.id)}
-            />
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
+      {error && alert}
+      {loading && spinner}
+      <CategoryList
+        categories={categories}
+        selected_category={selected_category}
+        delete_clicked={handle_delete}
+        item_selected={on_select_category}
+      />
       <CategoryForm
         clear_clicked={() => reset_category()}
         submit_clicked={(event) => handle_submit(event)}
         name_changed={(event) => handle_name_change(event)}
         category={selected_category}
       />
-      {loading && (
-        <Spinner
-          variant="danger"
-          animation="grow"
-          style={{ position: "absolute", right: "50%", top: "50%" }}
-          size="sm"
-        >
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      )}
     </React.Fragment>
   );
-}
+};
 
 export default Categories;
