@@ -13,6 +13,11 @@ from backend.disoltano.utility import (
   UserLevel,
   create_user_token
 )
+from backend.disoltano.error_messages import (
+  get_forbidden_error,
+  get_internal_server_error,
+  get_not_found_error
+)
 
 _username_arg = {"name": "username", "type": str}
 _password_arg = {"name": "password", "type": str}
@@ -31,17 +36,14 @@ class Registration(Resource):
     if len(data['password']) < password_required_lenght:
       return {"message": f"password must have at least\
       {password_required_lenght} characters"}, 400
-
     if UserModel.find_by_username(data['username']):
       return {"message": "username already exists"}, 400
-
     user = UserModel(**data)
     user.password = bcrypt.generate_password_hash(user.password).decode('utf-8')
     try:
       user.save_to_db()
     except Exception as e:
-      return {"message": "internal server error"}, 500
-
+      return get_internal_server_error()
     return {
       "message":
     "Registration success you must contact admin to activate your account."
@@ -52,19 +54,22 @@ class Registration(Resource):
     user_data = request.get_json()
     user = UserModel.find_by_id(user_data.get('id', None))
     if not user:
-      return {'message': 'user not found.'}, 404
+      return get_not_found_error('user')
     user_level = get_jwt_claims()["user_level"]
     current_user_id = get_jwt_identity()
+    # user want to update other user info
     if current_user_id != user.id:
-      if user_level != UserLevel.ADMIN\
-        and user_level != UserLevel.SYS_ADMIN:
-        return {'message': 'you are not allowed to do this action.' }, 405
+      # the user is guest and he is not allowed to do this action
+      if user_level != UserLevel.ADMIN and user_level != UserLevel.SYS_ADMIN:
+        return {'message': 'you are not allowed to do this action.'}, 405
+      # admin or sys admin want to activate user
       user_data = create_request_parser([_role_arg,
       _status_arg]).parse_args()
       user.role = user_data['role']
       user.activated = user_data['activated']
       user.save_to_db()
       return {'message': 'change success.', 'user': user.json()}, 201
+    # update profile info
     if "name" in user_data:
       user.name = user_data.get("name")
     if "password" in user_data:
@@ -85,8 +90,8 @@ class Registration(Resource):
         user.delete_from_db()
         return {"message": "user deleted"}
       except Exception as e:
-        return {"message": 'internal server error!'}, 500
-    return {"message": "user not found!"}, 404
+        return get_internal_server_error()
+    return get_not_found_error('user')
 
 class Users(Resource):
   @jwt_required
@@ -94,10 +99,7 @@ class Users(Resource):
     user_level = get_jwt_claims()['user_level']
     current_user_id = get_jwt_identity()
     if user_level == UserLevel.GUEST:
-      return {
-        "message": "you don't have access rights to the content.",
-        "error": "request_forbidden"
-      }, 403
+      return get_forbidden_error()
     users = []
     if user_level == UserLevel.SYS_ADMIN:
       users = [user.json() for user in UserModel.get_all()
