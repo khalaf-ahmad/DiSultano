@@ -16,7 +16,7 @@ _id_arg = {"name": "id", "type": int, "location": "form"}
 _category_id_arg = {"name": "category_id", "type": int, "location": "form"}
 _price_arg = {"name": "price", "type": float, "location": "form"}
 _receivers_args = {"name": "receivers", "type": int,
-    "location": "form", "action": "append", "required": False}
+"location": "form", "action": "append", "required": False}
 
 class Product(Resource):
 
