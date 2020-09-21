@@ -14,7 +14,6 @@ import authContext from "./context/auth-context";
 import { UserLevel } from './shared/utility';
 
 
-
 const AppRoutes = () => {
   const context = useContext(authContext);
 
@@ -29,19 +28,31 @@ const AppRoutes = () => {
     user_level === UserLevel.ADMIN || user_level === UserLevel.SYS_ADMIN ? (
       <LazyRoute path="/users" Component={Users} />
     ) : null;
-  
-  return (
-    <React.Fragment>
+
+  let routes = (
+    <Switch>
+      <Route path="/register" component={Registration} />
+      <Route path="/login" component={Login} />
+    </Switch>
+  );
+
+  if (context.isAuthenticated) {
+    routes = (
       <Switch>
-        <LazyRoute path="/orders_watcher" Component={OrderWatcher} />
         {store}
         {users}
+        <LazyRoute path="/orders_watcher" Component={OrderWatcher} />
         <Route path="/profile" component={Profile} />
-        <Route path="/register" component={Registration} />
-        <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
-        <LazyRoute path="/" exact Component={OrderBuilder} />
+        <Route path="/login" component={Login} />
+        <LazyRoute path="/" Component={OrderBuilder} />
       </Switch>
+    );
+  }
+
+  return (
+    <React.Fragment>
+      {routes}
     </React.Fragment>
   );
 }
