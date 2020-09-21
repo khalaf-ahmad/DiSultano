@@ -71,7 +71,7 @@ const Navigation = () => {
       <Navbar collapseOnSelect expand="sm"
         className={classes.Navbar} fixed="top">
         <Navbar.Brand href="/" className={classes.Brand}>
-          <h4> <span> Di</span> Soltano{name} </h4>
+          <h4> <span> Di</span> Sultano{name} </h4>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav"
           className={classes.Toggler} />
