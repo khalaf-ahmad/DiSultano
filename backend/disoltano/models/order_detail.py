@@ -8,7 +8,7 @@ From order_detail as d
 Join customer_order as o on o.id = d.order_id
 Join product as p on p.id = d.product_id 
 {}
-Where d.created = ?
+Where d.created = :created
 Order by o.date_created DESC
 """
 
@@ -17,7 +17,7 @@ Join (
     SELECT product_id , receiver_id 
     From product_receivers 
     group by product_id, receiver_id
-  ) as pr on pr.product_id = d.product_id and pr.receiver_id = ?
+  ) as pr on pr.product_id = d.product_id and pr.receiver_id = :user_id 
 """)
 
 _admin_detail_query = _detail_base_query.format("""
@@ -68,10 +68,8 @@ class OrderDetailModel(db.Model, BaseModel):
     }
 
   @classmethod
-  def _fetch_data(cls, query, params=None):
-    with db.engine.connect() as con:
-      result = con.execute(query, params) if params \
-      else con.execute(query)
+  def _fetch_data(cls, query, params):
+      result = db.session.execute(query, params)
       return [{
         "detail_id": row[0],
         "created": row[1],
@@ -79,31 +77,31 @@ class OrderDetailModel(db.Model, BaseModel):
         "name": row[3],
         "order_id": row[4],
         "customer_name": row[5],
-        "date_created": row[6]
+        "date_created": str(row[6])
       } for row in result]
 
   @classmethod
   def user_created_details(cls, user_id, page, per_page):
     query = cls._add_limit_to_query(_user_detail_query, page, per_page)
-    return cls._fetch_data(query, (user_id, True))
+    return cls._fetch_data(query, {'user_id': user_id, 'created': True})
 
   @classmethod
   def user_waiting_details(cls, user_id):
-    return cls._fetch_data(_user_detail_query, (user_id, False))
+    return cls._fetch_data(_user_detail_query, {'user_id': user_id, 'created': False})
 
   @classmethod
   def admin_created_details(cls, page, per_page):
     query = cls._add_limit_to_query(_admin_detail_query, page,per_page)
-    return cls._fetch_data(query, (True, ))
+    return cls._fetch_data(query, {'created': True})
 
   @classmethod
   def admin_waiting_details(cls):
-    return cls._fetch_data(_admin_detail_query, (False, ))
+    return cls._fetch_data(_admin_detail_query, {'created': False})
 
   @classmethod
   def _add_limit_to_query(cls, query, page, per_page):
     return f"""{query} 
-    LIMIT {(page-1)*per_page} , {per_page}"""
+    LIMIT {per_page}  OFFSET {(page-1)*per_page}"""
 
   def save_to_db(self):
     super().save_to_db()
