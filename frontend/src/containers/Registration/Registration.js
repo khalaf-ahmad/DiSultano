@@ -1,7 +1,7 @@
-import React,{ Component } from 'react';
+import React, { Component } from "react";
 import UserForm from "../../components/UI/UserForm/UserForm";
-import { UserControls } from '../../shared/utility';
-import AuthContext from '../../context/auth-context';
+import { UserControls } from "../../shared/utility";
+import AuthContext from "../../context/auth-context";
 
 class Registration extends Component {
   static contextType = AuthContext;
@@ -9,11 +9,8 @@ class Registration extends Component {
   state = {
     controls: UserControls,
     displayMessage: "",
-    category: ""
+    category: "",
   };
-  componentDidMount() {
-    this.context.resetAuth();
-  }
   componentWillUnmount() {
     this.context.clearMessage();
   }
@@ -25,7 +22,7 @@ class Registration extends Component {
     this.setState((prevState) => {
       return {
         displayMessage: "",
-        category:"",
+        category: "",
         controls: {
           ...prevState.controls,
           [controlName]: control,
@@ -38,7 +35,7 @@ class Registration extends Component {
       return {
         ...prevState,
         displayMessage: message,
-        category: "danger"
+        category: "danger",
       };
     });
   };
@@ -53,7 +50,7 @@ class Registration extends Component {
       password: this.state.controls["password"].value,
     };
     this.context.registerUser(user);
-  }
+  };
 
   formIsValid = () => {
     const password = this.state.controls["password"].value;
@@ -63,18 +60,22 @@ class Registration extends Component {
       return false;
     }
     return true;
-  }
+  };
 
   render() {
-    return  <UserForm
-      controls={this.state.controls}
-      submitText={this.context.isLoading ? "Loading..." : "Sign Up"}
-      loading={this.context.isLoading}
-      changeHandler={this.changeHandler}
-      displayMessage={this.state.displayMessage || this.context.displayMessage}
-      category={this.state.category || this.context.category}
-      handleSubmit={this.handleSubmit}
-    />;
+    return (
+      <UserForm
+        controls={this.state.controls}
+        submitText={this.context.isLoading ? "Loading..." : "Sign Up"}
+        loading={this.context.isLoading}
+        changeHandler={this.changeHandler}
+        displayMessage={
+          this.state.displayMessage || this.context.displayMessage
+        }
+        category={this.state.category || this.context.category}
+        handleSubmit={this.handleSubmit}
+      />
+    );
   }
 }
 
