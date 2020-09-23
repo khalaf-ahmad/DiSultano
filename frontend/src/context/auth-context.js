@@ -1,8 +1,8 @@
-import React, { createContext, Component } from 'react';
-import axios from '../axios-base';
-import LocalStorageService from '../shared/LocalStorageService';
-import { get_error_message } from '../shared/utility';
-import {token} from '../shared/utility';
+import React, { createContext, Component } from "react";
+import axios from "../axios-base";
+import LocalStorageService from "../shared/LocalStorageService";
+import { get_error_message } from "../shared/utility";
+import { token } from "../shared/utility";
 
 const initial_user = {
   name: "",
@@ -16,7 +16,7 @@ const initial_state = {
   displayMessage: "",
   category: "danger",
   isAuthenticated: false,
-  user: {...initial_user}
+  user: { ...initial_user },
 };
 
 const authContext = createContext({
@@ -24,8 +24,8 @@ const authContext = createContext({
   login: () => {},
   registerUser: () => {},
   resetAuth: () => {},
-  clearMessage: () => { },
-  update_user_info: () => {}
+  clearMessage: () => {},
+  update_user_info: () => {},
 });
 
 export class AuthContextProvider extends Component {
@@ -51,24 +51,25 @@ export class AuthContextProvider extends Component {
 
   get_access_token(refresh_token) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${refresh_token}`;
-    axios.post("/token/refresh")
-    .then((response) => {
-      const user = { ...response.data.user };
-      token.access_token = response.data.access_token;
-      this.setState((prev_state) => {
-        return {
-          ...prev_state,
-          isLoading: false,
-          isAuthenticated: true,
-          pause: false,
-          user
-        };
+    axios
+      .post("/token/refresh")
+      .then((response) => {
+        const user = { ...response.data.user };
+        token.access_token = response.data.access_token;
+        this.setState((prev_state) => {
+          return {
+            ...prev_state,
+            isLoading: false,
+            isAuthenticated: true,
+            pause: false,
+            user,
+          };
+        });
+      })
+      .catch((error) => {
+        this.reset_current_user();
+        this.setState({ pause: false, isLoading: false });
       });
-    })
-    .catch((error) => {
-      this.reset_current_user();
-      this.setState({ pause: false });
-    });
   }
 
   clearMessage = () => {
@@ -104,14 +105,14 @@ export class AuthContextProvider extends Component {
     this.send_auth_request(user, "/user");
   };
 
-  update_user_info = user => {
-    this.setState(prev_state => {
+  update_user_info = (user) => {
+    this.setState((prev_state) => {
       return {
         ...prev_state,
-        user: { ...prev_state.user, ...user }
-      }
+        user: { ...prev_state.user, ...user },
+      };
     });
-  }
+  };
 
   send_auth_request = (user, url) => {
     this.setState({
@@ -119,13 +120,14 @@ export class AuthContextProvider extends Component {
       isLoading: true,
       isAuthenticated: false,
     });
-    axios.post(url, user)
-    .then((response) => {
-      this.on_auth_success(response.data);
-    })
-    .catch((error) => {
-      this.on_auth_fail(get_error_message(error));
-    });
+    axios
+      .post(url, user)
+      .then((response) => {
+        this.on_auth_success(response.data);
+      })
+      .catch((error) => {
+        this.on_auth_fail(get_error_message(error));
+      });
   };
 
   on_auth_fail = (error_message) => {
@@ -148,7 +150,7 @@ export class AuthContextProvider extends Component {
         displayMessage: "",
         category: "",
         isAuthenticated: true,
-        isLoading: false
+        isLoading: false,
       };
     });
   };
@@ -166,7 +168,7 @@ export class AuthContextProvider extends Component {
           resetAuth: this.reset,
           clearMessage: this.clearMessage,
           user: this.state.user,
-          update_user_info: this.update_user_info
+          update_user_info: this.update_user_info,
         }}
       >
         {!this.state.pause && this.props.children}
