@@ -7,6 +7,7 @@ class OrderModel(db.Model, BaseModel):
   __tablename__ ="customer_order"
 
   id = db.Column(db.Integer, primary_key=True)
+  user_id = db.Column(db.ForeignKey('user.id'), nullable=False)
   date_created = db.Column(db.DateTime, nullable=False,
     default=datetime.now)
   customer_name = db.Column(db.String, nullable=False, default="")

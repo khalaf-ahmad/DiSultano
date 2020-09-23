@@ -35,8 +35,10 @@ class Order(Resource):
     _order_details]).parse_args()
     order_details = data['details']
     del data['details']
+    user_id = get_jwt_identity()
     order = OrderModel(**data)
-    order.add_details(order_details, get_jwt_identity())
+    order.add_details(order_details, user_id)
+    order.user_id = user_id
     try:
       order.save_to_db()
     except Exception as e:
@@ -50,16 +52,16 @@ class Order(Resource):
     order = OrderModel.find_by_id(data['id'])
     order_details = data['details']
     del data['details']
-    order_id =  data['id']
+    order_id = data['id']
+    user_id = get_jwt_identity()
     del data['id']
     if order:
-      order.customer_name = data['customer_name']
-      order.description = data['description']
       order.update_order(data['customer_name'], data['description'],
-      order_details, get_jwt_identity())
+      order_details, user_id)
     else:
       order = OrderModel(**data)
-      order.add_details(order_details, get_jwt_identity())
+      order.add_details(order_details, user_id)
+      order.user_id = user_id
       order.save_to_db()
     return {'order': order.json()}
 
@@ -80,8 +82,13 @@ class OrderList(Resource):
   @jwt_required
   def get(self):
     page = request.args.get('page', 1, type=int)
+    user_level = get_jwt_claims()['user_level']
     result = {'orders': []}
-    orders_pages = OrderModel.query.order_by(
+    query = OrderModel.query
+    if user_level != UserLevel.ADMIN and user_level != UserLevel.SYS_ADMIN:
+      user_id = get_jwt_identity()
+      query = query.filter_by(user_id=user_id)
+    orders_pages = query.order_by(
       OrderModel.date_created.desc()).paginate(page=page, per_page=12)
     result['orders'] = [order.json() for order in orders_pages.items]
     result['has_next'] = orders_pages.has_next
