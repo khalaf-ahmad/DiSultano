@@ -26,6 +26,7 @@ instance.interceptors.response.use(
     // if already send request to get refresh token  reject error
     // to prevent from infinite loop of sending refresh token
     if (
+      error.response &&
       error.response.status === 401 &&
       originalRequest.url === "/token/refresh"
     ) {
