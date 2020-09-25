@@ -3,7 +3,7 @@ from backend.disoltano.models.Model import BaseModel
 
 _detail_base_query = """
 SELECT d.detail_id, d.created, d.description, p.name, d.order_id,
-o.customer_name, o.date_created
+o.customer_name, o.date_created, d.quantity
 From order_detail as d  
 Join customer_order as o on o.id = d.order_id
 Join product as p on p.id = d.product_id 
@@ -71,13 +71,14 @@ class OrderDetailModel(db.Model, BaseModel):
   def _fetch_data(cls, query, params):
       result = db.session.execute(query, params)
       return [{
-        "detail_id": row[0],
-        "created": row[1],
-        "description": row[2],
-        "name": row[3],
-        "order_id": row[4],
-        "customer_name": row[5],
-        "date_created": str(row[6])
+        "detail_id": row["detail_id"],
+        "created": row["created"],
+        "description": row["description"],
+        "name": row["name"],
+        "order_id": row["order_id"],
+        "customer_name": row["customer_name"],
+        "date_created": str(row['date_created']),
+        "quantity": row["quantity"]
       } for row in result]
 
   @classmethod
