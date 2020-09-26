@@ -1,11 +1,11 @@
 from flask import Flask
-from backend.disoltano.config import Config
-from backend.disoltano.extensions_init import db, bcrypt, cors, socketio
-from backend.disoltano.jwt import jwt
-from backend.disoltano.api import api
-from backend.disoltano.models.product import ProductModel
-from backend.disoltano.models.category import CategoryModel
-from backend.disoltano.models.user import UserModel
+from disoltano.config import Config
+from disoltano.extensions_init import db, bcrypt, cors, socketio
+from disoltano.jwt import jwt
+from disoltano.api import api
+from disoltano.models.product import ProductModel
+from disoltano.models.category import CategoryModel
+from disoltano.models.user import UserModel
 from flask_socketio import send
 
 # creates flask app

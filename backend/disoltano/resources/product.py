@@ -1,17 +1,17 @@
 from flask_restful import Resource, request
-from backend.disoltano.utility import (
+from disoltano.utility import (
   create_request_parser,
   UserLevel,
   save_picture,
   delete_img
 )
-from backend.disoltano.error_messages import (
+from disoltano.error_messages import (
   get_forbidden_error,
   get_internal_server_error,
   get_not_found_error
 )
-from backend.disoltano.models.product import ProductModel
-from backend.disoltano.models.user import UserModel
+from disoltano.models.product import ProductModel
+from disoltano.models.user import UserModel
 from flask_jwt_extended import jwt_required, get_jwt_claims
 import os
 

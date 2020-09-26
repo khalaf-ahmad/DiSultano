@@ -1,6 +1,6 @@
 from flask_jwt_extended import JWTManager
-from backend.disoltano.utility import UserLevel
-from backend.disoltano.models.user import UserModel
+from disoltano.utility import UserLevel
+from disoltano.models.user import UserModel
 from flask import jsonify
 
 #create jwt variable to add authentication and authorization to our app

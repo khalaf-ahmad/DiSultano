@@ -1,7 +1,7 @@
-from backend.disoltano.extensions_init import db, socketio
+from disoltano.extensions_init import db, socketio
 from datetime import datetime
-from backend.disoltano.models.Model import BaseModel
-from backend.disoltano.models.order_detail import OrderDetailModel
+from disoltano.models.Model import BaseModel
+from disoltano.models.order_detail import OrderDetailModel
 
 class OrderModel(db.Model, BaseModel):
   __tablename__ ="customer_order"

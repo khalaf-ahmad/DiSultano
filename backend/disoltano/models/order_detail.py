@@ -1,5 +1,5 @@
-from backend.disoltano.extensions_init import db, socketio
-from backend.disoltano.models.Model import BaseModel
+from disoltano.extensions_init import db, socketio
+from disoltano.models.Model import BaseModel
 
 _detail_base_query = """
 SELECT d.detail_id, d.created, d.description, p.name, d.order_id,

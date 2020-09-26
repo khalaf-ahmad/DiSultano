@@ -1,11 +1,11 @@
 from flask_restful import Resource, inputs, request
-from backend.disoltano.utility import create_request_parser, UserLevel
-from backend.disoltano.models.order import OrderModel
-from backend.disoltano.models.order_detail import OrderDetailModel
-from backend.disoltano.models.product import ProductModel
+from disoltano.utility import create_request_parser, UserLevel
+from disoltano.models.order import OrderModel
+from disoltano.models.order_detail import OrderDetailModel
+from disoltano.models.product import ProductModel
 from flask_jwt_extended import jwt_required, get_jwt_claims, get_jwt_identity
-from backend.disoltano.extensions_init import db
-from backend.disoltano.error_messages import (
+from disoltano.extensions_init import db
+from disoltano.error_messages import (
   get_forbidden_error,
   get_internal_server_error,
   get_not_found_error

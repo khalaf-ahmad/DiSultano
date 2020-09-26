@@ -1,7 +1,7 @@
-from backend.disoltano.models.Model import BaseModel
-from backend.disoltano.extensions_init import db
-from backend.disoltano.models.user import UserModel
-from backend.disoltano.utility import save_picture, delete_img
+from disoltano.models.Model import BaseModel
+from disoltano.extensions_init import db
+from disoltano.models.user import UserModel
+from disoltano.utility import save_picture, delete_img
 from flask import url_for, current_app
 import os
 

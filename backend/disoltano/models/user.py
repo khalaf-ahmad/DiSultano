@@ -1,5 +1,5 @@
-from backend.disoltano.extensions_init import db
-from backend.disoltano.utility import UserLevel
+from disoltano.extensions_init import db
+from disoltano.utility import UserLevel
 
 class UserModel(db.Model):
   __tablename__= "user"
