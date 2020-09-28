@@ -1,4 +1,4 @@
-from disoltano.extensions_init import db
+from disultano.extensions_init import db
 
 class BaseModel:
 

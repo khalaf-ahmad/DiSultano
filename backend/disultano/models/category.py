@@ -1,6 +1,6 @@
-from disoltano.models.Model import BaseModel
-from disoltano.extensions_init import db
-from disoltano.models.product import ProductModel
+from disultano.models.Model import BaseModel
+from disultano.extensions_init import db
+from disultano.models.product import ProductModel
 
 class CategoryModel(BaseModel, db.Model):
   __tablename__ = "category"

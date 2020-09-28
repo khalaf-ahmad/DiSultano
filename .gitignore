@@ -29,12 +29,12 @@ yarn-error.log*
 .vscode
 
 #backend
-/backend/disoltano/static
-/backend/disoltano/db_alter.py
+/backend/disultano/static
+/backend/disultano/db_alter.py
 
 #enviroment variables
 .env
 
 # sqlite db
-/backend/disoltano/*.db
+/backend/disultano/*.db
 

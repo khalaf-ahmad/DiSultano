@@ -1,6 +1,6 @@
 from flask_restful import Resource, request
-from disoltano.models.user import UserModel
-from disoltano.extensions_init import bcrypt
+from disultano.models.user import UserModel
+from disultano.extensions_init import bcrypt
 from flask_jwt_extended import (
   jwt_required,
   get_jwt_claims,
@@ -8,12 +8,12 @@ from flask_jwt_extended import (
   get_jwt_identity,
   jwt_refresh_token_required
 )
-from disoltano.utility import (
+from disultano.utility import (
   create_request_parser,
   UserLevel,
   create_user_token
 )
-from disoltano.error_messages import (
+from disultano.error_messages import (
   get_forbidden_error,
   get_internal_server_error,
   get_not_found_error

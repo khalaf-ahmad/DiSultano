@@ -1,10 +1,10 @@
 from flask_restful import Api
-from disoltano.resources.user import (
+from disultano.resources.user import (
   Registration, Users, UserLogin, TokenRefresh
 )
-from disoltano.resources.category import Category, CategoryList
-from disoltano.resources.product import Product, ProductList
-from disoltano.resources.order import Order, OrderList, OrderDetail
+from disultano.resources.category import Category, CategoryList
+from disultano.resources.product import Product, ProductList
+from disultano.resources.order import Order, OrderList, OrderDetail
 
 # create api variable to make restful api's and endpoints
 api = Api()

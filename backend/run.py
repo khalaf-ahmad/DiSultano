@@ -1,5 +1,5 @@
-from disoltano import create_app
-from disoltano.extensions_init import socketio
+from disultano import create_app
+from disultano.extensions_init import socketio
 
 app = create_app()
 

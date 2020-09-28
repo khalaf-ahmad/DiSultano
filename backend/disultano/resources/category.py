@@ -1,8 +1,8 @@
 from flask_restful import Resource, inputs
-from disoltano.models.category import CategoryModel
-from disoltano.utility import create_request_parser, UserLevel
+from disultano.models.category import CategoryModel
+from disultano.utility import create_request_parser, UserLevel
 from flask_jwt_extended import jwt_required, get_jwt_claims
-from disoltano.error_messages import (
+from disultano.error_messages import (
   get_forbidden_error,
   get_internal_server_error,
   get_not_found_error
