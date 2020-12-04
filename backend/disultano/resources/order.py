@@ -129,3 +129,66 @@ class OrderDetail(Resource):
     detail.user_id = get_jwt_identity()
     detail.save_to_db()
     return {'message': 'Update Success.'}
+
+class PrintOrder(Resource):
+  @jwt_required
+  def post(self):
+    data = create_request_parser([_id_arg]).parse_args()
+    order = OrderModel.find_by_id(data['id'])
+    if not order:
+      return get_not_found_error('order')
+    try:
+      from escpos import printer
+      from datetime import datetime
+
+      p = printer.Usb(0x0483, 0x5743, 0, 0x81, 0x03)
+      # header
+      p.set(align="center", text_type="B", width=2)
+      p.text("Di Sultano Shop\n\n")
+      p.set(align="center")
+      p.text("Borj.Tyr\n")
+      p.text("Tel : 71516540\n")
+      p.text(datetime.utcnow().strftime('%d/%b/%Y  %H:%M') + "\n")
+      p.set(align="left", text_type="B")
+      p.text(f"{'Take away':<9s}{order.customer_name:>39s}")
+      p.text("\n")
+      # table
+      p.set(align="left")
+      dash = '-' * 48
+      p.text(dash)
+      p.text('{:<25s}{:>3s}{:>10s}{:>10s}'.format("Item", "Qty", "Price", "Tot"))
+      p.text(dash)
+      total_price = 0
+      for detail in order.details:
+          itemName = detail.product.name
+          name  = "sdf"
+          if len(itemName) > 25:
+            itemName = '{:.<25}'.format(itemName[: 22])
+          quantity = detail.quantity
+          price = "{:,.0f}".format(detail.detail_price)
+          tot =  "{:,.0f}".format(detail.quantity * detail.detail_price)
+          total_price += detail.quantity * detail.detail_price
+          p.text('{:<25s}{:>3d}{:>10s}{:>10s}'.format(itemName, quantity, price, tot))
+
+      p.text("\n")
+      p.text("-"*48)
+      p.text("\n")
+
+      #  footer
+      p.set(align="right", text_type="B")
+      p.text("Total Invoice :  {:,} L.L\n".format(total_price))
+      p.set(text_type="A")
+      p.text('\n')
+      p.set(align="left")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+      p.text("Served by : Darine Mustafa.\n")
+      p.text("Thank you for choosing disultano.\n\n")
+      p.set(width=2, align="center")
+      p.text("Challenge Test.\n\n")
+      p.set(text_type="A")
+      p.set(align="right")
+      p.text("Owner: Jalal hicham.\n")
+      p.cut()
+    except Exception as e:
+      return get_internal_server_error()
+
+    return {'message': "order printed"}

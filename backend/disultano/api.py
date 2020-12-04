@@ -4,7 +4,7 @@ from disultano.resources.user import (
 )
 from disultano.resources.category import Category, CategoryList
 from disultano.resources.product import Product, ProductList
-from disultano.resources.order import Order, OrderList, OrderDetail
+from disultano.resources.order import Order, OrderList, OrderDetail, PrintOrder
 
 # create api variable to make restful api's and endpoints
 api = Api()
@@ -28,6 +28,7 @@ api.add_resource(ProductList, '/products')
 #order resources
 api.add_resource(Order, '/order')
 api.add_resource(OrderList, '/orders')
+api.add_resource(PrintOrder, '/print_order')
 
 #order detail resources
 api.add_resource(OrderDetail, '/order_detail')
