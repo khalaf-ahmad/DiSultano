@@ -39,6 +39,11 @@ const OrderInfo = (props) => {
     [dispatch, order.id]
   );
 
+  const print_order = useCallback(
+    () => dispatch(actions.print_order(order.id)),
+    [dispatch, order.id]
+  );
+  
   const on_order_submit = useCallback(
     (event) => {
       event.preventDefault();
@@ -108,6 +113,7 @@ const OrderInfo = (props) => {
         delete_clicked={on_delete_clicked}
         name_changed={on_name_changed}
         description_changed={on_description_changed}
+        print_order={print_order}
       />
     </React.Fragment>
   );
