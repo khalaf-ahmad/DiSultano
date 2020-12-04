@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import FromInputControl from "../../UI/FromInputControl/FromInputControl";
+import { FiPrinter } from "react-icons/fi";
 
 const OrderForm = (props) => {
   return (
@@ -41,6 +42,11 @@ const OrderForm = (props) => {
         >
           Save
         </Button>
+        {props.is_old_product && (
+          <Button onClick={props.print_order} variant="outline-secondary">
+            <FiPrinter size="32" />
+          </Button>
+        )}
       </div>
     </Form>
   );
