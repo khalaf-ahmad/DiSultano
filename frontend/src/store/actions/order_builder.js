@@ -129,6 +129,32 @@ export const update_order_fail = (error) => {
     };
 };
 
+export const print_order = (order_id) => {
+  return {
+    type: actionTypes.PRINT_ORDER,
+    order_id,
+  };
+};
+
+export const print_order_start = () => {
+  return {
+    type: actionTypes.PRINT_ORDER_START,
+  };
+};
+
+export const print_order_success = () => {
+  return {
+    type: actionTypes.PRINT_ORDER_SUCCESS,
+  };
+};
+
+export const print_order_fail = (error) => {
+  return {
+    type: actionTypes.PRINT_ORDER_FAIL,
+    error,
+  };
+};
+
 export const fetch_orders = () => {
     return {
         type: actionTypes.FETCH_ORDERS
