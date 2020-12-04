@@ -11,7 +11,8 @@ import {
 
 import {
   fetch_orders_saga, add_order_saga,
-  delete_order_saga, update_order_saga
+  delete_order_saga, update_order_saga,
+  print_order_saga
 } from './order_builder';
 import * as actionTypes from '../actions/actionTypes';
 
@@ -57,7 +58,8 @@ export function* watchOrders() {
       takeEvery(actionTypes.FETCH_ORDERS, fetch_orders_saga),
       takeEvery(actionTypes.ADD_ORDER, add_order_saga),
       takeEvery(actionTypes.UPDATE_ORDER, update_order_saga),
-      takeEvery(actionTypes.DELETE_ORDER, delete_order_saga)
+      takeEvery(actionTypes.DELETE_ORDER, delete_order_saga),
+      takeEvery(actionTypes.PRINT_ORDER, print_order_saga)
     ]
   );
 }
