@@ -1,16 +1,16 @@
-import React, { useEffect, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../store/actions";
-import UserList from "../../components/UserList/UserList.js";
-import { Spinner, Alert } from "react-bootstrap";
+import React, { useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Spinner, Alert } from 'react-bootstrap';
+import * as actions from '../../store/actions';
+import UserList from '../../components/UserList/UserList.js';
 
 const status_style = {
-  position: "fixed",
-  left: "50%",
-  zIndex: "3031",
+  position: 'fixed',
+  left: '50%',
+  zIndex: '3031',
 };
 
-const Users = () => {
+function Users() {
   // Getting State from redux store
   const loading = useSelector((state) => state.users.loading);
   const error = useSelector((state) => state.users.error);
@@ -18,30 +18,26 @@ const Users = () => {
 
   const dispatch = useDispatch();
   // Mapping actions to component functions
-  const fetch_users = useCallback(
-    () => dispatch(actions.fetch_users_initiate()),
-    [dispatch]
-  );
+  const fetch_users = useCallback(() => dispatch(actions.fetch_users_initiate()), [dispatch]);
 
   const handle_status_change = useCallback(
-    (username, activated) =>
-      dispatch(actions.update_user_status(username, activated)),
-    [dispatch]
+    (username, activated) => dispatch(actions.update_user_status(username, activated)),
+    [dispatch],
   );
 
   const handle_role_change = useCallback(
     (username, role) => dispatch(actions.update_user_role(username, role)),
-    [dispatch]
+    [dispatch],
   );
 
   const handle_update_user = useCallback(
     (user) => dispatch(actions.save_user_init(user)),
-    [dispatch]
+    [dispatch],
   );
 
   const handle_delete_user = useCallback(
     (userId) => dispatch(actions.delete_user_init(userId)),
-    [dispatch]
+    [dispatch],
   );
 
   useEffect(() => {
@@ -49,10 +45,7 @@ const Users = () => {
   }, [fetch_users]);
 
   const alert = (
-    <Alert
-      style={{ ...status_style, transform: "translateX(-50%)" }}
-      variant="danger"
-    >
+    <Alert style={{ ...status_style, transform: 'translateX(-50%)' }} variant="danger">
       {error}
     </Alert>
   );
@@ -64,7 +57,7 @@ const Users = () => {
   );
 
   return (
-    <React.Fragment>
+    <>
       {error && alert}
       {loading && spinner}
       <UserList
@@ -74,8 +67,8 @@ const Users = () => {
         handle_update_user={handle_update_user}
         handle_delete_user={handle_delete_user}
       />
-    </React.Fragment>
+    </>
   );
-};
+}
 
 export default Users;

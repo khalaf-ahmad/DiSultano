@@ -1,14 +1,14 @@
-import React from "react";
-import { Modal, Button, Form } from "react-bootstrap";
-import FromInputControl from "../../../UI/FromInputControl/FromInputControl";
+import React from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
+import FromInputControl from '../../../UI/FromInputControl/FromInputControl';
 
 const controls = [
-  { name: "quantity", label: "Quantity", type: "number" },
-  { name: "detail_price", label: "Price", type: "number" },
-  { name: "description", label: "Description", type: "text" },
+  { name: 'quantity', label: 'Quantity', type: 'number' },
+  { name: 'detail_price', label: 'Price', type: 'number' },
+  { name: 'description', label: 'Description', type: 'text' },
 ];
 
-const DetailForm = (props) => {
+function DetailForm(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     props.update_detail(props.order_detail);
@@ -45,14 +45,11 @@ const DetailForm = (props) => {
               </React.Fragment>
             );
           })}
-          <Button type="submit" hidden></Button>
+          <Button type="submit" hidden />
         </Form>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
-        <Button
-          variant="outline-secondary"
-          onClick={props.handleCloseDetailModal}
-        >
+        <Button variant="outline-secondary" onClick={props.handleCloseDetailModal}>
           Close
         </Button>
         <Button variant="outline-success" onClick={handleSubmit}>
@@ -61,6 +58,6 @@ const DetailForm = (props) => {
       </Modal.Footer>
     </Modal>
   );
-};
+}
 
 export default DetailForm;

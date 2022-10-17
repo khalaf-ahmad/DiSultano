@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Col, Form } from "react-bootstrap";
-import bsCustomFileInput from "bs-custom-file-input";
-import UsersModal from "./UsersModal/UsersModal";
-import { fetch_users_initiate } from "../../../store/actions/users";
-import ProductFormControls from "./ProductFormControls/ProductFormControls";
-import QuestionModal from "../../UI/QuestionModal/QuestionModal";
+import React, { useEffect, useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Col, Form } from 'react-bootstrap';
+import bsCustomFileInput from 'bs-custom-file-input';
+import UsersModal from './UsersModal/UsersModal';
+import { fetch_users_initiate } from '../../../store/actions/users';
+import ProductFormControls from './ProductFormControls/ProductFormControls';
+import QuestionModal from '../../UI/QuestionModal/QuestionModal';
 
-const ProductForm = (props) => {
+function ProductForm(props) {
   // State
   const [show_user_modal, set_show_modal] = useState(false);
   const [product_recievers, set_recievers] = useState([]);
@@ -20,16 +20,14 @@ const ProductForm = (props) => {
   const users = useSelector((state) => state.users.users);
 
   // Mapping redux actions to functions
-  const fetch_users = useCallback(() => dispatch(fetch_users_initiate()), [
-    dispatch,
-  ]);
+  const fetch_users = useCallback(() => dispatch(fetch_users_initiate()), [dispatch]);
 
   const handle_close = () => set_show_modal(false);
   const handleShow = () => set_show_modal(true);
 
   const user_search = (user_list, value) => {
     const result = user_list.filter(
-      (usr) => usr.name.toLowerCase().indexOf(value.toLowerCase()) >= 0
+      (usr) => usr.name.toLowerCase().indexOf(value.toLowerCase()) >= 0,
     );
     return result.length ? result : user_list;
   };
@@ -105,26 +103,24 @@ const ProductForm = (props) => {
   );
 
   return (
-    <React.Fragment>
-      <Form as={Col} className="mt-2">
-        {users_control}
-        {delete_modal}
-        <ProductFormControls
-          product={props.product}
-          handleShow={handleShow}
-          clear_clicked={props.clear_form}
-          delete_product_clicked={() => set_delete_modal(true)}
-          input_changed={props.input_changed}
-          submit_clicked={handle_submit}
-          disable_update={props.disable_update}
-          image_changed={handle_image_changed}
-          product_recievers={product_recievers}
-          delete_receiver={props.delete_receiver}
-          handle_receiver_search={handle_receiver_search}
-        />
-      </Form>
-    </React.Fragment>
+    <Form as={Col} className="mt-2">
+      {users_control}
+      {delete_modal}
+      <ProductFormControls
+        product={props.product}
+        handleShow={handleShow}
+        clear_clicked={props.clear_form}
+        delete_product_clicked={() => set_delete_modal(true)}
+        input_changed={props.input_changed}
+        submit_clicked={handle_submit}
+        disable_update={props.disable_update}
+        image_changed={handle_image_changed}
+        product_recievers={product_recievers}
+        delete_receiver={props.delete_receiver}
+        handle_receiver_search={handle_receiver_search}
+      />
+    </Form>
   );
-};
+}
 
 export default ProductForm;

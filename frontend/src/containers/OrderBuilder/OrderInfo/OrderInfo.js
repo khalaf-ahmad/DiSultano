@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../../../store/actions";
-import OrderForm from "../../../components/Order/OrderForm/OrderForm";
-import QuestionModal from "../../../components/UI/QuestionModal/QuestionModal";
+import React, { useEffect, useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../../store/actions';
+import OrderForm from '../../../components/Order/OrderForm/OrderForm';
+import QuestionModal from '../../../components/UI/QuestionModal/QuestionModal';
 import DetailsInfo from './DetailsInfo/DetailsInfo';
 
-const OrderInfo = (props) => {
+function OrderInfo(props) {
   // Component State
-  const [customer_name, set_customer_name] = useState("");
-  const [description, set_description] = useState("");
+  const [customer_name, set_customer_name] = useState('');
+  const [description, set_description] = useState('');
   const [show_delete_modal, set_delete_modal] = useState(false);
 
   const dispatch = useDispatch();
@@ -19,31 +19,25 @@ const OrderInfo = (props) => {
   // Mapping Store Actions to component functions
   const set_order_info = useCallback(
     () => dispatch(actions.set_order_info(customer_name, description)),
-    [dispatch, customer_name, description]
+    [dispatch, customer_name, description],
   );
 
-  const reset_order = useCallback(() => dispatch(actions.reset_order()), [
-    dispatch,
-  ]);
+  const reset_order = useCallback(() => dispatch(actions.reset_order()), [dispatch]);
 
-  const add_order = useCallback(() => dispatch(actions.add_order()), [
-    dispatch,
-  ]);
+  const add_order = useCallback(() => dispatch(actions.add_order()), [dispatch]);
 
-  const update_order = useCallback(() => dispatch(actions.update_order()), [
-    dispatch,
-  ]);
+  const update_order = useCallback(() => dispatch(actions.update_order()), [dispatch]);
 
   const delete_order = useCallback(
     () => dispatch(actions.delete_order(order.id)),
-    [dispatch, order.id]
+    [dispatch, order.id],
   );
 
   const print_order = useCallback(
     () => dispatch(actions.print_order(order.id)),
-    [dispatch, order.id]
+    [dispatch, order.id],
   );
-  
+
   const on_order_submit = useCallback(
     (event) => {
       event.preventDefault();
@@ -51,7 +45,7 @@ const OrderInfo = (props) => {
       if (order.id === 0) add_order();
       else update_order();
     },
-    [set_order_info, add_order, update_order, order.id]
+    [set_order_info, add_order, update_order, order.id],
   );
 
   const handle_delete_order = useCallback(() => {
@@ -61,8 +55,8 @@ const OrderInfo = (props) => {
 
   const handle_clear_order = useCallback(() => {
     reset_order();
-    set_customer_name("");
-    set_description("");
+    set_customer_name('');
+    set_description('');
   }, [reset_order]);
 
   const delete_modal = (
@@ -74,15 +68,9 @@ const OrderInfo = (props) => {
     />
   );
 
-  const on_name_changed = useCallback(
-    (event) => set_customer_name(event.target.value),
-    []
-  );
+  const on_name_changed = useCallback((event) => set_customer_name(event.target.value), []);
 
-  const on_description_changed = useCallback(
-    (event) => set_description(event.target.value),
-    []
-  );
+  const on_description_changed = useCallback((event) => set_description(event.target.value), []);
 
   const on_delete_clicked = useCallback(() => set_delete_modal(true), []);
 
@@ -93,7 +81,7 @@ const OrderInfo = (props) => {
   }, [order.customer_name, order.description]);
 
   return (
-    <React.Fragment>
+    <>
       {delete_modal}
       <DetailsInfo details={order.details} />
       <div
@@ -115,8 +103,8 @@ const OrderInfo = (props) => {
         description_changed={on_description_changed}
         print_order={print_order}
       />
-    </React.Fragment>
+    </>
   );
-};
+}
 
 export default React.memo(OrderInfo);

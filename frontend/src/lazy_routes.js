@@ -1,19 +1,15 @@
 import React, { Suspense } from 'react';
 import { Route } from 'react-router-dom';
 
-export const OrderWatcher = React.lazy(() =>
-  import("./containers/OrderWatcher/OrderWatcher")
-);
+export const OrderWatcher = React.lazy(() => import('./containers/OrderWatcher/OrderWatcher'));
 
-export const OrderBuilder = React.lazy(() =>
-  import("./containers/OrderBuilder/OrderBuilder")
-);
+export const OrderBuilder = React.lazy(() => import('./containers/OrderBuilder/OrderBuilder'));
 
-export const Store = React.lazy(() => import("./containers/Store/Store"));
+export const Store = React.lazy(() => import('./containers/Store/Store'));
 
-export const Users = React.lazy(() => import("./containers/Users/Users"));
+export const Users = React.lazy(() => import('./containers/Users/Users'));
 
-const LazyRoute = ({ Component, path, exact }) => {
+function LazyRoute({ Component, path, exact }) {
   return (
     <Route
       path={path}
@@ -25,6 +21,6 @@ const LazyRoute = ({ Component, path, exact }) => {
       )}
     />
   );
-};
+}
 
 export default LazyRoute;

@@ -1,14 +1,14 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import ListGroup from "react-bootstrap/ListGroup";
-import CreatedDetail from "./CreatedDetail/CreatedDetail";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import ListGroup from 'react-bootstrap/ListGroup';
+import CreatedDetail from './CreatedDetail/CreatedDetail';
 
-const CreatedDetails = (props) => {
+function CreatedDetails(props) {
   // Getting created details from redux store
   const created_details = useSelector((state) => state.orders_details.created);
 
   return (
-    <React.Fragment>
+    <>
       <h3 className="text-center text-info bg-warning p-2">HISTORY</h3>
       <ListGroup as="ul" className="font-weight-bold">
         {created_details.map((detail) => (
@@ -19,8 +19,8 @@ const CreatedDetails = (props) => {
           />
         ))}
       </ListGroup>
-    </React.Fragment>
+    </>
   );
-};
+}
 
 export default React.memo(CreatedDetails);

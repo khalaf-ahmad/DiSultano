@@ -1,6 +1,6 @@
-import axios from "axios";
-import LocalStorageService from "./shared/LocalStorageService";
-import { token } from "./shared/utility";
+import axios from 'axios';
+import LocalStorageService from './shared/LocalStorageService';
+import { token } from './shared/utility';
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -10,13 +10,13 @@ instance.interceptors.request.use(
   (config) => {
     const user_token = token.access_token;
     if (user_token) {
-      config.headers["Authorization"] = `Bearer ${user_token}`;
+      config.headers.Authorization = `Bearer ${user_token}`;
     }
     return config;
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 instance.interceptors.response.use(
@@ -28,7 +28,7 @@ instance.interceptors.response.use(
     if (
       error.response &&
       error.response.status === 401 &&
-      originalRequest.url === "/token/refresh"
+      originalRequest.url === '/token/refresh'
     ) {
       return Promise.reject(error);
     }
@@ -42,24 +42,20 @@ instance.interceptors.response.use(
       refresh_token
     ) {
       originalRequest._retry = true;
-      instance.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${refresh_token}`;
-      token.access_token = "";
+      instance.defaults.headers.common.Authorization = `Bearer ${refresh_token}`;
+      token.access_token = '';
       return instance
-        .post("/token/refresh")
+        .post('/token/refresh')
         .then((res) => {
           if (res.status === 201) {
             token.access_token = res.data.access_token;
-            instance.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${token.access_token}`;
+            instance.defaults.headers.common.Authorization = `Bearer ${token.access_token}`;
           }
           return instance(originalRequest);
         })
         .catch((error) => Promise.reject(error));
     }
     return Promise.reject(error);
-  }
+  },
 );
 export default instance;

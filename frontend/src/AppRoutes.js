@@ -1,20 +1,14 @@
 import React, { useContext } from 'react';
-import { Route, Switch } from "react-router-dom";
-import Registration from "./containers/Registration/Registration";
-import Login from "./containers/Login/Login";
-import Logout from "./components/Logout/Logout";
-import Profile from "./containers/Profile/Profile";
-import LazyRoute, {
-  OrderBuilder,
-  OrderWatcher,
-  Store,
-  Users,
-} from "./lazy_routes";
-import authContext from "./context/auth-context";
+import { Route, Switch } from 'react-router-dom';
+import Registration from './containers/Registration/Registration';
+import Login from './containers/Login/Login';
+import Logout from './components/Logout/Logout';
+import Profile from './containers/Profile/Profile';
+import LazyRoute, { OrderBuilder, OrderWatcher, Store, Users } from './lazy_routes';
+import authContext from './context/auth-context';
 import { UserLevel } from './shared/utility';
 
-
-const AppRoutes = () => {
+function AppRoutes() {
   const context = useContext(authContext);
 
   const user_level = context.user.role;
@@ -50,11 +44,7 @@ const AppRoutes = () => {
     );
   }
 
-  return (
-    <React.Fragment>
-      {routes}
-    </React.Fragment>
-  );
+  return <>{routes}</>;
 }
 
 export default AppRoutes;

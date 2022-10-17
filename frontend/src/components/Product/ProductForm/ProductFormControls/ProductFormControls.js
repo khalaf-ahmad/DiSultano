@@ -1,16 +1,16 @@
-import React from "react";
-import { Col, Row, Form } from "react-bootstrap";
-import FromInputControl from "../../../UI/FromInputControl/FromInputControl";
-import CategoryControl from "../CategoryControl/CategoryControl";
-import FormButtonsControls from "./FormButtonsControls/FormButtonsControls";
-import ReceiversControls from "./ReceiversControl/ReceiversControl";
+import React from 'react';
+import { Col, Row, Form } from 'react-bootstrap';
+import FromInputControl from '../../../UI/FromInputControl/FromInputControl';
+import CategoryControl from '../CategoryControl/CategoryControl';
+import FormButtonsControls from './FormButtonsControls/FormButtonsControls';
+import ReceiversControls from './ReceiversControl/ReceiversControl';
 
 const controls = [
-  { name: "name", label: "Product Name", type: "text" },
-  { name: "price", label: "Price", type: "number" },
+  { name: 'name', label: 'Product Name', type: 'text' },
+  { name: 'price', label: 'Price', type: 'number' },
 ];
 
-const ProductFormControls = (props) => {
+function ProductFormControls(props) {
   const column_grid = { xs: 12, sm: 6 };
   const first_row_controls = controls.map((control) => (
     <Col {...column_grid} key={control.name}>
@@ -54,9 +54,7 @@ const ProductFormControls = (props) => {
         onChange={props.image_changed}
         className="mb-2"
         id="custom-file"
-        label={
-          props.product.image_form ? props.product.image_form.name : "Image"
-        }
+        label={props.product.image_form ? props.product.image_form.name : 'Image'}
         custom
       />
     </Col>
@@ -73,18 +71,16 @@ const ProductFormControls = (props) => {
   );
 
   return (
-    <React.Fragment>
+    <>
       <Row>{first_row_controls}</Row>
       <Row>
         {category_list_control}
         {file_control}
       </Row>
-      <Row style={{ maxHeight: "150px", overflow: "auto" }}>
-        {receivers_controls}
-      </Row>
+      <Row style={{ maxHeight: '150px', overflow: 'auto' }}>{receivers_controls}</Row>
       <Row>{form_button_controls}</Row>
-    </React.Fragment>
+    </>
   );
-};
+}
 
 export default ProductFormControls;

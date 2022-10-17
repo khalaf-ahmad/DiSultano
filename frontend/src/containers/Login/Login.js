@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { UserControls } from '../../shared/utility';
-import UserForm from "../../components/UI/UserForm/UserForm";
-import AuthContext from '../../context/auth-context';
 import { Redirect } from 'react-router';
+import { UserControls } from '../../shared/utility';
+import UserForm from '../../components/UI/UserForm/UserForm';
+import AuthContext from '../../context/auth-context';
 
 class Login extends Component {
   static contextType = AuthContext;
@@ -13,6 +13,7 @@ class Login extends Component {
       password: { ...UserControls.password },
     },
   };
+
   componentWillUnmount() {
     this.context.clearMessage();
   }
@@ -36,18 +37,19 @@ class Login extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const user = {
-      username: this.state.controls["username"].value,
-      password: this.state.controls["password"].value,
+      username: this.state.controls.username.value,
+      password: this.state.controls.password.value,
     };
     this.context.login(user);
   };
 
   render() {
-
-    return this.context.isAuthenticated? <Redirect to='/' /> : (
+    return this.context.isAuthenticated ? (
+      <Redirect to="/" />
+    ) : (
       <UserForm
         controls={this.state.controls}
-        submitText={this.context.isLoading ? "Loading..." : "Login"}
+        submitText={this.context.isLoading ? 'Loading...' : 'Login'}
         loading={this.context.isLoading}
         changeHandler={this.changeHandler}
         displayMessage={this.context.displayMessage}

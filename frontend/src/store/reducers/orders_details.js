@@ -1,14 +1,11 @@
 import * as actionTypes from '../actions/actionTypes';
-import {
-  on_action_fail, on_action_start,
-  updateObject
-} from '../../shared/utility';
+import { on_action_fail, on_action_start, updateObject } from '../../shared/utility';
 
 const initial_state = {
   created: [],
   waiting: [],
   loading: false,
-  error: "",
+  error: '',
 };
 
 const fetch_orders_details_success = (state, action) => {
@@ -16,12 +13,12 @@ const fetch_orders_details_success = (state, action) => {
     created: [...action.data.created],
     waiting: [...action.data.waiting],
     loading: false,
-    error: ""
+    error: '',
   });
 };
 
 const switch_detail = (first, second, detail_id) => {
-  let index = first.findIndex(dt => dt.detail_id === detail_id);
+  const index = first.findIndex((dt) => dt.detail_id === detail_id);
   if (index > -1) {
     second.unshift(first[index]);
     first.splice(index, 1);
@@ -29,10 +26,10 @@ const switch_detail = (first, second, detail_id) => {
 };
 
 const update_detail_state_success = (state, action) => {
-  const detail_id = action.detail_id;
+  const { detail_id } = action;
   const created_status = action.status;
-  let waiting = [...state.waiting];
-  let created = [...state.created];
+  const waiting = [...state.waiting];
+  const created = [...state.created];
   if (created_status) {
     switch_detail(waiting, created, detail_id);
   } else {
@@ -41,9 +38,8 @@ const update_detail_state_success = (state, action) => {
   return updateObject(state, { waiting, created, loading: false });
 };
 
-
 const reducer = (state = initial_state, action) => {
-  const type = action.type;
+  const { type } = action;
   switch (true) {
     case type === actionTypes.FETCH_ORDERS_DETAILS_SUCCESS:
       return fetch_orders_details_success(state, action);
@@ -54,7 +50,8 @@ const reducer = (state = initial_state, action) => {
     case type === actionTypes.FETCH_ORDERS_DETAILS_FAIL ||
       type === actionTypes.UPDATE_DETAIL_STATE_FAIL:
       return on_action_fail(state, action);
-    default: return state;
+    default:
+      return state;
   }
 };
 

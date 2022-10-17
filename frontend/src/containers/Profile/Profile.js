@@ -1,11 +1,10 @@
-import React, { Component } from "react";
-import { UserControls, get_error_message } from "../../shared/utility";
-import UserForm from "../../components/UI/UserForm/UserForm";
+import React, { Component } from 'react';
+import { UserControls, get_error_message } from '../../shared/utility';
+import UserForm from '../../components/UI/UserForm/UserForm';
 import axios from '../../axios-base';
 import authContext from '../../context/auth-context';
 
 class Profile extends Component {
-
   static contextType = authContext;
 
   state = {
@@ -16,13 +15,13 @@ class Profile extends Component {
           ...UserControls.name.elementConfig,
           required: false,
         },
-        value: this.context.user.name ,
+        value: this.context.user.name,
       },
       password: {
         ...UserControls.password,
         elementConfig: {
           ...UserControls.password.elementConfig,
-          placeholder: "New Password",
+          placeholder: 'New Password',
           required: false,
         },
       },
@@ -34,8 +33,8 @@ class Profile extends Component {
         },
       },
     },
-    displayMessage: "",
-    category: "",
+    displayMessage: '',
+    category: '',
     isLoading: false,
   };
 
@@ -46,8 +45,8 @@ class Profile extends Component {
 
     this.setState((prev_state) => {
       return {
-        displayMessage: "",
-        category: "",
+        displayMessage: '',
+        category: '',
         controls: {
           ...prev_state.controls,
           [controlName]: control,
@@ -61,7 +60,7 @@ class Profile extends Component {
       return {
         ...prev_state,
         displayMessage: message,
-        category: "danger",
+        category: 'danger',
       };
     });
   };
@@ -71,8 +70,8 @@ class Profile extends Component {
     if (!this.formIsValid()) {
       return;
     }
-    const name = this.state.controls["name"].value;
-    const password = this.state.controls["password"].value;
+    const name = this.state.controls.name.value;
+    const password = this.state.controls.password.value;
     const user = {
       id: this.context.user.id,
     };
@@ -82,8 +81,8 @@ class Profile extends Component {
       return {
         ...prev_state,
         isLoading: true,
-        category: "",
-        displayMessage: "",
+        category: '',
+        displayMessage: '',
       };
     });
     this.update_user(user);
@@ -91,14 +90,14 @@ class Profile extends Component {
 
   update_user = (user) => {
     axios
-      .put("/user", user)
+      .put('/user', user)
       .then((response) => {
         this.context.update_user_info(response.data.user);
         this.setState((prev_state) => ({
           ...prev_state,
           displayMessage: response.data.message,
           isLoading: false,
-          category: "success",
+          category: 'success',
         }));
       })
       .catch((error) => {
@@ -107,7 +106,7 @@ class Profile extends Component {
             ...prev_state,
             isLoading: false,
             displayMessage: get_error_message(error),
-            category: "danger",
+            category: 'danger',
           };
         });
       });
@@ -131,7 +130,7 @@ class Profile extends Component {
     return (
       <UserForm
         controls={this.state.controls}
-        submitText={this.state.isLoading ? "Loading..." : "Update"}
+        submitText={this.state.isLoading ? 'Loading...' : 'Update'}
         loading={this.state.isLoading}
         changeHandler={this.changeHandler}
         displayMessage={this.state.displayMessage}

@@ -1,7 +1,7 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import ProductForm from "../../../../components/Product/ProductForm/ProductForm";
-import * as actionTypes from "../../../../store/actions/product";
+import React, { useCallback, useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import ProductForm from '../../../../components/Product/ProductForm/ProductForm';
+import * as actionTypes from '../../../../store/actions/product';
 
 const check_product_equality = (selected, initial) => {
   if (selected.image_form) return false;
@@ -15,11 +15,11 @@ const check_product_equality = (selected, initial) => {
   if (selected.receivers.length !== initial.receivers.length) return false;
 
   return initial.receivers.every(
-    (user) => selected.receivers.findIndex((usr) => usr.id === user.id) >= 0
+    (user) => selected.receivers.findIndex((usr) => usr.id === user.id) >= 0,
   );
 };
 
-const ProductBuilder = (props) => {
+function ProductBuilder(props) {
   const [disable_update, set_disable_update] = useState(false);
   const { product, set_product, reset_product } = props;
 
@@ -27,7 +27,7 @@ const ProductBuilder = (props) => {
   // Mapping redux actions to functions
   const add_product = useCallback(
     () => dispatch(actionTypes.add_product(props.product)),
-    [dispatch, props.product]
+    [dispatch, props.product],
   );
 
   const update_product = useCallback(() => {
@@ -36,7 +36,7 @@ const ProductBuilder = (props) => {
 
   const delete_product = useCallback(
     () => dispatch(actionTypes.delete_product(props.product.id)),
-    [dispatch, props.product.id]
+    [dispatch, props.product.id],
   );
 
   const handle_add_receiver = useCallback(
@@ -52,14 +52,12 @@ const ProductBuilder = (props) => {
         };
       });
     },
-    [product, set_product]
+    [product, set_product],
   );
 
   const handle_delete_reciever = useCallback(
     (receiver_id) => {
-      const updated_receivers = product.receivers.filter(
-        (reciever) => reciever.id !== receiver_id
-      );
+      const updated_receivers = product.receivers.filter((reciever) => reciever.id !== receiver_id);
       set_product((prev_state) => {
         return {
           ...prev_state,
@@ -67,18 +65,18 @@ const ProductBuilder = (props) => {
         };
       });
     },
-    [product, set_product]
+    [product, set_product],
   );
 
   const handle_input_change = useCallback(
     (event) => {
-      let value = event.target.value;
+      let { value } = event.target;
       let property = event.target.name;
-      if (property === "category_id" || property === "price") {
+      if (property === 'category_id' || property === 'price') {
         value = +value;
       }
-      if (property === "category_id") {
-        property = "category";
+      if (property === 'category_id') {
+        property = 'category';
         value = { id: value };
       }
       set_product((prev_state) => {
@@ -88,7 +86,7 @@ const ProductBuilder = (props) => {
         };
       });
     },
-    [set_product]
+    [set_product],
   );
 
   const clear_form = useCallback(() => {
@@ -108,10 +106,7 @@ const ProductBuilder = (props) => {
     set_disable_update(eq);
   }, [props.product, props.products, clear_form]);
 
-  useEffect(() => detect_change_status(), [
-    props.product,
-    detect_change_status,
-  ]);
+  useEffect(() => detect_change_status(), [props.product, detect_change_status]);
 
   useEffect(() => clear_form(), [clear_form, props.delete_product]);
 
@@ -129,6 +124,6 @@ const ProductBuilder = (props) => {
       set_product={props.set_product}
     />
   );
-};
+}
 
 export default ProductBuilder;

@@ -1,8 +1,8 @@
-import React from "react";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
-import { AiOutlineSwitcher } from "react-icons/ai";
+import React from 'react';
+import ListGroupItem from 'react-bootstrap/ListGroupItem';
+import { AiOutlineSwitcher } from 'react-icons/ai';
 
-const CreatedDetail = ({ detail, detail_clicked }) => {
+function CreatedDetail({ detail, detail_clicked }) {
   return (
     <ListGroupItem as="li" action variant="info">
       <div className="d-flex justify-content-between">
@@ -17,6 +17,6 @@ const CreatedDetail = ({ detail, detail_clicked }) => {
       </div>
     </ListGroupItem>
   );
-};
+}
 
 export default CreatedDetail;

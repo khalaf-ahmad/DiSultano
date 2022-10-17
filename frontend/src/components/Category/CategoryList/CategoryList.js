@@ -3,8 +3,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { MdClear } from 'react-icons/md';
 
 const list_height_style = {
-  maxHeight: "calc( 100vh - 210px)",
-  overflow: "auto",
+  maxHeight: 'calc( 100vh - 210px)',
+  overflow: 'auto',
 };
 
 export default function CategoryList(props) {

@@ -1,20 +1,20 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Spinner, Alert } from "react-bootstrap";
-import CategoryForm from "../../../components/Category/CategoryForm/CategoryForm";
-import * as actionTypes from "../../../store/actions/category";
-import CategoryList from "../../../components/Category/CategoryList/CategoryList";
+import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Spinner, Alert } from 'react-bootstrap';
+import CategoryForm from '../../../components/Category/CategoryForm/CategoryForm';
+import * as actionTypes from '../../../store/actions/category';
+import CategoryList from '../../../components/Category/CategoryList/CategoryList';
 
-const initial_category = { id: 0, name: "" };
+const initial_category = { id: 0, name: '' };
 
 const status_position_style = {
-  position: "absolute",
-  left: "50%",
-  transform: "translateX(-50%)",
-  zIndex: "3031",
+  position: 'absolute',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  zIndex: '3031',
 };
 
-const Categories = () => {
+function Categories() {
   const [selected_category, setCategory] = useState({ ...initial_category });
 
   const dispatch = useDispatch();
@@ -24,22 +24,22 @@ const Categories = () => {
 
   const fetch_categories = useCallback(
     () => dispatch(actionTypes.fetch_categories(false)),
-    [dispatch]
+    [dispatch],
   );
 
   const delete_category = useCallback(
     (category_id) => dispatch(actionTypes.delete_category(category_id)),
-    [dispatch]
+    [dispatch],
   );
 
   const add_category = useCallback(
     (category_name) => dispatch(actionTypes.add_category(category_name)),
-    [dispatch]
+    [dispatch],
   );
 
   const update_category = useCallback(
     (category) => dispatch(actionTypes.update_category(category)),
-    [dispatch]
+    [dispatch],
   );
 
   useEffect(() => {
@@ -76,19 +76,18 @@ const Categories = () => {
   };
 
   const spinner = (
-    <Spinner
-      variant="danger"
-      animation="grow"
-      style={status_position_style}
-      size="sm"
-    >
+    <Spinner variant="danger" animation="grow" style={status_position_style} size="sm">
       <span className="sr-only">Loading...</span>
     </Spinner>
   );
 
-  const alert =  <Alert style={status_position_style} variant="danger">{error}</Alert>
+  const alert = (
+    <Alert style={status_position_style} variant="danger">
+      {error}
+    </Alert>
+  );
   return (
-    <React.Fragment>
+    <>
       {error && alert}
       {loading && spinner}
       <CategoryList
@@ -103,8 +102,8 @@ const Categories = () => {
         name_changed={(event) => handle_name_change(event)}
         category={selected_category}
       />
-    </React.Fragment>
+    </>
   );
-};
+}
 
 export default Categories;

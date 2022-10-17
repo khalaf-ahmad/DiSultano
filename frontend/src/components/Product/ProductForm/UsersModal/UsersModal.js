@@ -1,15 +1,10 @@
-import React from "react";
-import { Modal, Form, ListGroup, Button } from "react-bootstrap";
-import { MdAdd } from "react-icons/md";
+import React from 'react';
+import { Modal, Form, ListGroup, Button } from 'react-bootstrap';
+import { MdAdd } from 'react-icons/md';
 
-const UsersModal = (props) => {
+function UsersModal(props) {
   return (
-    <Modal
-      show={props.show}
-      onHide={props.on_close}
-      backdrop="static"
-      keyboard={false}
-    >
+    <Modal show={props.show} onHide={props.on_close} backdrop="static" keyboard={false}>
       <Modal.Header closeButton>
         <Modal.Title>Add Receiver</Modal.Title>
       </Modal.Header>
@@ -24,7 +19,7 @@ const UsersModal = (props) => {
           variant="flush"
           as="ul"
           className="text-capitalize rounded-0 text-lead"
-          style={{maxHeight: '400px', overflow: "auto"}}
+          style={{ maxHeight: '400px', overflow: 'auto' }}
         >
           {props.users.map((user) => (
             <ListGroup.Item
@@ -35,11 +30,7 @@ const UsersModal = (props) => {
               variant="warning"
             >
               <span>{user.name}</span>
-              <MdAdd
-                role="button"
-                className="text-bg"
-                onClick={() => props.add_clicked(user)}
-              />
+              <MdAdd role="button" className="text-bg" onClick={() => props.add_clicked(user)} />
             </ListGroup.Item>
           ))}
         </ListGroup>
@@ -51,6 +42,6 @@ const UsersModal = (props) => {
       </Modal.Footer>
     </Modal>
   );
-};
+}
 
 export default UsersModal;

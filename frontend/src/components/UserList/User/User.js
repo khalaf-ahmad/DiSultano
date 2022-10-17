@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Col, Card } from "react-bootstrap";
-import UserForm from "./UserForm/UserForm";
-import QuestionModal from "../../UI/QuestionModal/QuestionModal";
+import React, { useState } from 'react';
+import { Col, Card } from 'react-bootstrap';
+import UserForm from './UserForm/UserForm';
+import QuestionModal from '../../UI/QuestionModal/QuestionModal';
 
-const User = (props) => {
+function User(props) {
   const [show_modal, set_show_modal] = useState(false);
 
   const handle_delete_user = () => {
@@ -27,13 +27,11 @@ const User = (props) => {
     <Col sm="6" md="4">
       {delete_modal}
       <Card
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
         className="mb-2"
-        border={props.activated ? "success" : "light"}
+        border={props.activated ? 'success' : 'light'}
       >
-        <Card.Header style={{ color: "darkorchid" }}>
-          {props.username}
-        </Card.Header>
+        <Card.Header style={{ color: 'darkorchid' }}>{props.username}</Card.Header>
         <Card.Body>
           <Card.Title className="text-success">{props.name}</Card.Title>
           <UserForm {...props} open_modal={open_modal} />
@@ -41,6 +39,6 @@ const User = (props) => {
       </Card>
     </Col>
   );
-};
+}
 
 export default User;

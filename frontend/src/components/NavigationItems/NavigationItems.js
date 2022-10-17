@@ -1,12 +1,14 @@
-import React, { Fragment } from "react";
-import NavigationItem from "./NavigationItem/NavigationItem";
+import React, { Fragment } from 'react';
+import NavigationItem from './NavigationItem/NavigationItem';
 
-const NavigationItems = ({ navLinks }) => {
-    return (
-        <Fragment>
-            {navLinks.map((link, idx) =>  <NavigationItem link={link} key={idx} />)}
-        </Fragment>
-    );
-};
+function NavigationItems({ navLinks }) {
+  return (
+    <>
+      {navLinks.map((link, idx) => (
+        <NavigationItem link={link} key={idx} />
+      ))}
+    </>
+  );
+}
 
 export default NavigationItems;

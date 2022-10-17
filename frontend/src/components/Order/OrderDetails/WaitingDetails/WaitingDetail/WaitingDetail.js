@@ -1,14 +1,14 @@
-import React from "react";
-import { Card, Badge, Button } from "react-bootstrap";
+import React from 'react';
+import { Card, Badge, Button } from 'react-bootstrap';
 
 const badge_style = {
-  alignSelf: "center",
-  padding: "6px",
+  alignSelf: 'center',
+  padding: '6px',
 };
 
-const WaitingDetail = ({ detail, detail_clicked }) => {
-  const time = detail.date_created.split(" ")[1];
-  const time_array = time.split(":").slice(0, 2).join(":");
+function WaitingDetail({ detail, detail_clicked }) {
+  const time = detail.date_created.split(' ')[1];
+  const time_array = time.split(':').slice(0, 2).join(':');
   return (
     <Card bg="white" border="success">
       <Card.Header className="text-success">
@@ -22,7 +22,7 @@ const WaitingDetail = ({ detail, detail_clicked }) => {
       <Card.Text as="div" className="p-2">
         <div className="d-flex justify-content-between p-2">
           <Badge style={badge_style} variant="light">
-            {detail.customer_name || " "}
+            {detail.customer_name || ' '}
           </Badge>
           <Badge style={badge_style} variant="light">
             {detail.order_id}
@@ -38,16 +38,12 @@ const WaitingDetail = ({ detail, detail_clicked }) => {
         </div>
       </Card.Text>
       <Card.Footer>
-        <Button
-          className="m-auto d-block"
-          variant="outline-primary"
-          onClick={detail_clicked}
-        >
+        <Button className="m-auto d-block" variant="outline-primary" onClick={detail_clicked}>
           Done
         </Button>
       </Card.Footer>
     </Card>
   );
-};
+}
 
 export default WaitingDetail;

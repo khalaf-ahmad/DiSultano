@@ -1,6 +1,7 @@
-import React from "react";
-import { Form } from "react-bootstrap";
-const FromInputControl = (props) => {
+import React from 'react';
+import { Form } from 'react-bootstrap';
+
+function FromInputControl(props) {
   return (
     <div>
       <Form.Label htmlFor={props.id} srOnly>
@@ -18,6 +19,6 @@ const FromInputControl = (props) => {
       />
     </div>
   );
-};
+}
 
 export default FromInputControl;

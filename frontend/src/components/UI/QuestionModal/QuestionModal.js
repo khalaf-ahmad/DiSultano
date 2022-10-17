@@ -1,7 +1,7 @@
-import React from "react";
-import { Modal, Button } from "react-bootstrap";
+import React from 'react';
+import { Modal, Button } from 'react-bootstrap';
 
-const QuestionModal = (props) => {
+function QuestionModal(props) {
   return (
     <Modal show={props.show} onHide={props.close_clicked}>
       <Modal.Header closeButton>
@@ -18,6 +18,6 @@ const QuestionModal = (props) => {
       </Modal.Footer>
     </Modal>
   );
-};
+}
 
 export default QuestionModal;

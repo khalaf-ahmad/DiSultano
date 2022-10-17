@@ -17,10 +17,9 @@ export function* update_detail_state_saga(action) {
   try {
     yield axios.put('/order_detail', {
       detail_id: action.detail_id,
-      created: action.status
+      created: action.status,
     });
-    yield put(actions.update_detail_state_success(action.detail_id,
-      action.status));
+    yield put(actions.update_detail_state_success(action.detail_id, action.status));
   } catch (error) {
     yield put(actions.update_detail_state_fail(error));
   }

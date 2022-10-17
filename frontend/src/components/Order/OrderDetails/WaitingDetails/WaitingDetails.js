@@ -1,14 +1,14 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Row, Col } from "react-bootstrap";
-import WaitingDetail from "./WaitingDetail/WaitingDetail";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Row, Col } from 'react-bootstrap';
+import WaitingDetail from './WaitingDetail/WaitingDetail';
 
-const WaitingDetails = (props) => {
+function WaitingDetails(props) {
   // Getting wainting details from redux store
   const waiting_details = useSelector((state) => state.orders_details.waiting);
 
   return (
-    <React.Fragment>
+    <>
       <h3 className="text-center text-warning bg-info p-2">Waiting List</h3>
       <Row>
         {waiting_details.map((detail) => (
@@ -20,8 +20,8 @@ const WaitingDetails = (props) => {
           </Col>
         ))}
       </Row>
-    </React.Fragment>
+    </>
   );
-};
+}
 
 export default React.memo(WaitingDetails);

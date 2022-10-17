@@ -1,5 +1,5 @@
-import React from "react";
-import Product from "../ProductUI/ProductUI";
+import React from 'react';
+import Product from '../ProductUI/ProductUI';
 
 const ProductList = (props) => {
   return props.products.map((product) => (
@@ -8,9 +8,9 @@ const ProductList = (props) => {
       category={product.category}
       key={product.id}
       size={{
-        xs: "6",
-        sm: "4",
-        lg: "3",
+        xs: '6',
+        sm: '4',
+        lg: '3',
       }}
       product={product}
     />

@@ -1,14 +1,14 @@
-import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
-import * as actions from "../../../store/actions";
-import ProductUI from "../../../components/Product/ProductUI/ProductUI";
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import * as actions from '../../../store/actions';
+import ProductUI from '../../../components/Product/ProductUI/ProductUI';
 
-const initial_product = { id: 0, name: "", price: 0, image: "" };
+const initial_product = { id: 0, name: '', price: 0, image: '' };
 
 const iniial_order_detail = {
   detail_id: 0,
   detail_price: 0,
-  description: "",
+  description: '',
   quantity: 1,
   product: { ...initial_product },
 };
@@ -19,10 +19,7 @@ const ProductList = ({ products }) => {
   const dispatch = useDispatch();
   // Mapping Store actions to functions
 
-  const add_detail = useCallback(
-    (detail) => dispatch(actions.add_detail(detail)),
-    [dispatch]
-  );
+  const add_detail = useCallback((detail) => dispatch(actions.add_detail(detail)), [dispatch]);
 
   // Getting detail from product when selecting product
   const get_detail_from_product = (product) => {
@@ -43,7 +40,7 @@ const ProductList = ({ products }) => {
       product={product}
       card_clicked={() => on_product_selected(product)}
       key={product.id}
-      size={{ xs: "6", sm: "4", md: "6", lg: "3" }}
+      size={{ xs: '6', sm: '4', md: '6', lg: '3' }}
     />
   ));
 };

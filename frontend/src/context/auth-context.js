@@ -1,20 +1,19 @@
-import React, { createContext, Component } from "react";
-import axios from "../axios-base";
-import LocalStorageService from "../shared/LocalStorageService";
-import { get_error_message } from "../shared/utility";
-import { token } from "../shared/utility";
+import React, { createContext, Component } from 'react';
+import axios from '../axios-base';
+import LocalStorageService from '../shared/LocalStorageService';
+import { get_error_message, token } from '../shared/utility';
 
 const initial_user = {
-  name: "",
-  username: "",
+  name: '',
+  username: '',
   role: 0,
   id: 0,
 };
 
 const initial_state = {
   isLoading: false,
-  displayMessage: "",
-  category: "danger",
+  displayMessage: '',
+  category: 'danger',
   isAuthenticated: false,
   user: { ...initial_user },
 };
@@ -50,9 +49,9 @@ export class AuthContextProvider extends Component {
   }
 
   get_access_token(refresh_token) {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${refresh_token}`;
+    axios.defaults.headers.common.Authorization = `Bearer ${refresh_token}`;
     axios
-      .post("/token/refresh")
+      .post('/token/refresh')
       .then((response) => {
         const user = { ...response.data.user };
         token.access_token = response.data.access_token;
@@ -88,7 +87,7 @@ export class AuthContextProvider extends Component {
   };
 
   reset_current_user = () => {
-    token.access_token = "";
+    token.access_token = '';
     this.setState((prev_state) => {
       return {
         ...prev_state,
@@ -98,11 +97,11 @@ export class AuthContextProvider extends Component {
   };
 
   login = (user) => {
-    this.send_auth_request(user, "/login");
+    this.send_auth_request(user, '/login');
   };
 
   registerUser = (user) => {
-    this.send_auth_request(user, "/user");
+    this.send_auth_request(user, '/user');
   };
 
   update_user_info = (user) => {
@@ -116,7 +115,7 @@ export class AuthContextProvider extends Component {
 
   send_auth_request = (user, url) => {
     this.setState({
-      displayMessage: "",
+      displayMessage: '',
       isLoading: true,
       isAuthenticated: false,
     });
@@ -147,8 +146,8 @@ export class AuthContextProvider extends Component {
     this.setState((prev_state) => {
       return {
         ...prev_state,
-        displayMessage: "",
-        category: "",
+        displayMessage: '',
+        category: '',
         isAuthenticated: true,
         isLoading: false,
       };

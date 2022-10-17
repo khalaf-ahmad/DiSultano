@@ -3,23 +3,16 @@ import { Form, Badge } from 'react-bootstrap';
 import { MdClear } from 'react-icons/md';
 
 const list_group_style = {
-  height: "50px",
-  maxHeight: "50px",
-  overflow: "auto",
+  height: '50px',
+  maxHeight: '50px',
+  overflow: 'auto',
 };
 
-const variants = [
-  "primary",
-  "secondary",
-  "success",
-  "info",
-  "warning",
-  "danger",
-];
+const variants = ['primary', 'secondary', 'success', 'info', 'warning', 'danger'];
 
-const ReceiversControl = (props) => {
+function ReceiversControl(props) {
   return (
-    <React.Fragment>
+    <>
       <Form.Control
         className="mb-2 mt-2"
         placeholder="Filter Receivers"
@@ -43,8 +36,8 @@ const ReceiversControl = (props) => {
           </Badge>
         ))}
       </div>
-      <dir style={{ height: "2px", backgroundColor: "#e5e5e5" }}></dir>
-    </React.Fragment>
+      <dir style={{ height: '2px', backgroundColor: '#e5e5e5' }} />
+    </>
   );
 }
 

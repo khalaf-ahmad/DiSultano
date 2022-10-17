@@ -1,9 +1,9 @@
-import React from "react";
-import { Form, Button } from "react-bootstrap";
-import FromInputControl from "../../UI/FromInputControl/FromInputControl";
-import { FiPrinter } from "react-icons/fi";
+import React from 'react';
+import { Form, Button } from 'react-bootstrap';
+import { FiPrinter } from 'react-icons/fi';
+import FromInputControl from '../../UI/FromInputControl/FromInputControl';
 
-const OrderForm = (props) => {
+function OrderForm(props) {
   return (
     <Form className="b-1 text-large" onSubmit={props.on_order_submit}>
       <FromInputControl
@@ -23,11 +23,7 @@ const OrderForm = (props) => {
         onChange={props.description_changed}
       />
       <div className="d-flex justify-content-between">
-        <Button
-          type="reset"
-          onClick={props.clear_clicked}
-          variant="outline-secondary"
-        >
+        <Button type="reset" onClick={props.clear_clicked} variant="outline-secondary">
           Clear
         </Button>
         {props.is_old_product && (
@@ -35,11 +31,7 @@ const OrderForm = (props) => {
             Delete
           </Button>
         )}
-        <Button
-          type="submit"
-          disabled={!props.has_details}
-          variant="outline-success"
-        >
+        <Button type="submit" disabled={!props.has_details} variant="outline-success">
           Save
         </Button>
         {props.is_old_product && (
@@ -50,6 +42,6 @@ const OrderForm = (props) => {
       </div>
     </Form>
   );
-};
+}
 
 export default React.memo(OrderForm);
