@@ -8,7 +8,7 @@ import store from "./store";
 
 const AppContainer = () => (
     <Provider store={store}>
-      <BrowserRouter basename="/disultano-frontend">
+      <BrowserRouter>
         <App />
       </BrowserRouter>
     </Provider>
