@@ -13,7 +13,7 @@ export const Store = React.lazy(() => import("./containers/Store/Store"));
 
 export const Users = React.lazy(() => import("./containers/Users/Users"));
 
-export default ({ Component, path, exact }) => {
+const LazyRoute = ({ Component, path, exact }) => {
   return (
     <Route
       path={path}
@@ -26,3 +26,5 @@ export default ({ Component, path, exact }) => {
     />
   );
 };
+
+export default LazyRoute;
