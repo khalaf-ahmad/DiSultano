@@ -1,4 +1,5 @@
-.builderAlert, .builderSpinner {
+.builderAlert,
+.builderSpinner {
   position: fixed;
   z-index: 1340;
   left: 50%;
@@ -13,7 +14,7 @@
   top: 63px;
 }
 
-.BuildersRow{
+.BuildersRow {
   max-height: 450px;
   overflow: auto;
 }

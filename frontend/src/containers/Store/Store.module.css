@@ -1,11 +1,14 @@
-.CategoryList, .ProductList {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: space-between;
+.CategoryList,
+.ProductList {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
 }
 
-.ProductList > div, .CategoryList > ul, .CategoryList > form {
-    flex-basis: 100%;
+.ProductList > div,
+.CategoryList > ul,
+.CategoryList > form {
+  flex-basis: 100%;
 }
 
 .CategoryList {
